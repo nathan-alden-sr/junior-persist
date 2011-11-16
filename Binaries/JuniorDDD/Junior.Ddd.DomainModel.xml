@@ -1,0 +1,99 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Junior.Ddd.DomainModel</name>
+    </assembly>
+    <members>
+        <member name="T:Junior.Ddd.DomainModel.EntityExtensions">
+            <summary>
+            Extensions for entity types.
+            </summary>
+        </member>
+        <member name="M:Junior.Ddd.DomainModel.EntityExtensions.Lazy``1(``0)">
+            <summary>
+            Generates a <see cref="T:Junior.Ddd.DomainModel.LazyEntity`1"/> instance that is pre-initialized with an entity.
+            </summary>
+            <param name="entity">An entity.</param>
+            <returns>A <see cref="T:Junior.Ddd.DomainModel.LazyEntity`1"/> instance that is pre-initialized with an entity</returns>
+            <exception cref="T:System.ArgumentNullException">Thrown when <paramref name="entity"/> is null.</exception>
+        </member>
+        <member name="T:Junior.Ddd.DomainModel.EnumerableExtensions">
+            <summary>
+            Extensions for the <see cref="T:System.Collections.Generic.IEnumerable`1"/> type.
+            </summary>
+        </member>
+        <member name="M:Junior.Ddd.DomainModel.EnumerableExtensions.Lazy``1(System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            Generates a <see cref="T:Junior.Ddd.DomainModel.LazyEntities`1"/> instance that is pre-initialized with entities.
+            </summary>
+            <param name="entities">Entities.</param>
+            <returns>A <see cref="T:Junior.Ddd.DomainModel.LazyEntities`1"/> instance that is pre-initialized with entities.</returns>
+            <exception cref="T:System.ArgumentNullException">Thrown when <paramref name="entities"/> is null.</exception>
+        </member>
+        <member name="T:Junior.Ddd.DomainModel.ILazyEntity`1">
+            <summary>
+            Represents an entity relationship that will only be loaded when it is accessed.
+            </summary>
+            <typeparam name="TEntity"></typeparam>
+        </member>
+        <member name="P:Junior.Ddd.DomainModel.ILazyEntity`1.IsValueCreated">
+            <summary>
+            Gets a value determining if the entity has been loaded.
+            </summary>
+        </member>
+        <member name="P:Junior.Ddd.DomainModel.ILazyEntity`1.Value">
+            <summary>
+            Gets the entity.
+            </summary>
+        </member>
+        <member name="T:Junior.Ddd.DomainModel.LazyEntities`1">
+            <summary>
+            A set of entity relationships that will only be loaded when the set is accessed.
+            </summary>
+        </member>
+        <member name="M:Junior.Ddd.DomainModel.LazyEntities`1.#ctor(System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+            Initializes a new instance of the <see cref="T:Junior.Ddd.DomainModel.LazyEntities`1"/> class with a pre-initialized set of entities.
+            </summary>
+            <param name="entities"></param>
+        </member>
+        <member name="M:Junior.Ddd.DomainModel.LazyEntities`1.#ctor(System.Func{System.Collections.Generic.IEnumerable{`0}})">
+            <summary>
+            Initializes a new instance of the <see cref="T:Junior.Ddd.DomainModel.LazyEntities`1"/> class.
+            </summary>
+            <param name="valueDelegate">A delegate that will be called when the entities are accessed.</param>
+        </member>
+        <member name="M:Junior.Ddd.DomainModel.LazyEntities`1.GetEnumerator">
+            <summary>
+            Returns an enumerator that iterates through the collection.
+            </summary>
+            <returns>
+            A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.
+            </returns>
+            <filterpriority>1</filterpriority>
+        </member>
+        <member name="P:Junior.Ddd.DomainModel.LazyEntities`1.Empty">
+            <summary>
+            Gets an instance of <see cref="T:Junior.Ddd.DomainModel.LazyEntities`1"/> that contains no entities.
+            </summary>
+        </member>
+        <member name="T:Junior.Ddd.DomainModel.LazyEntity`1">
+            <summary>
+            An entity relationship that will only be loaded when it is accessed.
+            </summary>
+            <typeparam name="TEntity"></typeparam>
+        </member>
+        <member name="M:Junior.Ddd.DomainModel.LazyEntity`1.#ctor(`0)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Junior.Ddd.DomainModel.LazyEntity`1"/> class with a pre-initialized entity.
+            </summary>
+            <param name="entity">An entity.</param>
+        </member>
+        <member name="M:Junior.Ddd.DomainModel.LazyEntity`1.#ctor(System.Func{`0})">
+            <summary>
+            Initalizes a new instance of the <see cref="T:Junior.Ddd.DomainModel.LazyEntity`1"/> class.
+            </summary>
+            <param name="valueDelegate">A delegate that will be called when the entity is accessed.</param>
+        </member>
+    </members>
+</doc>

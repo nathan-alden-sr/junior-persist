@@ -1,0 +1,663 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Junior.Ddd.Validation</name>
+    </assembly>
+    <members>
+        <member name="T:Junior.Ddd.Validation.LazyEntitiesNotNullRule`2">
+            <summary>
+            Validates that a <see cref="T:Junior.Ddd.DomainModel.LazyEntities`1"/> instance is not null and also that if its value has been loaded, the value is not null.
+            </summary>
+            <typeparam name="TValidationError">A type, such as an enum, that represents a validation error.</typeparam>
+            <typeparam name="TEntity"></typeparam>
+        </member>
+        <member name="T:Junior.Ddd.Validation.NotNullRule`2">
+            <summary>
+            Validates that a value is not null.
+            </summary>
+            <typeparam name="TValidationError">A type, such as an enum, that represents a validation error.</typeparam>
+            <typeparam name="TValue"></typeparam>
+        </member>
+        <member name="T:Junior.Ddd.Validation.Rule`1">
+            <summary>
+            Base class for all validation rules.
+            </summary>
+            <typeparam name="TValidationError">A type, such as an enum, that represents a validation error.</typeparam>
+        </member>
+        <member name="T:Junior.Ddd.Validation.IRule`1">
+            <summary>
+            Represents a validation rule.
+            </summary>
+            <typeparam name="TValidationError">A type, such as an enum, that represents a validation error.</typeparam>
+        </member>
+        <member name="M:Junior.Ddd.Validation.IRule`1.Validate">
+            <summary>
+            Performs rule validation.
+            </summary>
+            <returns>Validation errors generated during validation.</returns>
+        </member>
+        <member name="M:Junior.Ddd.Validation.Rule`1.#ctor(Junior.Ddd.Validation.IRule{`0}[])">
+            <summary>
+            Initializes a new instance of the <see cref="T:Junior.Ddd.Validation.Rule`1"/> class.
+            </summary>
+            <param name="dependsOn">Rules that must pass validation before validating this rule.</param>
+        </member>
+        <member name="M:Junior.Ddd.Validation.Rule`1.#ctor(`0,Junior.Ddd.Validation.IRule{`0}[])">
+            <summary>
+            Initializes a new instance of the <see cref="T:Junior.Ddd.Validation.Rule`1"/> class.
+            </summary>
+            <param name="stopValidatingOn">Validation will immediately fail if a rule dependency results in a validation error equal to <paramref name="stopValidatingOn"/>.</param>
+            <param name="dependsOn">Rules that must pass validation before validating this rule.</param>
+        </member>
+        <member name="M:Junior.Ddd.Validation.Rule`1.#ctor(System.Collections.Generic.IEnumerable{`0},Junior.Ddd.Validation.IRule{`0}[])">
+            <summary>
+            Initializes a new instance of the <see cref="T:Junior.Ddd.Validation.Rule`1"/> class.
+            </summary>
+            <param name="stopValidatingOn">Validation will immediately fail if a rule dependency results in a validation error equal to one in <paramref name="stopValidatingOn"/>.</param>
+            <param name="dependsOn">Rules that must pass validation before validating this rule.</param>
+        </member>
+        <member name="M:Junior.Ddd.Validation.Rule`1.Validate">
+            <summary>
+            Performs rule validation.
+            </summary>
+            <returns>Validation errors generated during validation.</returns>
+        </member>
+        <member name="M:Junior.Ddd.Validation.Rule`1.OnValidate">
+            <summary>
+            Performs rule validation.
+            </summary>
+            <returns>Validation errors if the rule failed to validate.</returns>
+        </member>
+        <member name="M:Junior.Ddd.Validation.NotNullRule`2.#ctor(`0,`1,Junior.Ddd.Validation.IRule{`0}[])">
+            <summary>
+            Initializes a new instance of the <see cref="T:Junior.Ddd.Validation.NotNullRule`2"/> class.
+            </summary>
+            <param name="validationError">The validation error to use if validation fails.</param>
+            <param name="value">The value to validate.</param>
+            <param name="dependsOn">Rules that must pass validation before validating this rule.</param>
+        </member>
+        <member name="M:Junior.Ddd.Validation.NotNullRule`2.#ctor(`0,`1,`0,Junior.Ddd.Validation.IRule{`0}[])">
+            <summary>
+            Initializes a new instance of the <see cref="T:Junior.Ddd.Validation.NotNullRule`2"/> class.
+            </summary>
+            <param name="validationError">The validation error to use if validation fails.</param>
+            <param name="value">The value to validate.</param>
+            <param name="stopValidatingOn">Validation will immediately fail if a rule dependency results in a validation error equal to <paramref name="stopValidatingOn"/>.</param>
+            <param name="dependsOn">Rules that must pass validation before validating this rule.</param>
+        </member>
+        <member name="M:Junior.Ddd.Validation.NotNullRule`2.#ctor(`0,`1,System.Collections.Generic.IEnumerable{`0},Junior.Ddd.Validation.IRule{`0}[])">
+            <summary>
+            Initializes a new instance of the <see cref="T:Junior.Ddd.Validation.NotNullRule`2"/> class.
+            </summary>
+            <param name="validationError">The validation error to use if validation fails.</param>
+            <param name="value">The value to validate.</param>
+            <param name="stopValidatingOn">Validation will immediately fail if a rule dependency results in a validation error equal to one in <paramref name="stopValidatingOn"/>.</param>
+            <param name="dependsOn">Rules that must pass validation before validating this rule.</param>
+        </member>
+        <member name="M:Junior.Ddd.Validation.NotNullRule`2.OnValidate">
+            <summary>
+            Performs rule validation.
+            </summary>
+            <returns>Validation errors if the rule failed to validate.</returns>
+        </member>
+        <member name="M:Junior.Ddd.Validation.LazyEntitiesNotNullRule`2.#ctor(`0,Junior.Ddd.DomainModel.LazyEntities{`1},Junior.Ddd.Validation.IRule{`0}[])">
+            <summary>
+            Initializes a new instance of the <see cref="T:Junior.Ddd.Validation.LazyEntitiesNotNullRule`2"/> class.
+            </summary>
+            <param name="validationError">The validation error to use if validation fails.</param>
+            <param name="value">The value to validate.</param>
+            <param name="dependsOn">Rules that must pass validation before validating this rule.</param>
+        </member>
+        <member name="M:Junior.Ddd.Validation.LazyEntitiesNotNullRule`2.#ctor(`0,Junior.Ddd.DomainModel.LazyEntities{`1},`0,Junior.Ddd.Validation.IRule{`0}[])">
+            <summary>
+            Initializes a new instance of the <see cref="T:Junior.Ddd.Validation.LazyEntitiesNotNullRule`2"/> class.
+            </summary>
+            <param name="validationError">The validation error to use if validation fails.</param>
+            <param name="value">The value to validate.</param>
+            <param name="stopValidatingOn">Validation will immediately fail if a rule dependency results in a validation error equal to <paramref name="stopValidatingOn"/>.</param>
+            <param name="dependsOn">Rules that must pass validation before validating this rule.</param>
+        </member>
+        <member name="M:Junior.Ddd.Validation.LazyEntitiesNotNullRule`2.#ctor(`0,Junior.Ddd.DomainModel.LazyEntities{`1},System.Collections.Generic.IEnumerable{`0},Junior.Ddd.Validation.IRule{`0}[])">
+            <summary>
+            Initializes a new instance of the <see cref="T:Junior.Ddd.Validation.LazyEntitiesNotNullRule`2"/> class.
+            </summary>
+            <param name="validationError">The validation error to use if validation fails.</param>
+            <param name="value">The value to validate.</param>
+            <param name="stopValidatingOn">Validation will immediately fail if a rule dependency results in a validation error equal to one in <paramref name="stopValidatingOn"/>.</param>
+            <param name="dependsOn">Rules that must pass validation before validating this rule.</param>
+        </member>
+        <member name="T:Junior.Ddd.Validation.LazyEntityNotNullRule`2">
+            <summary>
+            Validates that a <see cref="T:Junior.Ddd.DomainModel.LazyEntity`1"/> instance is not null and also that if its value has been loaded, the value is not null.
+            </summary>
+            <typeparam name="TValidationError">A type, such as an enum, that represents a validation error.</typeparam>
+            <typeparam name="TEntity"></typeparam>
+        </member>
+        <member name="M:Junior.Ddd.Validation.LazyEntityNotNullRule`2.#ctor(`0,Junior.Ddd.DomainModel.LazyEntity{`1},Junior.Ddd.Validation.IRule{`0}[])">
+            <summary>
+            Initializes a new instance of the <see cref="T:Junior.Ddd.Validation.LazyEntityNotNullRule`2"/> class.
+            </summary>
+            <param name="validationError">The validation error to use if validation fails.</param>
+            <param name="value">The value to validate.</param>
+            <param name="dependsOn">Rules that must pass validation before validating this rule.</param>
+        </member>
+        <member name="M:Junior.Ddd.Validation.LazyEntityNotNullRule`2.#ctor(`0,Junior.Ddd.DomainModel.LazyEntity{`1},`0,Junior.Ddd.Validation.IRule{`0}[])">
+            <summary>
+            Initializes a new instance of the <see cref="T:Junior.Ddd.Validation.LazyEntityNotNullRule`2"/> class.
+            </summary>
+            <param name="validationError">The validation error to use if validation fails.</param>
+            <param name="value">The value to validate.</param>
+            <param name="stopValidatingOn">Validation will immediately fail if a rule dependency results in a validation error equal to <paramref name="stopValidatingOn"/>.</param>
+            <param name="dependsOn">Rules that must pass validation before validating this rule.</param>
+        </member>
+        <member name="M:Junior.Ddd.Validation.LazyEntityNotNullRule`2.#ctor(`0,Junior.Ddd.DomainModel.LazyEntity{`1},System.Collections.Generic.IEnumerable{`0},Junior.Ddd.Validation.IRule{`0}[])">
+            <summary>
+            Initializes a new instance of the <see cref="T:Junior.Ddd.Validation.LazyEntityNotNullRule`2"/> class.
+            </summary>
+            <param name="validationError">The validation error to use if validation fails.</param>
+            <param name="value">The value to validate.</param>
+            <param name="stopValidatingOn">Validation will immediately fail if a rule dependency results in a validation error equal to one in <paramref name="stopValidatingOn"/>.</param>
+            <param name="dependsOn">Rules that must pass validation before validating this rule.</param>
+        </member>
+        <member name="T:Junior.Ddd.Validation.NullableMaximumValueRule`2">
+            <summary>
+            Validates that a value is not greater than a maximum value.
+            </summary>
+            <typeparam name="TValidationError">A type, such as an enum, that represents a validation error.</typeparam>
+            <typeparam name="TValue">A comparable type.</typeparam>
+        </member>
+        <member name="M:Junior.Ddd.Validation.NullableMaximumValueRule`2.#ctor(`1,`0,System.Nullable{`1},Junior.Ddd.Validation.IRule{`0}[])">
+            <summary>
+            Initializes a new instance of the <see cref="T:Junior.Ddd.Validation.MaximumValueRule`2"/> class.
+            </summary>
+            <param name="maximumValue">The maximum allowable value for <paramref name="value"/>.</param>
+            <param name="validationError">The validation error to use if validation fails.</param>
+            <param name="value">The value to validate.</param>
+            <param name="dependsOn">Rules that must pass validation before validating this rule.</param>
+        </member>
+        <member name="M:Junior.Ddd.Validation.NullableMaximumValueRule`2.#ctor(`1,`0,System.Nullable{`1},`0,Junior.Ddd.Validation.IRule{`0}[])">
+            <summary>
+            Initializes a new instance of the <see cref="T:Junior.Ddd.Validation.MaximumValueRule`2"/> class.
+            </summary>
+            <param name="maximumValue">The maximum allowable value for <paramref name="value"/>.</param>
+            <param name="validationError">The validation error to use if validation fails.</param>
+            <param name="value">The value to validate.</param>
+            <param name="stopValidatingOn">Validation will immediately fail if a rule dependency results in a validation error equal to <paramref name="stopValidatingOn"/>.</param>
+            <param name="dependsOn">Rules that must pass validation before validating this rule.</param>
+        </member>
+        <member name="M:Junior.Ddd.Validation.NullableMaximumValueRule`2.#ctor(`1,`0,System.Nullable{`1},System.Collections.Generic.IEnumerable{`0},Junior.Ddd.Validation.IRule{`0}[])">
+            <summary>
+            Initializes a new instance of the <see cref="T:Junior.Ddd.Validation.MaximumValueRule`2"/> class.
+            </summary>
+            <param name="maximumValue">The maximum allowable value for <paramref name="value"/>.</param>
+            <param name="validationError">The validation error to use if validation fails.</param>
+            <param name="value">The value to validate.</param>
+            <param name="stopValidatingOn">Validation will immediately fail if a rule dependency results in a validation error equal to one in <paramref name="stopValidatingOn"/>.</param>
+            <param name="dependsOn">Rules that must pass validation before validating this rule.</param>
+            <exception cref="T:System.ArgumentNullException">Thrown when <paramref name="validationError"/> is null.</exception>
+        </member>
+        <member name="M:Junior.Ddd.Validation.NullableMaximumValueRule`2.OnValidate">
+            <summary>
+            Performs rule validation.
+            </summary>
+            <returns>Validation errors if the rule failed to validate.</returns>
+        </member>
+        <member name="T:Junior.Ddd.Validation.NullableMinimumValueRule`2">
+            <summary>
+            Validates that a value is not greater than a minimum value.
+            </summary>
+            <typeparam name="TValidationError">A type, such as an enum, that represents a validation error.</typeparam>
+            <typeparam name="TValue">A comparable type.</typeparam>
+        </member>
+        <member name="M:Junior.Ddd.Validation.NullableMinimumValueRule`2.#ctor(`1,`0,System.Nullable{`1},Junior.Ddd.Validation.IRule{`0}[])">
+            <summary>
+            Initializes a new instance of the <see cref="T:Junior.Ddd.Validation.MinimumValueRule`2"/> class.
+            </summary>
+            <param name="minimumValue">The minimum allowable value for <paramref name="value"/>.</param>
+            <param name="validationError">The validation error to use if validation fails.</param>
+            <param name="value">The value to validate.</param>
+            <param name="dependsOn">Rules that must pass validation before validating this rule.</param>
+        </member>
+        <member name="M:Junior.Ddd.Validation.NullableMinimumValueRule`2.#ctor(`1,`0,System.Nullable{`1},`0,Junior.Ddd.Validation.IRule{`0}[])">
+            <summary>
+            Initializes a new instance of the <see cref="T:Junior.Ddd.Validation.MinimumValueRule`2"/> class.
+            </summary>
+            <param name="minimumValue">The minimum allowable value for <paramref name="value"/>.</param>
+            <param name="validationError">The validation error to use if validation fails.</param>
+            <param name="value">The value to validate.</param>
+            <param name="stopValidatingOn">Validation will immediately fail if a rule dependency results in a validation error equal to <paramref name="stopValidatingOn"/>.</param>
+            <param name="dependsOn">Rules that must pass validation before validating this rule.</param>
+        </member>
+        <member name="M:Junior.Ddd.Validation.NullableMinimumValueRule`2.#ctor(`1,`0,System.Nullable{`1},System.Collections.Generic.IEnumerable{`0},Junior.Ddd.Validation.IRule{`0}[])">
+            <summary>
+            Initializes a new instance of the <see cref="T:Junior.Ddd.Validation.MinimumValueRule`2"/> class.
+            </summary>
+            <param name="minimumValue">The minimum allowable value for <paramref name="value"/>.</param>
+            <param name="validationError">The validation error to use if validation fails.</param>
+            <param name="value">The value to validate.</param>
+            <param name="stopValidatingOn">Validation will immediately fail if a rule dependency results in a validation error equal to one in <paramref name="stopValidatingOn"/>.</param>
+            <param name="dependsOn">Rules that must pass validation before validating this rule.</param>
+            <exception cref="T:System.ArgumentNullException">Thrown when <paramref name="validationError"/> is null.</exception>
+        </member>
+        <member name="M:Junior.Ddd.Validation.NullableMinimumValueRule`2.OnValidate">
+            <summary>
+            Performs rule validation.
+            </summary>
+            <returns>Validation errors if the rule failed to validate.</returns>
+        </member>
+        <member name="T:Junior.Ddd.Validation.RegexRule`1">
+            <summary>
+            Validates that a value regular expression.
+            </summary>
+            <typeparam name="TValidationError">A type, such as an enum, that represents a validation error.</typeparam>
+        </member>
+        <member name="M:Junior.Ddd.Validation.RegexRule`1.#ctor(System.String,`0,System.String,System.Boolean,Junior.Ddd.Validation.IRule{`0}[])">
+            <summary>
+            Initializes a new instance of the <see cref="T:Junior.Ddd.Validation.RegexRule`1"/> class.
+            </summary>
+            <param name="regexPattern">A regular expression pattern.</param>
+            <param name="validationError">The validation error to use if validation fails.</param>
+            <param name="value">The value to validate.</param>
+            <param name="allowNull">Indicates if null values are allowed.</param>
+            <param name="dependsOn">Rules that must pass validation before validating this rule.</param>
+        </member>
+        <member name="M:Junior.Ddd.Validation.RegexRule`1.#ctor(System.String,`0,System.String,System.Boolean,`0,Junior.Ddd.Validation.IRule{`0}[])">
+            <summary>
+            Initializes a new instance of the <see cref="T:Junior.Ddd.Validation.RegexRule`1"/> class.
+            </summary>
+            <param name="regexPattern">A regular expression pattern.</param>
+            <param name="validationError">The validation error to use if validation fails.</param>
+            <param name="value">The value to validate.</param>
+            <param name="allowNull">Indicates if null values are allowed.</param>
+            <param name="stopValidatingOn">Validation will immediately fail if a rule dependency results in a validation error equal to <paramref name="stopValidatingOn"/>.</param>
+            <param name="dependsOn">Rules that must pass validation before validating this rule.</param>
+        </member>
+        <member name="M:Junior.Ddd.Validation.RegexRule`1.#ctor(System.String,`0,System.String,System.Boolean,System.Collections.Generic.IEnumerable{`0},Junior.Ddd.Validation.IRule{`0}[])">
+            <summary>
+            Initializes a new instance of the <see cref="T:Junior.Ddd.Validation.RegexRule`1"/> class.
+            </summary>
+            <param name="regexPattern">A regular expression pattern.</param>
+            <param name="validationError">The validation error to use if validation fails.</param>
+            <param name="value">The value to validate.</param>
+            <param name="allowNull">Indicates if null values are allowed.</param>
+            <param name="stopValidatingOn">Validation will immediately fail if a rule dependency results in a validation error equal to one in <paramref name="stopValidatingOn"/>.</param>
+            <param name="dependsOn">Rules that must pass validation before validating this rule.</param>
+            <exception cref="T:System.ArgumentNullException">Thrown when <paramref name="regexPattern"/> is null.</exception>
+            <exception cref="T:System.ArgumentNullException">Thrown when <paramref name="validationError"/> is null.</exception>
+            <exception cref="T:System.ArgumentNullException">Thrown when <paramref name="value"/> is null and <paramref name="allowNull"/> is false.</exception>
+        </member>
+        <member name="M:Junior.Ddd.Validation.RegexRule`1.OnValidate">
+            <summary>
+            Performs rule validation.
+            </summary>
+            <returns>Validation errors if the rule failed to validate.</returns>
+        </member>
+        <member name="T:Junior.Ddd.Validation.IRuleValidator`1">
+            <summary>
+            Represents a way to validate many rules at once and optionally throw an exception if validation fails.
+            </summary>
+            <typeparam name="TValidationError">A type, such as an enum, that represents a validation error.</typeparam>
+        </member>
+        <member name="M:Junior.Ddd.Validation.IRuleValidator`1.Validate(System.Func{System.Collections.Generic.IEnumerable{`0},System.Exception},Junior.Ddd.Validation.IRule{`0}[])">
+            <summary>
+            Validates a set of rules and, if validation fails, throws an exception returned by the specified delegate.
+            </summary>
+            <param name="getExceptionDelegate">A delegate that returns an exception to throw when validation fails.</param>
+            <param name="rules">Rules to validate.</param>
+        </member>
+        <member name="M:Junior.Ddd.Validation.IRuleValidator`1.Validate(Junior.Ddd.Validation.IRule{`0}[])">
+            <summary>
+            Validates a set of rules and returns any validation errors generated during validation.
+            </summary>
+            <param name="rules">Rules to validate.</param>
+            <returns>Validation errors generated during validation.</returns>
+        </member>
+        <member name="T:Junior.Ddd.Validation.MaximumLengthRule`1">
+            <summary>
+            Validates that a value is not longer than a maximum length.
+            </summary>
+            <typeparam name="TValidationError">A type, such as an enum, that represents a validation error.</typeparam>
+        </member>
+        <member name="M:Junior.Ddd.Validation.MaximumLengthRule`1.#ctor(System.Int32,`0,System.String,System.Boolean,Junior.Ddd.Validation.IRule{`0}[])">
+            <summary>
+            Initializes a new instance of the <see cref="T:Junior.Ddd.Validation.MaximumLengthRule`1"/> class.
+            </summary>
+            <param name="maximumLength">The maximum allowable length for <paramref name="value"/>.</param>
+            <param name="validationError">The validation error to use if validation fails.</param>
+            <param name="value">The value to validate.</param>
+            <param name="allowNull">Indicates if null values are allowed.</param>
+            <param name="dependsOn">Rules that must pass validation before validating this rule.</param>
+        </member>
+        <member name="M:Junior.Ddd.Validation.MaximumLengthRule`1.#ctor(System.Int32,`0,System.String,System.Boolean,`0,Junior.Ddd.Validation.IRule{`0}[])">
+            <summary>
+            Initializes a new instance of the <see cref="T:Junior.Ddd.Validation.MaximumLengthRule`1"/> class.
+            </summary>
+            <param name="maximumLength">The maximum allowable length for <paramref name="value"/>.</param>
+            <param name="validationError">The validation error to use if validation fails.</param>
+            <param name="value">The value to validate.</param>
+            <param name="allowNull">Indicates if null values are allowed.</param>
+            <param name="stopValidatingOn">Validation will immediately fail if a rule dependency results in a validation error equal to <paramref name="stopValidatingOn"/>.</param>
+            <param name="dependsOn">Rules that must pass validation before validating this rule.</param>
+        </member>
+        <member name="M:Junior.Ddd.Validation.MaximumLengthRule`1.#ctor(System.Int32,`0,System.String,System.Boolean,System.Collections.Generic.IEnumerable{`0},Junior.Ddd.Validation.IRule{`0}[])">
+            <summary>
+            Initializes a new instance of the <see cref="T:Junior.Ddd.Validation.MaximumLengthRule`1"/> class.
+            </summary>
+            <param name="maximumLength">The maximum allowable length for <paramref name="value"/>.</param>
+            <param name="validationError">The validation error to use if validation fails.</param>
+            <param name="value">The value to validate.</param>
+            <param name="allowNull">Indicates if null values are allowed.</param>
+            <param name="stopValidatingOn">Validation will immediately fail if a rule dependency results in a validation error equal to one in <paramref name="stopValidatingOn"/>.</param>
+            <param name="dependsOn">Rules that must pass validation before validating this rule.</param>
+            <exception cref="T:System.ArgumentNullException">Thrown when <paramref name="validationError"/> is null.</exception>
+            <exception cref="T:System.ArgumentNullException">Thrown when <paramref name="value"/> is null and <paramref name="allowNull"/> is false.</exception>
+        </member>
+        <member name="M:Junior.Ddd.Validation.MaximumLengthRule`1.OnValidate">
+            <summary>
+            Performs rule validation.
+            </summary>
+            <returns>Validation errors if the rule failed to validate.</returns>
+        </member>
+        <member name="T:Junior.Ddd.Validation.MaximumValueRule`2">
+            <summary>
+            Validates that a value is not greater than a maximum value.
+            </summary>
+            <typeparam name="TValidationError">A type, such as an enum, that represents a validation error.</typeparam>
+            <typeparam name="TValue">A comparable type.</typeparam>
+        </member>
+        <member name="M:Junior.Ddd.Validation.MaximumValueRule`2.#ctor(`1,`0,`1,Junior.Ddd.Validation.IRule{`0}[])">
+            <summary>
+            Initializes a new instance of the <see cref="T:Junior.Ddd.Validation.MaximumValueRule`2"/> class.
+            </summary>
+            <param name="maximumValue">The maximum allowable value for <paramref name="value"/>.</param>
+            <param name="validationError">The validation error to use if validation fails.</param>
+            <param name="value">The value to validate.</param>
+            <param name="dependsOn">Rules that must pass validation before validating this rule.</param>
+        </member>
+        <member name="M:Junior.Ddd.Validation.MaximumValueRule`2.#ctor(`1,`0,`1,`0,Junior.Ddd.Validation.IRule{`0}[])">
+            <summary>
+            Initializes a new instance of the <see cref="T:Junior.Ddd.Validation.MaximumValueRule`2"/> class.
+            </summary>
+            <param name="maximumValue">The maximum allowable value for <paramref name="value"/>.</param>
+            <param name="validationError">The validation error to use if validation fails.</param>
+            <param name="value">The value to validate.</param>
+            <param name="stopValidatingOn">Validation will immediately fail if a rule dependency results in a validation error equal to <paramref name="stopValidatingOn"/>.</param>
+            <param name="dependsOn">Rules that must pass validation before validating this rule.</param>
+        </member>
+        <member name="M:Junior.Ddd.Validation.MaximumValueRule`2.#ctor(`1,`0,`1,System.Collections.Generic.IEnumerable{`0},Junior.Ddd.Validation.IRule{`0}[])">
+            <summary>
+            Initializes a new instance of the <see cref="T:Junior.Ddd.Validation.MaximumValueRule`2"/> class.
+            </summary>
+            <param name="maximumValue">The maximum allowable value for <paramref name="value"/>.</param>
+            <param name="validationError">The validation error to use if validation fails.</param>
+            <param name="value">The value to validate.</param>
+            <param name="stopValidatingOn">Validation will immediately fail if a rule dependency results in a validation error equal to one in <paramref name="stopValidatingOn"/>.</param>
+            <param name="dependsOn">Rules that must pass validation before validating this rule.</param>
+            <exception cref="T:System.ArgumentNullException">Thrown when <paramref name="validationError"/> is null.</exception>
+        </member>
+        <member name="M:Junior.Ddd.Validation.MaximumValueRule`2.OnValidate">
+            <summary>
+            Performs rule validation.
+            </summary>
+            <returns>Validation errors if the rule failed to validate.</returns>
+        </member>
+        <member name="T:Junior.Ddd.Validation.MinimumLengthRule`1">
+            <summary>
+            Validates that a value is not longer than a minimum length.
+            </summary>
+            <typeparam name="TValidationError">A type, such as an enum, that represents a validation error.</typeparam>
+        </member>
+        <member name="M:Junior.Ddd.Validation.MinimumLengthRule`1.#ctor(System.Int32,`0,System.String,System.Boolean,Junior.Ddd.Validation.IRule{`0}[])">
+            <summary>
+            Initializes a new instance of the <see cref="T:Junior.Ddd.Validation.MinimumLengthRule`1"/> class.
+            </summary>
+            <param name="minimumLength">The minimum allowable length for <paramref name="value"/>.</param>
+            <param name="validationError">The validation error to use if validation fails.</param>
+            <param name="value">The value to validate.</param>
+            <param name="allowNull">Indicates if null values are allowed.</param>
+            <param name="dependsOn">Rules that must pass validation before validating this rule.</param>
+        </member>
+        <member name="M:Junior.Ddd.Validation.MinimumLengthRule`1.#ctor(System.Int32,`0,System.String,System.Boolean,`0,Junior.Ddd.Validation.IRule{`0}[])">
+            <summary>
+            Initializes a new instance of the <see cref="T:Junior.Ddd.Validation.MinimumLengthRule`1"/> class.
+            </summary>
+            <param name="minimumLength">The minimum allowable length for <paramref name="value"/>.</param>
+            <param name="validationError">The validation error to use if validation fails.</param>
+            <param name="value">The value to validate.</param>
+            <param name="allowNull">Indicates if null values are allowed.</param>
+            <param name="stopValidatingOn">Validation will immediately fail if a rule dependency results in a validation error equal to <paramref name="stopValidatingOn"/>.</param>
+            <param name="dependsOn">Rules that must pass validation before validating this rule.</param>
+        </member>
+        <member name="M:Junior.Ddd.Validation.MinimumLengthRule`1.#ctor(System.Int32,`0,System.String,System.Boolean,System.Collections.Generic.IEnumerable{`0},Junior.Ddd.Validation.IRule{`0}[])">
+            <summary>
+            Initializes a new instance of the <see cref="T:Junior.Ddd.Validation.MinimumLengthRule`1"/> class.
+            </summary>
+            <param name="minimumLength">The minimum allowable length for <paramref name="value"/>.</param>
+            <param name="validationError">The validation error to use if validation fails.</param>
+            <param name="value">The value to validate.</param>
+            <param name="allowNull">Indicates if null values are allowed.</param>
+            <param name="stopValidatingOn">Validation will immediately fail if a rule dependency results in a validation error equal to one in <paramref name="stopValidatingOn"/>.</param>
+            <param name="dependsOn">Rules that must pass validation before validating this rule.</param>
+            <exception cref="T:System.ArgumentNullException">Thrown when <paramref name="validationError"/> is null.</exception>
+            <exception cref="T:System.ArgumentNullException">Thrown when <paramref name="value"/> is null and <paramref name="allowNull"/> is false.</exception>
+        </member>
+        <member name="M:Junior.Ddd.Validation.MinimumLengthRule`1.OnValidate">
+            <summary>
+            Performs rule validation.
+            </summary>
+            <returns>Validation errors if the rule failed to validate.</returns>
+        </member>
+        <member name="T:Junior.Ddd.Validation.MinimumValueRule`2">
+            <summary>
+            Validates that a value is not less than a minimum value.
+            </summary>
+            <typeparam name="TValidationError">A type, such as an enum, that represents a validation error.</typeparam>
+            <typeparam name="TValue">A comparable type.</typeparam>
+        </member>
+        <member name="M:Junior.Ddd.Validation.MinimumValueRule`2.#ctor(`1,`0,`1,Junior.Ddd.Validation.IRule{`0}[])">
+            <summary>
+            Initializes a new instance of the <see cref="T:Junior.Ddd.Validation.MinimumValueRule`2"/> class.
+            </summary>
+            <param name="minimumValue">The minimum allowable value for <paramref name="value"/>.</param>
+            <param name="validationError">The validation error to use if validation fails.</param>
+            <param name="value">The value to validate.</param>
+            <param name="dependsOn">Rules that must pass validation before validating this rule.</param>
+        </member>
+        <member name="M:Junior.Ddd.Validation.MinimumValueRule`2.#ctor(`1,`0,`1,`0,Junior.Ddd.Validation.IRule{`0}[])">
+            <summary>
+            Initializes a new instance of the <see cref="T:Junior.Ddd.Validation.MinimumValueRule`2"/> class.
+            </summary>
+            <param name="minimumValue">The minimum allowable value for <paramref name="value"/>.</param>
+            <param name="validationError">The validation error to use if validation fails.</param>
+            <param name="value">The value to validate.</param>
+            <param name="stopValidatingOn">Validation will immediately fail if a rule dependency results in a validation error equal to <paramref name="stopValidatingOn"/>.</param>
+            <param name="dependsOn">Rules that must pass validation before validating this rule.</param>
+        </member>
+        <member name="M:Junior.Ddd.Validation.MinimumValueRule`2.#ctor(`1,`0,`1,System.Collections.Generic.IEnumerable{`0},Junior.Ddd.Validation.IRule{`0}[])">
+            <summary>
+            Initializes a new instance of the <see cref="T:Junior.Ddd.Validation.MinimumValueRule`2"/> class.
+            </summary>
+            <param name="minimumValue">The minimum allowable value for <paramref name="value"/>.</param>
+            <param name="validationError">The validation error to use if validation fails.</param>
+            <param name="value">The value to validate.</param>
+            <param name="stopValidatingOn">Validation will immediately fail if a rule dependency results in a validation error equal to one in <paramref name="stopValidatingOn"/>.</param>
+            <param name="dependsOn">Rules that must pass validation before validating this rule.</param>
+            <exception cref="T:System.ArgumentNullException">Thrown when <paramref name="validationError"/> is null.</exception>
+        </member>
+        <member name="M:Junior.Ddd.Validation.MinimumValueRule`2.OnValidate">
+            <summary>
+            Performs rule validation.
+            </summary>
+            <returns>Validation errors if the rule failed to validate.</returns>
+        </member>
+        <member name="T:Junior.Ddd.Validation.RuleValidator`1">
+            <summary>
+            Validates many rules at once and optionally throw an exception if validation fails.
+            </summary>
+            <typeparam name="TValidationError">A type, such as an enum, that represents a validation error.</typeparam>
+        </member>
+        <member name="M:Junior.Ddd.Validation.RuleValidator`1.Validate(System.Func{System.Collections.Generic.IEnumerable{`0},System.Exception},Junior.Ddd.Validation.IRule{`0}[])">
+            <summary>
+            Validates a set of rules and, if validation fails, throws an exception returned by the specified delegate.
+            </summary>
+            <param name="getExceptionDelegate">A delegate that returns an exception to throw when validation fails.</param>
+            <param name="rules">Rules to validate.</param>
+            <exception cref="T:System.ArgumentNullException">Thrown when <paramref name="getExceptionDelegate"/> is null.</exception>
+            <exception cref="T:System.ArgumentNullException">Thrown when <paramref name="rules"/> is null.</exception>
+        </member>
+        <member name="M:Junior.Ddd.Validation.RuleValidator`1.Validate(Junior.Ddd.Validation.IRule{`0}[])">
+            <summary>
+            Validates a set of rules and returns any validation errors generated during validation.
+            Only one error per <typeparamref name="TValidationError"/> will be returned in the case where the same error occurs multiple times.
+            </summary>
+            <param name="rules">Rules to validate.</param>
+            <returns>Validation errors generated during validation.</returns>
+            <exception cref="T:System.ArgumentNullException">Thrown when <paramref name="rules"/> is null.</exception>
+        </member>
+        <member name="P:Junior.Ddd.Validation.RuleValidator`1.Default">
+            <summary>
+            Gets a default rule validator for validation errors of type <typeparamref name="TValidationError"/>.
+            </summary>
+        </member>
+        <member name="T:Junior.Ddd.Validation.DateTimeKindRule`1">
+            <summary>
+            Validates that a value is a certain <see cref="T:System.DateTimeKind"/>.
+            </summary>
+            <typeparam name="TValidationError">A type, such as an enum, that represents a validation error.</typeparam>
+        </member>
+        <member name="M:Junior.Ddd.Validation.DateTimeKindRule`1.#ctor(System.DateTimeKind,`0,System.DateTime,Junior.Ddd.Validation.IRule{`0}[])">
+            <summary>
+            Initializes a new instance of the <see cref="T:Junior.Ddd.Validation.DateTimeKindRule`1"/> class.
+            </summary>
+            <param name="kind">A <see cref="T:System.DateTimeKind"/> with which to test.</param>
+            <param name="validationError">The validation error to use if validation fails.</param>
+            <param name="value">The value to validate.</param>
+            <param name="dependsOn">Rules that must pass validation before validating this rule.</param>
+        </member>
+        <member name="M:Junior.Ddd.Validation.DateTimeKindRule`1.#ctor(System.DateTimeKind,`0,System.DateTime,`0,Junior.Ddd.Validation.IRule{`0}[])">
+            <summary>
+            Initializes a new instance of the <see cref="T:Junior.Ddd.Validation.DateTimeKindRule`1"/> class.
+            </summary>
+            <param name="kind">A <see cref="T:System.DateTimeKind"/> with which to test.</param>
+            <param name="validationError">The validation error to use if validation fails.</param>
+            <param name="value">The value to validate.</param>
+            <param name="stopValidatingOn">Validation will immediately fail if a rule dependency results in a validation error equal to <paramref name="stopValidatingOn"/>.</param>
+            <param name="dependsOn">Rules that must pass validation before validating this rule.</param>
+        </member>
+        <member name="M:Junior.Ddd.Validation.DateTimeKindRule`1.#ctor(System.DateTimeKind,`0,System.DateTime,System.Collections.Generic.IEnumerable{`0},Junior.Ddd.Validation.IRule{`0}[])">
+            <summary>
+            Initializes a new instance of the <see cref="T:Junior.Ddd.Validation.DateTimeKindRule`1"/> class.
+            </summary>
+            <param name="kind">A <see cref="T:System.DateTimeKind"/> with which to test.</param>
+            <param name="validationError">The validation error to use if validation fails.</param>
+            <param name="value">The value to validate.</param>
+            <param name="stopValidatingOn">Validation will immediately fail if a rule dependency results in a validation error equal to one in <paramref name="stopValidatingOn"/>.</param>
+            <param name="dependsOn">Rules that must pass validation before validating this rule.</param>
+        </member>
+        <member name="M:Junior.Ddd.Validation.DateTimeKindRule`1.#ctor(System.DateTimeKind,`0,System.Nullable{System.DateTime},System.Boolean,Junior.Ddd.Validation.IRule{`0}[])">
+            <summary>
+            Initializes a new instance of the <see cref="T:Junior.Ddd.Validation.DateTimeKindRule`1"/> class.
+            </summary>
+            <param name="kind">A <see cref="T:System.DateTimeKind"/> with which to test.</param>
+            <param name="validationError">The validation error to use if validation fails.</param>
+            <param name="value">The value to validate.</param>
+            <param name="allowNull">Indicates if null values are allowed.</param>
+            <param name="dependsOn">Rules that must pass validation before validating this rule.</param>
+        </member>
+        <member name="M:Junior.Ddd.Validation.DateTimeKindRule`1.#ctor(System.DateTimeKind,`0,System.Nullable{System.DateTime},System.Boolean,`0,Junior.Ddd.Validation.IRule{`0}[])">
+            <summary>
+            Initializes a new instance of the <see cref="T:Junior.Ddd.Validation.DateTimeKindRule`1"/> class.
+            </summary>
+            <param name="kind">A <see cref="T:System.DateTimeKind"/> with which to test.</param>
+            <param name="validationError">The validation error to use if validation fails.</param>
+            <param name="value">The value to validate.</param>
+            <param name="allowNull">Indicates if null values are allowed.</param>
+            <param name="stopValidatingOn">Validation will immediately fail if a rule dependency results in a validation error equal to <paramref name="stopValidatingOn"/>.</param>
+            <param name="dependsOn">Rules that must pass validation before validating this rule.</param>
+        </member>
+        <member name="M:Junior.Ddd.Validation.DateTimeKindRule`1.#ctor(System.DateTimeKind,`0,System.Nullable{System.DateTime},System.Boolean,System.Collections.Generic.IEnumerable{`0},Junior.Ddd.Validation.IRule{`0}[])">
+            <summary>
+            Initializes a new instance of the <see cref="T:Junior.Ddd.Validation.DateTimeKindRule`1"/> class.
+            </summary>
+            <param name="kind">A <see cref="T:System.DateTimeKind"/> with which to test.</param>
+            <param name="validationError">The validation error to use if validation fails.</param>
+            <param name="value">The value to validate.</param>
+            <param name="allowNull">Indicates if null values are allowed.</param>
+            <param name="stopValidatingOn">Validation will immediately fail if a rule dependency results in a validation error equal to one in <paramref name="stopValidatingOn"/>.</param>
+            <param name="dependsOn">Rules that must pass validation before validating this rule.</param>
+            <exception cref="T:System.ArgumentNullException">Thrown when <paramref name="validationError"/> is null.</exception>
+            <exception cref="T:System.ArgumentNullException">Thrown when <paramref name="value"/> is null and <paramref name="allowNull"/> is false.</exception>
+        </member>
+        <member name="M:Junior.Ddd.Validation.DateTimeKindRule`1.OnValidate">
+            <summary>
+            Performs rule validation.
+            </summary>
+            <returns>Validation errors if the rule failed to validate.</returns>
+        </member>
+        <member name="T:Junior.Ddd.Validation.ValidationException`1">
+            <summary>
+            An exception thrown when rules fail to validate. <see cref="T:Junior.Ddd.Validation.ValidationException`1"/> contains the
+            <typeparamref name="TValidationError"/> values for the validation errors.
+            </summary>
+            <typeparam name="TValidationError"></typeparam>
+        </member>
+        <member name="M:Junior.Ddd.Validation.ValidationException`1.#ctor(System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+            Initializes a new instance of the <see cref="T:Junior.Ddd.Validation.ValidationException`1"/> class.
+            </summary>
+            <param name="errors">Validation errors.</param>
+        </member>
+        <member name="M:Junior.Ddd.Validation.ValidationException`1.#ctor(System.Collections.Generic.IEnumerable{`0},System.String)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Junior.Ddd.Validation.ValidationException`1"/> class.
+            </summary>
+            <param name="errors">Validation errors.</param>
+            <param name="message">The message that describes the error.</param>
+        </member>
+        <member name="M:Junior.Ddd.Validation.ValidationException`1.#ctor(System.Collections.Generic.IEnumerable{`0},System.String,System.Exception)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Junior.Ddd.Validation.ValidationException`1"/> class.
+            </summary>
+            <param name="errors">Validation errors.</param>
+            <param name="message">The message that describes the error.</param>
+            <param name="innerException">The exception that is the cause of the current exception, or a null reference (Nothing in Visual Basic) if no inner exception is specified.</param>
+        </member>
+        <member name="M:Junior.Ddd.Validation.ValidationException`1.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Junior.Ddd.Validation.ValidationException`1"/> class with serialized data.
+            </summary>
+            <param name="info">The object that holds the serialized object data.</param>
+            <param name="context">The contextual information about the source or destination.</param>
+        </member>
+        <member name="M:Junior.Ddd.Validation.ValidationException`1.GetEnumerator">
+            <summary>
+            Returns an enumerator that iterates through the collection.
+            </summary>
+            <returns>
+            A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.
+            </returns>
+            <filterpriority>1</filterpriority>
+        </member>
+        <member name="M:Junior.Ddd.Validation.ValidationException`1.ContainsValidationError(`0)">
+            <summary>
+            Determines if the specified validation error is contained in this exception.
+            </summary>
+            <param name="validationError">A validation error.</param>
+            <returns>true if <paramref name="validationError"/> is contained in this exception; otherwise, false.</returns>
+        </member>
+        <member name="M:Junior.Ddd.Validation.ValidationException`1.GetMessage``1(System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+            Retrieves the exception message
+            </summary>
+            <typeparam name="T">The type being validated.</typeparam>
+            <param name="errors">Validation errors generated during validation.</param>
+            <returns>A formatted exception message.</returns>
+            <exception cref="T:System.ArgumentNullException">Thrown when <paramref name="errors"/> is null.</exception>
+        </member>
+        <member name="P:Junior.Ddd.Validation.ValidationException`1.ValidationErrors">
+            <summary>
+            Returns the validation errors associated with the exception.
+            </summary>
+        </member>
+    </members>
+</doc>

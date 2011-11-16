@@ -1,0 +1,107 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Junior.Ddd.DomainEvents</name>
+    </assembly>
+    <members>
+        <member name="T:Junior.Ddd.DomainEvents.DomainEventManager">
+            <summary>
+            Registers and raises domain events and invokes global and thread-local delegates when domain events are raised.
+            <see cref="T:Junior.Ddd.DomainEvents.DomainEventManager"/> is thread-safe.
+            </summary>
+        </member>
+        <member name="F:Junior.Ddd.DomainEvents.DomainEventManager.Instance">
+            <summary>
+            The singleton instance of <see cref="T:Junior.Ddd.DomainEvents.DomainEventManager"/>.
+            </summary>
+        </member>
+        <member name="M:Junior.Ddd.DomainEvents.DomainEventManager.RegisterGlobalDelegate``1(System.Action{``0})">
+            <summary>
+            Registers a delegate for the specified domain event type. The delegate registration is application-scoped.
+            </summary>
+            <param name="delegate">A delegate to be executed when a domain event of type <typeparamref name="TDomainEvent"/> is raised.</param>
+            <typeparam name="TDomainEvent">A domain event type.</typeparam>
+        </member>
+        <member name="M:Junior.Ddd.DomainEvents.DomainEventManager.RegisterThreadLocalDelegate``1(System.Action{``0})">
+            <summary>
+            Registers a delegate for the specified domain event type. The delegate registration is thread-local.
+            </summary>
+            <param name="delegate">A delegate to be executed when a domain event of type <typeparamref name="TDomainEvent"/> is raised.</param>
+            <typeparam name="TDomainEvent">A domain event type.</typeparam>
+        </member>
+        <member name="M:Junior.Ddd.DomainEvents.DomainEventManager.ClearAllDelegateRegistrations">
+            <summary>
+            Clears all global delegate registrations as well as delegate registrations on the current thread.
+            Equivalent to calling both <see cref="M:Junior.Ddd.DomainEvents.DomainEventManager.ClearGlobalDelegateRegistrations"/> and <see cref="M:Junior.Ddd.DomainEvents.DomainEventManager.ClearThreadLocalDelegateRegistrations"/>.
+            </summary>
+        </member>
+        <member name="M:Junior.Ddd.DomainEvents.DomainEventManager.ClearGlobalDelegateRegistrations">
+            <summary>
+            Clears all global delegate registrations.
+            </summary>
+        </member>
+        <member name="M:Junior.Ddd.DomainEvents.DomainEventManager.ClearThreadLocalDelegateRegistrations">
+            <summary>
+            Clears all delegate registrations on the current thread.
+            </summary>
+        </member>
+        <member name="M:Junior.Ddd.DomainEvents.DomainEventManager.Raise``1(``0)">
+            <summary>
+            Raises the specified domain event. Domain event handlers will be located using <see cref="P:Junior.Ddd.DomainEvents.DomainEventManager.DomainEventHandlerFinder"/> and all registered
+            delegates for the domain event of type <typeparamref name="TDomainEvent"/> will be invoked. After domain events are handled,
+            global followed by thread-local delegates registered for <typeparamref name="TDomainEvent"/> are invoked.
+            </summary>
+            <param name="domainEvent">A domain event.</param>
+            <typeparam name="TDomainEvent">A domain event type.</typeparam>
+        </member>
+        <member name="P:Junior.Ddd.DomainEvents.DomainEventManager.DomainEventHandlerFinder">
+            <summary>
+            Gets or sets the domain event handler finder to use for finding domain event handlers.
+            Setting this property to null prevents domain events from being handled.
+            </summary>
+        </member>
+        <member name="T:Junior.Ddd.DomainEvents.IDomainEvent">
+            <summary>
+            Represents a domain event. <see cref="T:Junior.Ddd.DomainEvents.IDomainEvent"/> is a marker interface.
+            </summary>
+        </member>
+        <member name="T:Junior.Ddd.DomainEvents.IDomainEventHandler`1">
+            <summary>
+            Represents a way to handle a domain event.
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="M:Junior.Ddd.DomainEvents.IDomainEventHandler`1.Handle(`0)">
+            <summary>
+            Handles a domain event.
+            </summary>
+            <param name="domainEvent">A domain event.</param>
+        </member>
+        <member name="T:Junior.Ddd.DomainEvents.IDomainEventHandlerFinder">
+            <summary>
+            Represents a way to find domain event handlers for a domain event.
+            </summary>
+        </member>
+        <member name="M:Junior.Ddd.DomainEvents.IDomainEventHandlerFinder.Find``2">
+            <summary>
+            Finds domain event handlers for a domain event.
+            </summary>
+            <typeparam name="TDomainEventHandler">A domain event handler type.</typeparam>
+            <typeparam name="TDomainEvent">A domain event type.</typeparam>
+            <returns>Domain event handlers for the specified domain event type.</returns>
+        </member>
+        <member name="T:Junior.Ddd.DomainEvents.NullDomainEventHandlerFinder">
+            <summary>
+            Never returns domain event handlers for any domain event type.
+            </summary>
+        </member>
+        <member name="M:Junior.Ddd.DomainEvents.NullDomainEventHandlerFinder.Find``2">
+            <summary>
+            Finds domain event handlers for a domain event.
+            </summary>
+            <typeparam name="TDomainEventHandler">A domain event handler type.</typeparam>
+            <typeparam name="TDomainEvent">A domain event type.</typeparam>
+            <returns>Domain event handlers for the specified domain event type.</returns>
+        </member>
+    </members>
+</doc>

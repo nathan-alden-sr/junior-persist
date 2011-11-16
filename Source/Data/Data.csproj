@@ -1,0 +1,101 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{1553A877-3A22-479C-AB22-EC4594B71E27}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Junior.Persist.Data</RootNamespace>
+    <AssemblyName>Junior.Persist.Data</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\BuildOutput\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <WarningsAsErrors>1591</WarningsAsErrors>
+    <DocumentationFile>..\BuildOutput\Debug\Junior.Persist.Data.xml</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\BuildOutput\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <WarningsAsErrors>1591</WarningsAsErrors>
+    <DocumentationFile>..\BuildOutput\Release\Junior.Persist.Data.xml</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>..\JuniorPersist.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="..\CommonAssemblyInfo.cs">
+      <Link>Properties\CommonAssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="CacheKey.cs" />
+    <Compile Include="ConfigurationManagerConnectionStringProvider.cs" />
+    <Compile Include="DataConnector.cs" />
+    <Compile Include="ICache.cs" />
+    <Compile Include="ICommandProvider.cs" />
+    <Compile Include="IConnectionProvider.cs" />
+    <Compile Include="IConnectionStringProvider.cs" />
+    <Compile Include="ICommandTimeoutProvider.cs" />
+    <Compile Include="IQueryResult.cs" />
+    <Compile Include="PairMappers\EnlistmentOptionPairMapper.cs" />
+    <Compile Include="PairMappers\IsolationLevelPairMapper.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ResultQueryResult.cs" />
+    <Compile Include="ThirtySecondCommandTimeoutProvider.cs" />
+    <Compile Include="TransactionScopeTransactionManager.cs" />
+    <Compile Include="TransactionScopeTransaction.cs" />
+    <Compile Include="CacheQueryResult.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\JuniorPersist.snk">
+      <Link>JuniorPersist.snk</Link>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Junior.Common">
+      <HintPath>..\..\Binaries\JuniorDDD\Junior.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Transactions" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Sessions\Sessions.csproj">
+      <Project>{1E9A5D03-B743-49EC-9A11-2CDC29AEE35D}</Project>
+      <Name>Sessions</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
