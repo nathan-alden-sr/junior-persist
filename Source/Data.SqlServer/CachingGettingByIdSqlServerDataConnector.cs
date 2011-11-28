@@ -91,12 +91,14 @@ namespace Junior.Persist.Data.SqlServer
 
 			IEnumerable<TEntityData> entityDatas = ExecuteProjection(sql, GetEntityData, parameters);
 
+			// ReSharper disable PossibleMultipleEnumeration
 			if (entityDatas.CountGreaterThan(1))
 			{
 				throw new TooManyRowsException(String.Format("A query for a single entity row resulted in more than one row.{0}Type: {1}", Environment.NewLine, typeof(TEntityData).FullName));
 			}
 
 			return new ResultQueryResult<TEntityData>(key, entityDatas.FirstOrDefault());
+			// ReSharper restore PossibleMultipleEnumeration
 		}
 
 		/// <summary>

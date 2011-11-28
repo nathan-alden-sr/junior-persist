@@ -46,12 +46,14 @@ namespace Junior.Persist.Data.MySql
 
 			IEnumerable<TData> entityDatas = ExecuteProjection(sql, _getDataDelegate, parameters);
 
+			// ReSharper disable PossibleMultipleEnumeration
 			if (entityDatas.CountGreaterThan(1))
 			{
 				throw new TooManyRowsException(String.Format("A query for a single entity row resulted in more than one row.{0}Type: {1}", Environment.NewLine, typeof(TData).FullName));
 			}
 
 			return entityDatas.FirstOrDefault();
+			// ReSharper restore PossibleMultipleEnumeration
 		}
 
 		public IEnumerable<TData> GetDatas(string sql)
