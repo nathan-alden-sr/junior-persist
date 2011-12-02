@@ -15,7 +15,7 @@ namespace Junior.Persist.UnitTests.Persistence
 		public class When_retrieving_lazy_entity_reference_using_finder
 		{
 			[Test]
-			public void Must_retrieve_correct_id()
+			public void Must_retrieve_correct_entity()
 			{
 				var entity = new object();
 				var finder = MockRepository.GenerateMock<IByIdFinder<object>>();
@@ -33,7 +33,7 @@ namespace Junior.Persist.UnitTests.Persistence
 		public class When_retrieving_lazy_entity_reference_using_func
 		{
 			[Test]
-			public void Must_retrieve_correct_id()
+			public void Must_retrieve_correct_entity()
 			{
 				var entity = new object();
 				var systemUnderTest = new LazyEntityById<object>(Guid.NewGuid(), (guid, handling) => entity);
