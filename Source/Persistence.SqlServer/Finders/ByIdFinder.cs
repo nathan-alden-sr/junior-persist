@@ -31,7 +31,7 @@ namespace Junior.Persist.Persistence.SqlServer.Finders
 		/// <summary>
 		/// Gets the data connector that finds entity data.
 		/// </summary>
-		public TDataConnector DataConnector
+		protected TDataConnector DataConnector
 		{
 			get
 			{
