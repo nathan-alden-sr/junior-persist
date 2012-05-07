@@ -71,8 +71,10 @@
     <Reference Include="Junior.Ddd.DomainModel">
       <HintPath>..\..\Binaries\JuniorDDD\Junior.Ddd.DomainModel.dll</HintPath>
     </Reference>
-    <Reference Include="MySql.Data, Version=6.3.6.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+    <Reference Include="MySql.Data, Version=0.0.0.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
       <HintPath>..\..\Binaries\MySQL Connector-Net\MySql.Data.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <Private>True</Private>
     </Reference>
     <Reference Include="nunit.framework, Version=2.5.9.10348, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
       <HintPath>..\..\Binaries\NUnit\framework\nunit.framework.dll</HintPath>
