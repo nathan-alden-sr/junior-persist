@@ -176,19 +176,6 @@ namespace Junior.Persist.Data.MySql
 		/// Executes a non-query SQL statement.
 		/// </summary>
 		/// <param name="sql">A SQL statement.</param>
-		/// <returns>The number of rows affected by the SQL statement.</returns>
-		/// <exception cref="ArgumentNullException">Thrown when <paramref name="sql"/> is null.</exception>
-		protected int ExecuteNonQuery(string sql)
-		{
-			sql.ThrowIfNull("sql");
-
-			return ExecuteNonQuery(sql, Enumerable.Empty<MySqlParameter>());
-		}
-
-		/// <summary>
-		/// Executes a non-query SQL statement.
-		/// </summary>
-		/// <param name="sql">A SQL statement.</param>
 		/// <param name="parameters">Named parameters.</param>
 		/// <returns>The number of rows affected by the SQL statement.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="sql"/> is null.</exception>
@@ -225,19 +212,6 @@ namespace Junior.Persist.Data.MySql
 		/// Executes a SQL statement that returns a scalar value.
 		/// </summary>
 		/// <param name="sql">A SQL statement.</param>
-		/// <returns>A scalar value.</returns>
-		/// <exception cref="ArgumentNullException">Thrown when <paramref name="sql"/> is null.</exception>
-		protected T ExecuteScalar<T>(string sql)
-		{
-			sql.ThrowIfNull("sql");
-
-			return ExecuteScalar<T>(sql, Enumerable.Empty<MySqlParameter>());
-		}
-
-		/// <summary>
-		/// Executes a SQL statement that returns a scalar value.
-		/// </summary>
-		/// <param name="sql">A SQL statement.</param>
 		/// <param name="parameters">Named parameters.</param>
 		/// <returns>A scalar value.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="sql"/> is null.</exception>
@@ -266,21 +240,20 @@ namespace Junior.Persist.Data.MySql
 				string formattedSql = FormatSql(sql);
 				MySqlCommand command = CommandProvider.GetCommand(_connectionKey, connection, formattedSql, parameters);
 
-				return (T)command.ExecuteScalar();
+				object value = command.ExecuteScalar();
+
+				if (value == null || value == DBNull.Value)
+				{
+					if (typeof(T).IsValueType)
+					{
+						throw new Exception("Query resulted in NULL but scalar type is a value type.");
+					}
+
+					return default(T);
+				}
+
+				return (T)value;
 			}
-		}
-
-		/// <summary>
-		/// Executes a SQL statement and returns a data reader.
-		/// </summary>
-		/// <param name="sql">A SQL statement.</param>
-		/// <returns>A data reader.</returns>
-		/// <exception cref="ArgumentNullException">Thrown when <paramref name="sql"/> is null.</exception>
-		protected MySqlDataReader ExecuteReader(string sql)
-		{
-			sql.ThrowIfNull("sql");
-
-			return ExecuteReader(sql, Enumerable.Empty<MySqlParameter>());
 		}
 
 		/// <summary>
@@ -331,22 +304,6 @@ namespace Junior.Persist.Data.MySql
 		/// </summary>
 		/// <param name="sql">A SQL statement.</param>
 		/// <param name="getProjectedObjectDelegate">A delegate that converts data reader records into <typeparamref name="T"/> instances.</param>
-		/// <returns><typeparamref name="T"/> instances.</returns>
-		/// <exception cref="ArgumentNullException">Thrown when <paramref name="sql"/> is null.</exception>
-		/// <exception cref="ArgumentNullException">Thrown when <paramref name="getProjectedObjectDelegate"/> is null.</exception>
-		protected IEnumerable<T> ExecuteProjection<T>(string sql, Func<MySqlDataReader, T> getProjectedObjectDelegate)
-		{
-			sql.ThrowIfNull("sql");
-			getProjectedObjectDelegate.ThrowIfNull("getProjectedObjectDelegate");
-
-			return ExecuteProjection(sql, getProjectedObjectDelegate, Enumerable.Empty<MySqlParameter>());
-		}
-
-		/// <summary>
-		/// Executes a SQL statement and processes data reader records through a projection delegate.
-		/// </summary>
-		/// <param name="sql">A SQL statement.</param>
-		/// <param name="getProjectedObjectDelegate">A delegate that converts data reader records into <typeparamref name="T"/> instances.</param>
 		/// <param name="parameters">Named parameters.</param>
 		/// <returns><typeparamref name="T"/> instances.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="sql"/> is null.</exception>
@@ -389,22 +346,6 @@ namespace Junior.Persist.Data.MySql
 			}
 
 			return projections;
-		}
-
-		/// <summary>
-		/// Executes a SQL statement and processes <see cref="DataRow"/> instances through a projection delegate.
-		/// </summary>
-		/// <param name="sql">A SQL statement.</param>
-		/// <param name="getProjectedObjectDelegate">A delegate that converts <see cref="DataRow"/> instances into <typeparamref name="T"/> instances.</param>
-		/// <returns><typeparamref name="T"/> instances.</returns>
-		/// <exception cref="ArgumentNullException">Thrown when <paramref name="sql"/> is null.</exception>
-		/// <exception cref="ArgumentNullException">Thrown when <paramref name="getProjectedObjectDelegate"/> is null.</exception>
-		protected IEnumerable<T> ExecuteProjection<T>(string sql, Func<DataRow, T> getProjectedObjectDelegate)
-		{
-			sql.ThrowIfNull("sql");
-			getProjectedObjectDelegate.ThrowIfNull("getProjectedObjectDelegate");
-
-			return ExecuteProjection(sql, getProjectedObjectDelegate, Enumerable.Empty<MySqlParameter>());
 		}
 
 		/// <summary>

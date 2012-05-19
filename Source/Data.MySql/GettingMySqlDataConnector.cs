@@ -42,19 +42,6 @@ namespace Junior.Persist.Data.MySql
 		/// Retrieves data by executing a SQL query.
 		/// </summary>
 		/// <param name="sql">A SQL query.</param>
-		/// <returns>Data.</returns>
-		/// <exception cref="ArgumentNullException">Thrown when <paramref name="sql"/> is null.</exception>
-		protected TData GetData(string sql)
-		{
-			sql.ThrowIfNull("sql");
-
-			return _gettingMySqlDataConnectorHelper.GetData(sql);
-		}
-
-		/// <summary>
-		/// Retrieves data by executing a SQL query.
-		/// </summary>
-		/// <param name="sql">A SQL query.</param>
 		/// <param name="parameters">Named parameters.</param>
 		/// <returns>Data.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="sql"/> is null.</exception>
@@ -77,19 +64,6 @@ namespace Junior.Persist.Data.MySql
 			sql.ThrowIfNull("sql");
 
 			return _gettingMySqlDataConnectorHelper.GetData(sql, parameters);
-		}
-
-		/// <summary>
-		/// Retrieves data by executing a SQL query.
-		/// </summary>
-		/// <param name="sql">A SQL query.</param>
-		/// <returns>Data.</returns>
-		/// <exception cref="ArgumentNullException">Thrown when <paramref name="sql"/> is null.</exception>
-		protected IEnumerable<TData> GetDatas(string sql)
-		{
-			sql.ThrowIfNull("sql");
-
-			return _gettingMySqlDataConnectorHelper.GetDatas(sql);
 		}
 
 		/// <summary>

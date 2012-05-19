@@ -54,6 +54,7 @@
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="CachingGettingByIdSqlServerDataConnector.cs" />
+    <Compile Include="GenericSqlServerDataConnector.cs" />
     <Compile Include="GettingSqlServerDataConnector.cs" />
     <Compile Include="GettingSqlServerDataConnectorHelper.cs" />
     <Compile Include="ICachingGettingByIdDataConnector.cs" />

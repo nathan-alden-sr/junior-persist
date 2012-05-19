@@ -25,13 +25,6 @@ namespace Junior.Persist.Data.SqlServer
 			_getDataDelegate = getDataDelegate;
 		}
 
-		public TData GetData(string sql)
-		{
-			sql.ThrowIfNull("sql");
-
-			return GetData(sql, Enumerable.Empty<SqlParameter>());
-		}
-
 		public TData GetData(string sql, params SqlParameter[] parameters)
 		{
 			sql.ThrowIfNull("sql");
@@ -53,13 +46,6 @@ namespace Junior.Persist.Data.SqlServer
 
 			return entityDatas.FirstOrDefault();
 			// ReSharper restore PossibleMultipleEnumeration
-		}
-
-		public IEnumerable<TData> GetDatas(string sql)
-		{
-			sql.ThrowIfNull("sql");
-
-			return ExecuteProjection(sql, _getDataDelegate, Enumerable.Empty<SqlParameter>());
 		}
 
 		public IEnumerable<TData> GetDatas(string sql, params SqlParameter[] parameters)

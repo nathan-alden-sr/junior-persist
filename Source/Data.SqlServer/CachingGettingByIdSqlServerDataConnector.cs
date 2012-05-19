@@ -47,19 +47,6 @@ namespace Junior.Persist.Data.SqlServer
 		/// Retrieves entity data by executing a SQL query.
 		/// </summary>
 		/// <param name="sql">A SQL query.</param>
-		/// <returns>A query result specifying either cached entity data or containing the entity data itself.</returns>
-		/// <exception cref="ArgumentNullException">Thrown when <paramref name="sql"/> is null.</exception>
-		protected IQueryResult<TEntityData> GetEntityData(string sql)
-		{
-			sql.ThrowIfNull("sql");
-
-			return GetEntityData(sql, Enumerable.Empty<SqlParameter>());
-		}
-
-		/// <summary>
-		/// Retrieves entity data by executing a SQL query.
-		/// </summary>
-		/// <param name="sql">A SQL query.</param>
 		/// <param name="parameters">Named parameters.</param>
 		/// <returns>A query result specifying either cached entity data or containing the entity data itself.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="sql"/> is null.</exception>
@@ -99,19 +86,6 @@ namespace Junior.Persist.Data.SqlServer
 
 			return new ResultQueryResult<TEntityData>(key, entityDatas.FirstOrDefault());
 			// ReSharper restore PossibleMultipleEnumeration
-		}
-
-		/// <summary>
-		/// Retrieves data for multiple entities by executing a SQL query.
-		/// </summary>
-		/// <param name="sql">A SQL query.</param>
-		/// <returns>A query result specifying either cached entity data or containing the entity data itself.</returns>
-		/// <exception cref="ArgumentNullException">Thrown when <paramref name="sql"/> is null.</exception>
-		protected IQueryResult<IEnumerable<TEntityData>> GetEntityDatas(string sql)
-		{
-			sql.ThrowIfNull("sql");
-
-			return GetEntityDatas(sql, Enumerable.Empty<SqlParameter>());
 		}
 
 		/// <summary>

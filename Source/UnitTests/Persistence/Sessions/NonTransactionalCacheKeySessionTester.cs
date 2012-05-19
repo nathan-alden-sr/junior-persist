@@ -13,6 +13,7 @@ using Rhino.Mocks;
 
 namespace Junior.Persist.UnitTests.Persistence.Sessions
 {
+	// ReSharper disable AccessToDisposedClosure
 	public static class NonTransactionalCacheKeySessionTester
 	{
 		[DebuggerDisplay("{_id}")]
@@ -373,11 +374,11 @@ namespace Junior.Persist.UnitTests.Persistence.Sessions
 					session.EntitiesWereFound(cacheKey, cacheEntities);
 					session.EntityWasPersisted(addedCacheEntity);
 					session.RemoveEntities(new[]
-					                            	{
-					                            		addedCacheEntity.Entity,
-					                            		cacheEntities[1].Entity,
-					                            		cacheEntities[3].Entity
-					                            	});
+					                       	{
+					                       		addedCacheEntity.Entity,
+					                       		cacheEntities[1].Entity,
+					                       		cacheEntities[3].Entity
+					                       	});
 				}
 
 				observer.VerifyAllExpectations();
@@ -434,6 +435,15 @@ namespace Junior.Persist.UnitTests.Persistence.Sessions
 		[TestFixture]
 		public class When_removing_entities_from_session_by_entity_id : NonTransactionalCacheKeySessionTestFixture
 		{
+			[Test]
+			public void Must_not_throw_exception_if_entity_being_removed_is_not_cached()
+			{
+				using (INonTransactionalCacheKeySession session = SessionManager.Enroll())
+				{
+					Assert.DoesNotThrow(() => session.RemoveEntity(Guid.NewGuid()));
+				}
+			}
+
 			[Test]
 			public void Must_remove_cache_keys_and_all_their_entities_for_cache_keys_referencing_a_removed_entity()
 			{
@@ -507,15 +517,8 @@ namespace Junior.Persist.UnitTests.Persistence.Sessions
 
 				observer.VerifyAllExpectations();
 			}
-
-			[Test]
-			public void Must_not_throw_exception_if_entity_being_removed_is_not_cached()
-			{
-				using (INonTransactionalCacheKeySession session = SessionManager.Enroll())
-				{
-					Assert.DoesNotThrow(() => session.RemoveEntity(Guid.NewGuid()));
-				}
-			}
 		}
 	}
+
+	// ReSharper restore AccessToDisposedClosure
 }

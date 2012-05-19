@@ -69,7 +69,10 @@ namespace Junior.Persist.Data.MySql
 			              		CommandType = CommandType.Text
 			              	};
 
-			command.Parameters.Add(parameters.ToArray());
+			foreach (MySqlParameter parameter in parameters)
+			{
+				command.Parameters.Add(parameter);
+			}
 			command.Prepare();
 
 			return command;

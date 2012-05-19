@@ -65,7 +65,7 @@ namespace Junior.Persist.Data
 		{
 			other.ThrowIfNull("other");
 
-			int result = _sql.CompareTo(other._sql);
+			int result = String.CompareOrdinal(_sql, other._sql);
 
 			if (result != 0)
 			{
@@ -84,7 +84,7 @@ namespace Junior.Persist.Data
 
 			for (int i = 0; i < parameters.Length; i++)
 			{
-				result = parameters[i].First.CompareTo(otherParameters[i].First);
+				result = String.CompareOrdinal(parameters[i].First, otherParameters[i].First);
 
 				if (result != 0)
 				{

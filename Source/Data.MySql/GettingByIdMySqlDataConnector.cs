@@ -49,19 +49,6 @@ namespace Junior.Persist.Data.MySql
 		/// Retrieves entity data by executing a SQL query.
 		/// </summary>
 		/// <param name="sql">A SQL query.</param>
-		/// <returns>Entity data.</returns>
-		/// <exception cref="ArgumentNullException">Thrown when <paramref name="sql"/> is null.</exception>
-		protected virtual TEntityData GetEntityData(string sql)
-		{
-			sql.ThrowIfNull("sql");
-
-			return _gettingMySqlDataConnectorHelper.GetData(sql);
-		}
-
-		/// <summary>
-		/// Retrieves entity data by executing a SQL query.
-		/// </summary>
-		/// <param name="sql">A SQL query.</param>
 		/// <param name="parameters">Named parameters.</param>
 		/// <returns>Entity data.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="sql"/> is null.</exception>
@@ -85,19 +72,6 @@ namespace Junior.Persist.Data.MySql
 			sql.ThrowIfNull("sql");
 
 			return _gettingMySqlDataConnectorHelper.GetData(sql, parameters);
-		}
-
-		/// <summary>
-		/// Retrieves data for multiple entities by executing a SQL query.
-		/// </summary>
-		/// <param name="sql">A SQL query.</param>
-		/// <returns>Entity data.</returns>
-		/// <exception cref="ArgumentNullException">Thrown when <paramref name="sql"/> is null.</exception>
-		protected virtual IEnumerable<TEntityData> GetEntityDatas(string sql)
-		{
-			sql.ThrowIfNull("sql");
-
-			return _gettingMySqlDataConnectorHelper.GetDatas(sql);
 		}
 
 		/// <summary>
