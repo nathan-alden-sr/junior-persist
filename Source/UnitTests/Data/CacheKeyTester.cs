@@ -20,11 +20,11 @@ namespace Junior.Persist.UnitTests.Data
 				const string sql1 = "sql1";
 				const string sql2 = "sql2";
 				IEnumerable<DbParameter> parameters = new[]
-				                                      	{
-				                                      		new SqlParameter("@Test1", 0),
-				                                      		new SqlParameter("@Test2", "Test"),
-				                                      		new SqlParameter("@Test3", 1.45m)
-				                                      	};
+					{
+						new SqlParameter("@Test1", 0),
+						new SqlParameter("@Test2", "Test"),
+						new SqlParameter("@Test3", 1.45m)
+					};
 
 				var cacheKey1 = new CacheKey(sql1, parameters);
 				var cacheKey2 = new CacheKey(sql2, parameters);
@@ -42,17 +42,17 @@ namespace Junior.Persist.UnitTests.Data
 			{
 				const string sql = "sql";
 				IEnumerable<DbParameter> parameters1 = new[]
-				                                       	{
-				                                       		new SqlParameter("@Test1", 0),
-				                                       		new SqlParameter("@Test2", "Test"),
-				                                       		new SqlParameter("@Test3", 1.45m)
-				                                       	};
+					{
+						new SqlParameter("@Test1", 0),
+						new SqlParameter("@Test2", "Test"),
+						new SqlParameter("@Test3", 1.45m)
+					};
 				IEnumerable<DbParameter> parameters2 = new[]
-				                                       	{
-				                                       		new SqlParameter("@Test1", 0),
-				                                       		new SqlParameter("@Test2", "Test"),
-				                                       		new SqlParameter("@Test3", 1.452m)
-				                                       	};
+					{
+						new SqlParameter("@Test1", 0),
+						new SqlParameter("@Test2", "Test"),
+						new SqlParameter("@Test3", 1.452m)
+					};
 
 				var cacheKey1 = new CacheKey(sql, parameters1);
 				var cacheKey2 = new CacheKey(sql, parameters2);
@@ -70,11 +70,11 @@ namespace Junior.Persist.UnitTests.Data
 			{
 				const string sql = "sql";
 				IEnumerable<DbParameter> parameters = new[]
-				                                      	{
-				                                      		new SqlParameter("@Test1", 0),
-				                                      		new SqlParameter("@Test2", "Test"),
-				                                      		new SqlParameter("@Test3", 1.45m)
-				                                      	};
+					{
+						new SqlParameter("@Test1", 0),
+						new SqlParameter("@Test2", "Test"),
+						new SqlParameter("@Test3", 1.45m)
+					};
 
 				var cacheKey1 = new CacheKey(sql, parameters);
 				var cacheKey2 = new CacheKey(sql, parameters.OrderByDescending(arg => arg.ParameterName));
@@ -92,11 +92,11 @@ namespace Junior.Persist.UnitTests.Data
 			{
 				const string sql = "sql";
 				IEnumerable<DbParameter> parameters = new[]
-				                                      	{
-				                                      		new SqlParameter("@Test1", 0),
-				                                      		new SqlParameter("@Test2", "Test"),
-				                                      		new SqlParameter("@Test3", 1.45m)
-				                                      	};
+					{
+						new SqlParameter("@Test1", 0),
+						new SqlParameter("@Test2", "Test"),
+						new SqlParameter("@Test3", 1.45m)
+					};
 
 				var cacheKey1 = new CacheKey(sql, parameters.Take(1).Skip(1).Take(1));
 				var cacheKey2 = new CacheKey(sql, parameters);
@@ -114,11 +114,11 @@ namespace Junior.Persist.UnitTests.Data
 			{
 				const string sql = "sql";
 				IEnumerable<DbParameter> parameters = new[]
-				                                      	{
-				                                      		new SqlParameter("@Test1", 0),
-				                                      		new SqlParameter("@Test2", "Test"),
-				                                      		new SqlParameter("@Test3", 1.45m)
-				                                      	};
+					{
+						new SqlParameter("@Test1", 0),
+						new SqlParameter("@Test2", "Test"),
+						new SqlParameter("@Test3", 1.45m)
+					};
 
 				var cacheKey1 = new CacheKey(sql, parameters);
 				var cacheKey2 = new CacheKey(sql, parameters);

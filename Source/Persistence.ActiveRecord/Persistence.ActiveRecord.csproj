@@ -25,22 +25,22 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\BuildOutput\Debug\</OutputPath>
+    <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <WarningsAsErrors>1591</WarningsAsErrors>
-    <DocumentationFile>..\BuildOutput\Debug\Junior.Persist.Persistence.ActiveRecord.xml</DocumentationFile>
+    <DocumentationFile>bin\Debug\Junior.Persist.Persistence.ActiveRecord.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\BuildOutput\Release\</OutputPath>
+    <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <WarningsAsErrors>1591</WarningsAsErrors>
-    <DocumentationFile>..\BuildOutput\Release\Junior.Persist.Persistence.ActiveRecord.xml</DocumentationFile>
+    <DocumentationFile>bin\Release\Junior.Persist.Persistence.ActiveRecord.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
@@ -61,21 +61,56 @@
     <None Include="..\JuniorPersist.snk">
       <Link>JuniorPersist.snk</Link>
     </None>
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Castle.ActiveRecord, Version=3.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
-      <HintPath>..\..\Binaries\ActiveRecord\Castle.ActiveRecord.dll</HintPath>
+    <Reference Include="Antlr3.Runtime">
+      <HintPath>..\packages\Antlr.3.1.3.42154\lib\Antlr3.Runtime.dll</HintPath>
     </Reference>
-    <Reference Include="Junior.Common">
-      <HintPath>..\..\Binaries\JuniorDDD\Junior.Common.dll</HintPath>
+    <Reference Include="Castle.ActiveRecord">
+      <HintPath>..\packages\Castle.Activerecord.3.0.0.1\lib\Net40\Castle.ActiveRecord.dll</HintPath>
+    </Reference>
+    <Reference Include="Castle.ActiveRecord.Web">
+      <HintPath>..\packages\Castle.Activerecord.3.0.0.1\lib\Net40\Castle.ActiveRecord.Web.dll</HintPath>
+    </Reference>
+    <Reference Include="Castle.Components.Validator">
+      <HintPath>..\packages\Castle.Components.Validator.2.5.0\lib\NET40\Castle.Components.Validator.dll</HintPath>
+    </Reference>
+    <Reference Include="Castle.Core">
+      <HintPath>..\packages\Castle.Core.2.5.2\lib\NET35\Castle.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Iesi.Collections">
+      <HintPath>..\packages\Iesi.Collections.1.0.1\lib\Iesi.Collections.dll</HintPath>
+    </Reference>
+    <Reference Include="Junior.Common, Version=1.0.6.0, Culture=neutral, PublicKeyToken=998713eb9a0cce30, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\JuniorCommon.1.0.6\lib\net40\Junior.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Junior.Ddd.DomainEvents">
+      <HintPath>..\packages\JuniorDDD.1.0.2\lib\net40\Junior.Ddd.DomainEvents.dll</HintPath>
     </Reference>
     <Reference Include="Junior.Ddd.DomainModel">
-      <HintPath>..\..\Binaries\JuniorDDD\Junior.Ddd.DomainModel.dll</HintPath>
+      <HintPath>..\packages\JuniorDDD.1.0.2\lib\net40\Junior.Ddd.DomainModel.dll</HintPath>
     </Reference>
-    <Reference Include="NHibernate, Version=3.0.0.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
-      <HintPath>..\..\Binaries\ActiveRecord\NHibernate.dll</HintPath>
+    <Reference Include="Junior.Ddd.Validation">
+      <HintPath>..\packages\JuniorDDD.1.0.2\lib\net40\Junior.Ddd.Validation.dll</HintPath>
     </Reference>
+    <Reference Include="NHibernate">
+      <HintPath>..\packages\NHibernate.3.0.0.4000\lib\NHibernate.dll</HintPath>
+    </Reference>
+    <Reference Include="NHibernate.ByteCode.Castle">
+      <HintPath>..\packages\NHibernate.3.0.0.4000\lib\NHibernate.ByteCode.Castle.dll</HintPath>
+    </Reference>
+    <Reference Include="NHibernate.Search">
+      <HintPath>..\packages\Castle.Activerecord.3.0.0.1\lib\Net40\NHibernate.Search.dll</HintPath>
+    </Reference>
+    <Reference Include="Remotion.Data.Linq">
+      <HintPath>..\packages\NHibernate.3.0.0.4000\lib\Remotion.Data.Linq.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Data\Data.csproj">

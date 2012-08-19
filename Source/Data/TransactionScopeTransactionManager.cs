@@ -52,10 +52,10 @@ namespace Junior.Persist.Data
 		{
 			TransactionScopeOption transactionScopeOption = EnlistmentOptionPairMapper.Instance.Map(option);
 			var transactionOptions = new TransactionOptions
-			                         	{
-			                         		IsolationLevel = IsolationLevelPairMapper.Instance.Map(isolationLevel),
-			                         		Timeout = timeout
-			                         	};
+				{
+					IsolationLevel = IsolationLevelPairMapper.Instance.Map(isolationLevel),
+					Timeout = timeout
+				};
 			var transactionScope = new TransactionScope(transactionScopeOption, transactionOptions);
 
 			return new TransactionScopeTransaction(transactionScope);

@@ -64,10 +64,10 @@ namespace Junior.Persist.Data.MySql
 			parameters = parameters ?? Enumerable.Empty<MySqlParameter>();
 
 			var command = new MySqlCommand(sql, connection)
-			              	{
-			              		CommandTimeout = (int)_commandTimeoutProvider.GetTimeout(connectionKey).TotalSeconds,
-			              		CommandType = CommandType.Text
-			              	};
+				{
+					CommandTimeout = (int)_commandTimeoutProvider.GetTimeout(connectionKey).TotalSeconds,
+					CommandType = CommandType.Text
+				};
 
 			foreach (MySqlParameter parameter in parameters)
 			{

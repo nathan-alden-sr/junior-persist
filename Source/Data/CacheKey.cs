@@ -12,7 +12,7 @@ namespace Junior.Persist.Data
 	/// </summary>
 	public class CacheKey : IComparable<CacheKey>
 	{
-		private readonly IEnumerable<Pair<string, object>> _parameters;
+		private readonly IEnumerable<Tuple<string, object>> _parameters;
 		private readonly string _sql;
 
 		/// <summary>
@@ -48,8 +48,8 @@ namespace Junior.Persist.Data
 
 			_sql = sql;
 			_parameters = parameters
-				.Select(arg => new Pair<string, object>(arg.ParameterName, arg.Value))
-				.OrderBy(arg => arg.First);
+				.Select(arg => new Tuple<string, object>(arg.ParameterName, arg.Value))
+				.OrderBy(arg => arg.Item1);
 		}
 
 		/// <summary>
@@ -72,8 +72,8 @@ namespace Junior.Persist.Data
 				return result;
 			}
 
-			Pair<string, object>[] parameters = _parameters.ToArray();
-			Pair<string, object>[] otherParameters = other._parameters.ToArray();
+			Tuple<string, object>[] parameters = _parameters.ToArray();
+			Tuple<string, object>[] otherParameters = other._parameters.ToArray();
 
 			result = parameters.Length.CompareTo(otherParameters.Length);
 
@@ -84,14 +84,14 @@ namespace Junior.Persist.Data
 
 			for (int i = 0; i < parameters.Length; i++)
 			{
-				result = String.CompareOrdinal(parameters[i].First, otherParameters[i].First);
+				result = String.CompareOrdinal(parameters[i].Item1, otherParameters[i].Item1);
 
 				if (result != 0)
 				{
 					return result;
 				}
 
-				result = Comparer<object>.Default.Compare(parameters[i].Second, otherParameters[i].Second);
+				result = Comparer<object>.Default.Compare(parameters[i].Item2, otherParameters[i].Item2);
 
 				if (result != 0)
 				{

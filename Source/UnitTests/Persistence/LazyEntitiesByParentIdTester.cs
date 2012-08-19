@@ -15,10 +15,10 @@ namespace Junior.Persist.UnitTests.Persistence
 			public void Must_initialize_using_func_supplied_in_constructor()
 			{
 				var childEntities = new[]
-				                    	{
-				                    		new object(),
-				                    		new object()
-				                    	};
+					{
+						new object(),
+						new object()
+					};
 				var systemUnderTest = new LazyEntitiesByParentId<object>(
 					Guid.NewGuid(),
 					entity => childEntities);

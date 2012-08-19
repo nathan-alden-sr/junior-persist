@@ -1,3 +1,4 @@
+using System;
 using System.Transactions;
 
 using Junior.Common;
@@ -17,8 +18,8 @@ namespace Junior.Persist.Data.PairMappers
 
 		private EnlistmentOptionPairMapper()
 			: base(
-				new Pair<EnlistmentOption, TransactionScopeOption>(EnlistmentOption.AlwaysNew, TransactionScopeOption.RequiresNew),
-				new Pair<EnlistmentOption, TransactionScopeOption>(EnlistmentOption.AmbientOrNew, TransactionScopeOption.Required))
+				new Tuple<EnlistmentOption, TransactionScopeOption>(EnlistmentOption.AlwaysNew, TransactionScopeOption.RequiresNew),
+				new Tuple<EnlistmentOption, TransactionScopeOption>(EnlistmentOption.AmbientOrNew, TransactionScopeOption.Required))
 		{
 		}
 	}

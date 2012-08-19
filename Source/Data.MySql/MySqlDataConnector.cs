@@ -47,9 +47,9 @@ namespace Junior.Persist.Data.MySql
 			parameterName.ThrowIfNull("parameterName");
 
 			return new MySqlParameter(parameterName, type)
-			       	{
-			       		Value = GetSqlParameterValue(value)
-			       	};
+				{
+					Value = GetSqlParameterValue(value)
+				};
 		}
 
 		/// <summary>
@@ -66,9 +66,9 @@ namespace Junior.Persist.Data.MySql
 			parameterName.ThrowIfNull("parameterName");
 
 			return new MySqlParameter(parameterName, type, size)
-			       	{
-			       		Value = GetSqlParameterValue(value)
-			       	};
+				{
+					Value = GetSqlParameterValue(value)
+				};
 		}
 
 		/// <summary>
@@ -87,11 +87,11 @@ namespace Junior.Persist.Data.MySql
 			parameterName.ThrowIfNull("parameterName");
 
 			return new MySqlParameter(parameterName, type, size)
-			       	{
-			       		Precision = precision,
-			       		Scale = scale,
-			       		Value = GetSqlParameterValue(value)
-			       	};
+				{
+					Precision = precision,
+					Scale = scale,
+					Value = GetSqlParameterValue(value)
+				};
 		}
 
 		/// <summary>
@@ -109,11 +109,11 @@ namespace Junior.Persist.Data.MySql
 			parameterName.ThrowIfNull("parameterName");
 
 			return new MySqlParameter(parameterName, type)
-			       	{
-			       		Precision = precision,
-			       		Scale = scale,
-			       		Value = GetSqlParameterValue(value)
-			       	};
+				{
+					Precision = precision,
+					Scale = scale,
+					Value = GetSqlParameterValue(value)
+				};
 		}
 
 		/// <summary>

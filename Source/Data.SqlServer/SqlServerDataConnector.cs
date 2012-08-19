@@ -46,9 +46,9 @@ namespace Junior.Persist.Data.SqlServer
 			parameterName.ThrowIfNull("parameterName");
 
 			return new SqlParameter(parameterName, type)
-			       	{
-			       		Value = GetSqlParameterValue(value)
-			       	};
+				{
+					Value = GetSqlParameterValue(value)
+				};
 		}
 
 		/// <summary>
@@ -65,9 +65,9 @@ namespace Junior.Persist.Data.SqlServer
 			parameterName.ThrowIfNull("parameterName");
 
 			return new SqlParameter(parameterName, type, size)
-			       	{
-			       		Value = GetSqlParameterValue(value)
-			       	};
+				{
+					Value = GetSqlParameterValue(value)
+				};
 		}
 
 		/// <summary>
@@ -86,11 +86,11 @@ namespace Junior.Persist.Data.SqlServer
 			parameterName.ThrowIfNull("parameterName");
 
 			return new SqlParameter(parameterName, type, size)
-			       	{
-			       		Precision = precision,
-			       		Scale = scale,
-			       		Value = GetSqlParameterValue(value)
-			       	};
+				{
+					Precision = precision,
+					Scale = scale,
+					Value = GetSqlParameterValue(value)
+				};
 		}
 
 		/// <summary>
@@ -108,11 +108,11 @@ namespace Junior.Persist.Data.SqlServer
 			parameterName.ThrowIfNull("parameterName");
 
 			return new SqlParameter(parameterName, type)
-			       	{
-			       		Precision = precision,
-			       		Scale = scale,
-			       		Value = GetSqlParameterValue(value)
-			       	};
+				{
+					Precision = precision,
+					Scale = scale,
+					Value = GetSqlParameterValue(value)
+				};
 		}
 
 		/// <summary>
@@ -127,9 +127,9 @@ namespace Junior.Persist.Data.SqlServer
 			parameterName.ThrowIfNull("parameterName");
 
 			return new SqlParameter(parameterName, SqlDbType.BigInt, 8)
-			       	{
-			       		Value = GetSqlParameterValue((long)value)
-			       	};
+				{
+					Value = GetSqlParameterValue((long)value)
+				};
 		}
 
 		/// <summary>

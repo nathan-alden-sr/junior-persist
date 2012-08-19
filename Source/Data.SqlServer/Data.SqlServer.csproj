@@ -26,22 +26,22 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\BuildOutput\Debug\</OutputPath>
+    <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <WarningsAsErrors>1591</WarningsAsErrors>
-    <DocumentationFile>..\BuildOutput\Debug\Junior.Persist.Data.SqlServer.xml</DocumentationFile>
+    <DocumentationFile>bin\Debug\Junior.Persist.Data.SqlServer.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\BuildOutput\Release\</OutputPath>
+    <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <WarningsAsErrors>1591</WarningsAsErrors>
-    <DocumentationFile>..\BuildOutput\Release\Junior.Persist.Data.SqlServer.xml</DocumentationFile>
+    <DocumentationFile>bin\Release\Junior.Persist.Data.SqlServer.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
@@ -74,14 +74,17 @@
     <None Include="..\JuniorPersist.snk">
       <Link>JuniorPersist.snk</Link>
     </None>
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Junior.Common">
-      <HintPath>..\..\Binaries\JuniorDDD\Junior.Common.dll</HintPath>
+    <Reference Include="Junior.Common, Version=1.0.6.0, Culture=neutral, PublicKeyToken=998713eb9a0cce30, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\JuniorCommon.1.0.6\lib\net40\Junior.Common.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Data\Data.csproj">

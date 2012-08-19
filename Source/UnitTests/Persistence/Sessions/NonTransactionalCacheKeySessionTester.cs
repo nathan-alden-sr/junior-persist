@@ -236,34 +236,34 @@ namespace Junior.Persist.UnitTests.Persistence.Sessions
 					var cacheKey1 = new CacheKey("test1");
 					var cacheKey2 = new CacheKey("test2");
 					var cacheEntities1 = new[]
-					                     	{
-					                     		new CacheEntity<object>(new Entity1(), Guid.NewGuid()),
-					                     		new CacheEntity<object>(new Entity1(), Guid.NewGuid())
-					                     	};
+						{
+							new CacheEntity<object>(new Entity1(), Guid.NewGuid()),
+							new CacheEntity<object>(new Entity1(), Guid.NewGuid())
+						};
 					var cacheEntities2 = new[]
-					                     	{
-					                     		new CacheEntity<object>(new Entity2(), Guid.NewGuid()),
-					                     		new CacheEntity<object>(new Entity2(), Guid.NewGuid())
-					                     	};
+						{
+							new CacheEntity<object>(new Entity2(), Guid.NewGuid()),
+							new CacheEntity<object>(new Entity2(), Guid.NewGuid())
+						};
 
-					foreach (var cacheEntity in cacheEntities1.Concat(cacheEntities2))
+					foreach (CacheEntity<object> cacheEntity in cacheEntities1.Concat(cacheEntities2))
 					{
 						CacheEntity<object> tempCacheEntity = cacheEntity;
 
 						observer.Expect(arg => arg.EntityFound(session, tempCacheEntity.Entity.GetType(), tempCacheEntity.Id)).Repeat.Once();
 					}
-					foreach (var cacheEntity in cacheEntities1.Concat(cacheEntities2))
+					foreach (CacheEntity<object> cacheEntity in cacheEntities1.Concat(cacheEntities2))
 					{
 						CacheEntity<object> tempCacheEntity = cacheEntity;
 
 						observer.Expect(arg => arg.EntityRemoved(session, tempCacheEntity.Entity.GetType(), tempCacheEntity.Id)).Repeat.Once();
 					}
 
-					foreach (var cacheEntity in cacheEntities1)
+					foreach (CacheEntity<object> cacheEntity in cacheEntities1)
 					{
 						session.EntityWasFound(cacheKey1, cacheEntity);
 					}
-					foreach (var cacheEntity in cacheEntities2)
+					foreach (CacheEntity<object> cacheEntity in cacheEntities2)
 					{
 						session.EntityWasFound(cacheKey2, cacheEntity);
 					}
@@ -288,43 +288,43 @@ namespace Junior.Persist.UnitTests.Persistence.Sessions
 					var cacheKey2 = new CacheKey("test2");
 					var cacheKey3 = new CacheKey("test3");
 					var cacheEntities1 = new[]
-					                     	{
-					                     		new CacheEntity<object>(new Entity1(), Guid.NewGuid()),
-					                     		new CacheEntity<object>(new Entity1(), Guid.NewGuid())
-					                     	};
+						{
+							new CacheEntity<object>(new Entity1(), Guid.NewGuid()),
+							new CacheEntity<object>(new Entity1(), Guid.NewGuid())
+						};
 					var cacheEntities2 = new[]
-					                     	{
-					                     		new CacheEntity<object>(new Entity2(), Guid.NewGuid()),
-					                     		new CacheEntity<object>(new Entity2(), Guid.NewGuid())
-					                     	};
+						{
+							new CacheEntity<object>(new Entity2(), Guid.NewGuid()),
+							new CacheEntity<object>(new Entity2(), Guid.NewGuid())
+						};
 					var cacheEntities3 = new[]
-					                     	{
-					                     		new CacheEntity<object>(new Entity1(), Guid.NewGuid()),
-					                     		new CacheEntity<object>(new Entity1(), Guid.NewGuid())
-					                     	};
+						{
+							new CacheEntity<object>(new Entity1(), Guid.NewGuid()),
+							new CacheEntity<object>(new Entity1(), Guid.NewGuid())
+						};
 
-					foreach (var cacheEntity in cacheEntities1.Concat(cacheEntities2).Concat(cacheEntities3))
+					foreach (CacheEntity<object> cacheEntity in cacheEntities1.Concat(cacheEntities2).Concat(cacheEntities3))
 					{
 						CacheEntity<object> tempCacheEntity = cacheEntity;
 
 						observer.Expect(arg => arg.EntityFound(session, tempCacheEntity.Entity.GetType(), tempCacheEntity.Id)).Repeat.Once();
 					}
-					foreach (var cacheEntity in cacheEntities1.Concat(cacheEntities3))
+					foreach (CacheEntity<object> cacheEntity in cacheEntities1.Concat(cacheEntities3))
 					{
 						CacheEntity<object> tempCacheEntity = cacheEntity;
 
 						observer.Expect(arg => arg.EntityRemoved(session, tempCacheEntity.Entity.GetType(), tempCacheEntity.Id)).Repeat.Once();
 					}
 
-					foreach (var cacheEntity in cacheEntities1)
+					foreach (CacheEntity<object> cacheEntity in cacheEntities1)
 					{
 						session.EntityWasFound(cacheKey1, cacheEntity);
 					}
-					foreach (var cacheEntity in cacheEntities2)
+					foreach (CacheEntity<object> cacheEntity in cacheEntities2)
 					{
 						session.EntityWasFound(cacheKey2, cacheEntity);
 					}
-					foreach (var cacheEntity in cacheEntities3)
+					foreach (CacheEntity<object> cacheEntity in cacheEntities3)
 					{
 						session.EntityWasFound(cacheKey3, cacheEntity);
 					}
@@ -347,16 +347,16 @@ namespace Junior.Persist.UnitTests.Persistence.Sessions
 				{
 					var cacheKey = new CacheKey("test");
 					var cacheEntities = new[]
-					                    	{
-					                    		new CacheEntity<object>(new Entity1(), Guid.NewGuid()),
-					                    		new CacheEntity<object>(new Entity1(), Guid.NewGuid()),
-					                    		new CacheEntity<object>(new Entity1(), Guid.NewGuid()),
-					                    		new CacheEntity<object>(new Entity1(), Guid.NewGuid()),
-					                    		new CacheEntity<object>(new Entity1(), Guid.NewGuid())
-					                    	};
+						{
+							new CacheEntity<object>(new Entity1(), Guid.NewGuid()),
+							new CacheEntity<object>(new Entity1(), Guid.NewGuid()),
+							new CacheEntity<object>(new Entity1(), Guid.NewGuid()),
+							new CacheEntity<object>(new Entity1(), Guid.NewGuid()),
+							new CacheEntity<object>(new Entity1(), Guid.NewGuid())
+						};
 					var addedCacheEntity = new CacheEntity<object>(new Entity1(), Guid.NewGuid());
 
-					foreach (var cacheEntity in cacheEntities)
+					foreach (CacheEntity<object> cacheEntity in cacheEntities)
 					{
 						CacheEntity<object> tempCacheEntity = cacheEntity;
 
@@ -364,7 +364,7 @@ namespace Junior.Persist.UnitTests.Persistence.Sessions
 					}
 					observer.Expect(arg => arg.EntityPersisted(session, addedCacheEntity.Entity.GetType(), addedCacheEntity.Id)).Repeat.Once();
 					observer.Expect(arg => arg.EntityRemoved(session, addedCacheEntity.Entity.GetType(), addedCacheEntity.Id)).Repeat.Once();
-					foreach (var cacheEntity in cacheEntities)
+					foreach (CacheEntity<object> cacheEntity in cacheEntities)
 					{
 						CacheEntity<object> tempCacheEntity = cacheEntity;
 
@@ -374,11 +374,11 @@ namespace Junior.Persist.UnitTests.Persistence.Sessions
 					session.EntitiesWereFound(cacheKey, cacheEntities);
 					session.EntityWasPersisted(addedCacheEntity);
 					session.RemoveEntities(new[]
-					                       	{
-					                       		addedCacheEntity.Entity,
-					                       		cacheEntities[1].Entity,
-					                       		cacheEntities[3].Entity
-					                       	});
+						{
+							addedCacheEntity.Entity,
+							cacheEntities[1].Entity,
+							cacheEntities[3].Entity
+						});
 				}
 
 				observer.VerifyAllExpectations();
@@ -392,25 +392,25 @@ namespace Junior.Persist.UnitTests.Persistence.Sessions
 				using (INonTransactionalCacheKeySession session = SessionManager.Enroll(observer))
 				{
 					var cacheEntities = new[]
-					                    	{
-					                    		new CacheEntity<object>(new Entity1(), Guid.NewGuid()),
-					                    		new CacheEntity<object>(new Entity1(), Guid.NewGuid())
-					                    	};
+						{
+							new CacheEntity<object>(new Entity1(), Guid.NewGuid()),
+							new CacheEntity<object>(new Entity1(), Guid.NewGuid())
+						};
 
-					foreach (var cacheEntity in cacheEntities)
+					foreach (CacheEntity<object> cacheEntity in cacheEntities)
 					{
 						CacheEntity<object> tempCacheEntity = cacheEntity;
 
 						observer.Expect(arg => arg.EntityPersisted(session, tempCacheEntity.Entity.GetType(), tempCacheEntity.Id)).Repeat.Once();
 					}
-					foreach (var cacheEntity in cacheEntities)
+					foreach (CacheEntity<object> cacheEntity in cacheEntities)
 					{
 						CacheEntity<object> tempCacheEntity = cacheEntity;
 
 						observer.Expect(arg => arg.EntityRemoved(session, tempCacheEntity.Entity.GetType(), tempCacheEntity.Id)).Repeat.Once();
 					}
 
-					foreach (var cacheEntity in cacheEntities)
+					foreach (CacheEntity<object> cacheEntity in cacheEntities)
 					{
 						session.EntityWasPersisted(cacheEntity);
 					}
@@ -454,16 +454,16 @@ namespace Junior.Persist.UnitTests.Persistence.Sessions
 					var cacheKey = new CacheKey("test");
 					Guid entityId = Guid.NewGuid();
 					var cacheEntities = new[]
-					                    	{
-					                    		new CacheEntity<object>(new Entity1(), Guid.NewGuid()),
-					                    		new CacheEntity<object>(new Entity1(), entityId),
-					                    		new CacheEntity<object>(new Entity1(), Guid.NewGuid()),
-					                    		new CacheEntity<object>(new Entity1(), Guid.NewGuid()),
-					                    		new CacheEntity<object>(new Entity1(), Guid.NewGuid())
-					                    	};
+						{
+							new CacheEntity<object>(new Entity1(), Guid.NewGuid()),
+							new CacheEntity<object>(new Entity1(), entityId),
+							new CacheEntity<object>(new Entity1(), Guid.NewGuid()),
+							new CacheEntity<object>(new Entity1(), Guid.NewGuid()),
+							new CacheEntity<object>(new Entity1(), Guid.NewGuid())
+						};
 					var addedCacheEntity = new CacheEntity<object>(new Entity1(), Guid.NewGuid());
 
-					foreach (var cacheEntity in cacheEntities)
+					foreach (CacheEntity<object> cacheEntity in cacheEntities)
 					{
 						CacheEntity<object> tempCacheEntity = cacheEntity;
 
@@ -471,7 +471,7 @@ namespace Junior.Persist.UnitTests.Persistence.Sessions
 					}
 					observer.Expect(arg => arg.EntityPersisted(session, addedCacheEntity.Entity.GetType(), addedCacheEntity.Id)).Repeat.Once();
 					observer.Expect(arg => arg.EntityRemoved(session, addedCacheEntity.Entity.GetType(), addedCacheEntity.Id)).Repeat.Once();
-					foreach (var cacheEntity in cacheEntities)
+					foreach (CacheEntity<object> cacheEntity in cacheEntities)
 					{
 						CacheEntity<object> tempCacheEntity = cacheEntity;
 
@@ -495,12 +495,12 @@ namespace Junior.Persist.UnitTests.Persistence.Sessions
 				{
 					Guid entityId = Guid.NewGuid();
 					var cacheEntities = new[]
-					                    	{
-					                    		new CacheEntity<object>(new Entity1(), Guid.NewGuid()),
-					                    		new CacheEntity<object>(new Entity1(), entityId)
-					                    	};
+						{
+							new CacheEntity<object>(new Entity1(), Guid.NewGuid()),
+							new CacheEntity<object>(new Entity1(), entityId)
+						};
 
-					foreach (var cacheEntity in cacheEntities)
+					foreach (CacheEntity<object> cacheEntity in cacheEntities)
 					{
 						CacheEntity<object> tempCacheEntity = cacheEntity;
 
@@ -508,7 +508,7 @@ namespace Junior.Persist.UnitTests.Persistence.Sessions
 					}
 					observer.Expect(arg => arg.EntityRemoved(session, cacheEntities[1].Entity.GetType(), cacheEntities[1].Id)).Repeat.Once();
 
-					foreach (var cacheEntity in cacheEntities)
+					foreach (CacheEntity<object> cacheEntity in cacheEntities)
 					{
 						session.EntityWasPersisted(cacheEntity);
 					}

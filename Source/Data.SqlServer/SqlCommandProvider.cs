@@ -63,10 +63,10 @@ namespace Junior.Persist.Data.SqlServer
 			parameters = parameters ?? Enumerable.Empty<SqlParameter>();
 
 			var command = new SqlCommand(sql, connection)
-			              	{
-			              		CommandTimeout = (int)_commandTimeoutProvider.GetTimeout(connectionKey).TotalSeconds,
-			              		CommandType = CommandType.Text
-			              	};
+				{
+					CommandTimeout = (int)_commandTimeoutProvider.GetTimeout(connectionKey).TotalSeconds,
+					CommandType = CommandType.Text
+				};
 
 			command.Parameters.AddRange(parameters.ToArray());
 

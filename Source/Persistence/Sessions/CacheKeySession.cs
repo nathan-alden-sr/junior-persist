@@ -123,9 +123,9 @@ namespace Junior.Persist.Persistence.Sessions
 				throw new SessionException("Cannot cache more than one type of entity per cache key.");
 			}
 			if (!cacheEntities
-			     	.Select(arg => arg.Entity)
-			     	.Distinct()
-			     	.CountEqual(cacheEntities.Count()))
+				     .Select(arg => arg.Entity)
+				     .Distinct()
+				     .CountEqual(cacheEntities.Count()))
 			{
 				throw new SessionException("Cannot cache same entity more than once.");
 			}
@@ -133,7 +133,7 @@ namespace Junior.Persist.Persistence.Sessions
 			_entitiesFoundByCacheKey.Value[cacheKey] = cacheEntities.Select(arg => arg.Entity);
 			_entityIdsByEntity.Value.ReplaceMany(cacheEntities.Select(arg => new KeyValuePair<object, Guid>(arg.Entity, arg.Id)));
 
-			foreach (var cacheEntity in cacheEntities)
+			foreach (CacheEntity<object> cacheEntity in cacheEntities)
 			{
 				_observer.EntityFound(this, cacheEntity.Entity.GetType(), cacheEntity.Id);
 			}
@@ -200,7 +200,7 @@ namespace Junior.Persist.Persistence.Sessions
 			_entitiesFoundByCacheKey.Value.RemoveMany(foundCacheKeys);
 			_entityIdsByEntity.Value.RemoveMany(entitiesToRemove.Select(arg => arg.Key));
 
-			foreach (var entity in entitiesToRemove)
+			foreach (KeyValuePair<object, Guid> entity in entitiesToRemove)
 			{
 				_observer.EntityRemoved(this, entity.Key.GetType(), entity.Value);
 			}
@@ -277,8 +277,8 @@ namespace Junior.Persist.Persistence.Sessions
 			IEnumerable<object> cacheEntities;
 
 			return _entitiesFoundByCacheKey.Value.TryGetValue(cacheKey, out cacheEntities)
-			       	? cacheEntities.Join(_entityIdsByEntity.Value, entity => entity, pair => pair.Key, (entity, pair) => new CacheEntity<object>(pair.Key, pair.Value))
-			       	: Enumerable.Empty<CacheEntity<object>>();
+				       ? cacheEntities.Join(_entityIdsByEntity.Value, entity => entity, pair => pair.Key, (entity, pair) => new CacheEntity<object>(pair.Key, pair.Value))
+				       : Enumerable.Empty<CacheEntity<object>>();
 		}
 
 		/// <summary>
@@ -311,7 +311,7 @@ namespace Junior.Persist.Persistence.Sessions
 			{
 				_entitiesFoundByCacheKey.Value.Remove(cacheKey);
 			}
-			foreach (var cacheEntity in cacheEntities)
+			foreach (KeyValuePair<object, Guid> cacheEntity in cacheEntities)
 			{
 				_entityIdsByEntity.Value.Remove(cacheEntity.Key);
 
@@ -324,7 +324,7 @@ namespace Junior.Persist.Persistence.Sessions
 		/// </summary>
 		public void ClearAll()
 		{
-			foreach (var entity in _entityIdsByEntity.Value)
+			foreach (KeyValuePair<object, Guid> entity in _entityIdsByEntity.Value)
 			{
 				_observer.EntityRemoved(this, entity.Key.GetType(), entity.Value);
 			}

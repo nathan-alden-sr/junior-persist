@@ -115,8 +115,8 @@ namespace Junior.Persist.Data.MySql
 			var key = new CacheKey(sql);
 
 			return _cache.IsCached(key)
-			       	? (IQueryResult<IEnumerable<TEntityData>>)new CacheQueryResult<IEnumerable<TEntityData>>(key)
-			       	: new ResultQueryResult<IEnumerable<TEntityData>>(key, ExecuteProjection(sql, GetEntityData, parameters));
+				       ? (IQueryResult<IEnumerable<TEntityData>>)new CacheQueryResult<IEnumerable<TEntityData>>(key)
+				       : new ResultQueryResult<IEnumerable<TEntityData>>(key, ExecuteProjection(sql, GetEntityData, parameters));
 		}
 
 		/// <summary>

@@ -1,3 +1,5 @@
+using System;
+
 using Junior.Common;
 using Junior.Persist.Sessions.Transactions;
 
@@ -15,13 +17,13 @@ namespace Junior.Persist.Data.PairMappers
 
 		private IsolationLevelPairMapper()
 			: base(
-				new Pair<IsolationLevel, System.Transactions.IsolationLevel>(IsolationLevel.Chaos, System.Transactions.IsolationLevel.Chaos),
-				new Pair<IsolationLevel, System.Transactions.IsolationLevel>(IsolationLevel.ReadCommitted, System.Transactions.IsolationLevel.ReadCommitted),
-				new Pair<IsolationLevel, System.Transactions.IsolationLevel>(IsolationLevel.ReadUncommitted, System.Transactions.IsolationLevel.ReadUncommitted),
-				new Pair<IsolationLevel, System.Transactions.IsolationLevel>(IsolationLevel.RepeatableRead, System.Transactions.IsolationLevel.RepeatableRead),
-				new Pair<IsolationLevel, System.Transactions.IsolationLevel>(IsolationLevel.Serializable, System.Transactions.IsolationLevel.Serializable),
-				new Pair<IsolationLevel, System.Transactions.IsolationLevel>(IsolationLevel.Snapshot, System.Transactions.IsolationLevel.Snapshot),
-				new Pair<IsolationLevel, System.Transactions.IsolationLevel>(IsolationLevel.Unspecified, System.Transactions.IsolationLevel.Unspecified))
+				new Tuple<IsolationLevel, System.Transactions.IsolationLevel>(IsolationLevel.Chaos, System.Transactions.IsolationLevel.Chaos),
+				new Tuple<IsolationLevel, System.Transactions.IsolationLevel>(IsolationLevel.ReadCommitted, System.Transactions.IsolationLevel.ReadCommitted),
+				new Tuple<IsolationLevel, System.Transactions.IsolationLevel>(IsolationLevel.ReadUncommitted, System.Transactions.IsolationLevel.ReadUncommitted),
+				new Tuple<IsolationLevel, System.Transactions.IsolationLevel>(IsolationLevel.RepeatableRead, System.Transactions.IsolationLevel.RepeatableRead),
+				new Tuple<IsolationLevel, System.Transactions.IsolationLevel>(IsolationLevel.Serializable, System.Transactions.IsolationLevel.Serializable),
+				new Tuple<IsolationLevel, System.Transactions.IsolationLevel>(IsolationLevel.Snapshot, System.Transactions.IsolationLevel.Snapshot),
+				new Tuple<IsolationLevel, System.Transactions.IsolationLevel>(IsolationLevel.Unspecified, System.Transactions.IsolationLevel.Unspecified))
 		{
 		}
 	}

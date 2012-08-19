@@ -285,40 +285,47 @@ namespace Junior.Persist.Persistence.MySql.Repositories
 
 			Guid parentEntityId = SessionCache.GetEntityId(parentEntity);
 			var synchronizer = new EnumerableSynchronizer<BinaryGuid, TEntity>(getExistingEntityIdsDelegate(new BinaryGuid(parentEntityId)), entities);
-			Action<TEntity> addedItemDelegate = arg =>
-			                                    	{
-			                                    		if (persistingRepository != null)
-			                                    		{
-			                                    			persistingRepository.Persist(parentEntity, arg);
-			                                    		}
-			                                    		if (afterEntityAddedDelegate != null)
-			                                    		{
-			                                    			afterEntityAddedDelegate(arg);
-			                                    		}
-			                                    	};
-			Action<TEntity> commonItemDelegate = arg =>
-			                                     	{
-			                                     		if (persistingRepository != null)
-			                                     		{
-			                                     			persistingRepository.Persist(parentEntity, arg);
-			                                     		}
-			                                     		if (afterEntityUpdatedDelegate != null)
-			                                     		{
-			                                     			afterEntityUpdatedDelegate(arg);
-			                                     		}
-			                                     	};
-			Action<BinaryGuid> removedItemDelegate = arg =>
-			                                         	{
-			                                         		if (beforeEntityRemovedDelegate != null)
-			                                         		{
-			                                         			beforeEntityRemovedDelegate(arg);
-			                                         		}
-			                                         		if (deletingByIdDataConnector != null)
-			                                         		{
-			                                         			deletingByIdDataConnector.DeleteById(arg);
-			                                         			SessionCache.RemoveEntity(arg);
-			                                         		}
-			                                         	};
+			// ReSharper disable ImplicitlyCapturedClosure
+			Action<TEntity> addedItemDelegate =
+				arg =>
+				// ReSharper restore ImplicitlyCapturedClosure
+					{
+						if (persistingRepository != null)
+						{
+							persistingRepository.Persist(parentEntity, arg);
+						}
+						if (afterEntityAddedDelegate != null)
+						{
+							afterEntityAddedDelegate(arg);
+						}
+					};
+			Action<TEntity> commonItemDelegate =
+				// ReSharper disable ImplicitlyCapturedClosure
+				arg =>
+				// ReSharper restore ImplicitlyCapturedClosure
+					{
+						if (persistingRepository != null)
+						{
+							persistingRepository.Persist(parentEntity, arg);
+						}
+						if (afterEntityUpdatedDelegate != null)
+						{
+							afterEntityUpdatedDelegate(arg);
+						}
+					};
+			Action<BinaryGuid> removedItemDelegate =
+				arg =>
+					{
+						if (beforeEntityRemovedDelegate != null)
+						{
+							beforeEntityRemovedDelegate(arg);
+						}
+						if (deletingByIdDataConnector != null)
+						{
+							deletingByIdDataConnector.DeleteById(arg);
+							SessionCache.RemoveEntity(arg);
+						}
+					};
 
 			synchronizer.Synchronize(addedItemDelegate, removedItemDelegate, commonItemDelegate);
 
@@ -357,16 +364,16 @@ namespace Junior.Persist.Persistence.MySql.Repositories
 			getExistingEntityIdsDelegate.ThrowIfNull("getExistingEntityIdsDelegate");
 
 			return entities.IsValueCreated
-			       	? Persist(
-			       		parentEntity,
-			       		entities.Value,
-			       		getExistingEntityIdsDelegate,
-			       		persistingRepository,
-			       		deletingByIdDataConnector,
-			       		afterEntityAddedDelegate,
-			       		beforeEntityRemovedDelegate,
-			       		afterEntityUpdatedDelegate)
-			       	: null;
+				       ? Persist(
+					       parentEntity,
+					       entities.Value,
+					       getExistingEntityIdsDelegate,
+					       persistingRepository,
+					       deletingByIdDataConnector,
+					       afterEntityAddedDelegate,
+					       beforeEntityRemovedDelegate,
+					       afterEntityUpdatedDelegate)
+				       : null;
 		}
 
 		/// <summary>
