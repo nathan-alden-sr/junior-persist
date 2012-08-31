@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
 	<metadata>
-		<id>JuniorPersist.Persistence.SqlServer</id>
+		<id>JuniorPersist.Persistence.PostgreSql</id>
 		<version>$version$</version>
-		<title>JuniorPersist - SQL Server Persistence Layer</title>
+		<title>JuniorPersist - PostgreSQL Persistence Layer</title>
 		<authors>Nathan Alden Sr.</authors>
-		<description>JuniorPersist is an entity persistence and data access framework. This package provides support for a SQL Server persistence layer.</description>
+		<description>JuniorPersist is an entity persistence and data access framework. This package provides support for a PostgreSQL persistence layer.</description>
 		<releaseNotes></releaseNotes>
 		<projectUrl>https://github.com/NathanAlden/JuniorPersist</projectUrl>
 		<iconUrl>https://docs.google.com/uc?export=download&amp;id=0B8a4O6RATfaXQ2YxekpxbXRfUjQ</iconUrl>
 		<dependencies>
 			<dependency id="JuniorDDD" version="1.0.2"/>
-			<dependency id="JuniorPersist.Data.SqlServer" version="1.0.2"/>
+			<dependency id="JuniorPersist.Data.PostgreSql" version="1.0.2"/>
 		</dependencies>
 		<references>
 			<reference file="Junior.Persist.Persistence.dll"/>
-			<reference file="Junior.Persist.Persistence.SqlServer.dll"/>
+			<reference file="Junior.Persist.Persistence.PostgreSql.dll"/>
 		</references>
 		<frameworkAssemblies>
 			<frameworkAssembly assemblyName="System" targetFramework="net40"/>
@@ -28,6 +28,6 @@
 		<file src="NuGet Staging\LICENSE"/>
 		<file src="NuGet Staging\README"/>
 		<file src="NuGet Staging\bin\Junior.Persist.Persistence.*" target="lib\net40"/>
-		<file src="NuGet Staging\bin\Junior.Persist.Persistence.SqlServer.*" target="lib\net40"/>
+		<file src="NuGet Staging\bin\Junior.Persist.Persistence.PostgreSql.*" target="lib\net40"/>
 	</files>
 </package>

@@ -5,21 +5,13 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{C5583C64-4F00-4F79-9FD1-55B6C332C87A}</ProjectGuid>
+    <ProjectGuid>{3233D344-6A52-494F-866F-5B830ADB4EB3}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Junior.Persist.Data.MySql</RootNamespace>
-    <AssemblyName>Junior.Persist.Data.MySql</AssemblyName>
+    <RootNamespace>Junior.Persist.Persistence.PostgreSql</RootNamespace>
+    <AssemblyName>Junior.Persist.Persistence.PostgreSql</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <SccProjectName>
-    </SccProjectName>
-    <SccLocalPath>
-    </SccLocalPath>
-    <SccAuxPath>
-    </SccAuxPath>
-    <SccProvider>
-    </SccProvider>
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -30,8 +22,6 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <WarningsAsErrors>1591</WarningsAsErrors>
-    <DocumentationFile>bin\Debug\Junior.Persist.Data.MySql.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -40,8 +30,6 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <WarningsAsErrors>1591</WarningsAsErrors>
-    <DocumentationFile>bin\Release\Junior.Persist.Data.MySql.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
@@ -53,22 +41,34 @@
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="CachingGettingByIdMySqlDataConnector.cs" />
-    <Compile Include="GenericMySqlDataConnector.cs" />
-    <Compile Include="GettingByIdMySqlDataConnector.cs" />
-    <Compile Include="GettingMySqlDataConnector.cs" />
-    <Compile Include="GettingMySqlDataConnectorHelper.cs" />
-    <Compile Include="ICachingGettingByIdDataConnector.cs" />
-    <Compile Include="IDeletingByIdDataConnector.cs" />
-    <Compile Include="IGettingByIdDataConnector.cs" />
-    <Compile Include="IEntityData.cs" />
-    <Compile Include="IInsertingOrUpdatingDataConnector.cs" />
-    <Compile Include="MySqlCommandProvider.cs" />
-    <Compile Include="MySqlConnectionProvider.cs" />
-    <Compile Include="MySqlDataConnector.cs" />
-    <Compile Include="MySqlDataReaderExtensions.cs" />
+    <Compile Include="Finders\ByIdFinder.cs" />
+    <Compile Include="Finders\CachingByIdFinder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TooManyRowsException.cs" />
+    <Compile Include="Repositories\PersistingCacheKeyCachingRepository.cs" />
+    <Compile Include="Repositories\PersistingDeletingCacheKeyCachingRepository.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Junior.Common">
+      <HintPath>..\packages\JuniorCommon.1.0.6\lib\net40\Junior.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Junior.Ddd.DomainEvents">
+      <HintPath>..\packages\JuniorDDD.1.0.2\lib\net40\Junior.Ddd.DomainEvents.dll</HintPath>
+    </Reference>
+    <Reference Include="Junior.Ddd.DomainModel">
+      <HintPath>..\packages\JuniorDDD.1.0.2\lib\net40\Junior.Ddd.DomainModel.dll</HintPath>
+    </Reference>
+    <Reference Include="Junior.Ddd.Validation">
+      <HintPath>..\packages\JuniorDDD.1.0.2\lib\net40\Junior.Ddd.Validation.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Security">
+      <HintPath>..\packages\Npgsql.2.0.11\lib\Net40\Mono.Security.dll</HintPath>
+    </Reference>
+    <Reference Include="Npgsql">
+      <HintPath>..\packages\Npgsql.2.0.11\lib\Net40\Npgsql.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\JuniorPersist.snk">
@@ -77,23 +77,21 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Junior.Common, Version=1.0.6.0, Culture=neutral, PublicKeyToken=998713eb9a0cce30, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\JuniorCommon.1.0.6\lib\net40\Junior.Common.dll</HintPath>
-    </Reference>
-    <Reference Include="MySql.Data, Version=6.5.4.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
-      <Private>True</Private>
-      <HintPath>..\packages\MySql.Data.6.5.4\lib\net40\MySql.Data.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
-    <Reference Include="System.Xml.Linq" />
-  </ItemGroup>
-  <ItemGroup>
+    <ProjectReference Include="..\Data.PostgreSql\Data.PostgreSql.csproj">
+      <Project>{2633CFCA-F260-4494-BE52-0161699317F8}</Project>
+      <Name>Data.PostgreSql</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Data\Data.csproj">
       <Project>{1553A877-3A22-479C-AB22-EC4594B71E27}</Project>
       <Name>Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Persistence\Persistence.csproj">
+      <Project>{CA9ED9D3-A2B9-434A-9BDA-5EB33F2786A7}</Project>
+      <Name>Persistence</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Sessions\Sessions.csproj">
+      <Project>{1E9A5D03-B743-49EC-9A11-2CDC29AEE35D}</Project>
+      <Name>Sessions</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

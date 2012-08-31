@@ -1,25 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
 	<metadata>
-		<id>JuniorPersist.Persistence.ActiveRecord</id>
+		<id>JuniorPersist.Data.PostgreSql</id>
 		<version>$version$</version>
-		<title>JuniorPersist - Castle ActiveRecord Persistence Layer</title>
+		<title>JuniorPersist - PostgreSQL Data Layer</title>
 		<authors>Nathan Alden Sr.</authors>
-		<description>JuniorPersist is an entity persistence and data access framework. This package provides support for a Castle ActiveRecord persistence layer.</description>
+		<description>JuniorPersist is an entity persistence and data access framework. This package provides support for a PostgreSQL data layer.</description>
 		<releaseNotes></releaseNotes>
 		<projectUrl>https://github.com/NathanAlden/JuniorPersist</projectUrl>
 		<iconUrl>https://docs.google.com/uc?export=download&amp;id=0B8a4O6RATfaXQ2YxekpxbXRfUjQ</iconUrl>
 		<dependencies>
-			<dependency id="JuniorDDD" version="1.0.2"/>
-			<dependency id="JuniorPersist.Data.ActiveRecord" version="1.0.2"/>
+			<dependency id="JuniorCommon" version="1.0.6"/>
+			<dependency id="Npgsql" version="2.0.11"/>
 		</dependencies>
 		<references>
-			<reference file="Junior.Persist.Persistence.dll"/>
-			<reference file="Junior.Persist.Persistence.ActiveRecord.dll"/>
+			<reference file="Junior.Persist.Data.dll"/>
+			<reference file="Junior.Persist.Data.PostgreSql.dll"/>
+			<reference file="Junior.Persist.Sessions.dll"/>
 		</references>
 		<frameworkAssemblies>
 			<frameworkAssembly assemblyName="System" targetFramework="net40"/>
+			<frameworkAssembly assemblyName="System.Configuration" targetFramework="net40"/>
 			<frameworkAssembly assemblyName="System.Data" targetFramework="net40"/>
+			<frameworkAssembly assemblyName="System.Transactions" targetFramework="net40"/>
 			<frameworkAssembly assemblyName="System.Xml" targetFramework="net40"/>
 			<frameworkAssembly assemblyName="System.Xml.Linq" targetFramework="net40"/>
 		</frameworkAssemblies>
@@ -28,7 +31,8 @@
 	<files>
 		<file src="NuGet Staging\LICENSE"/>
 		<file src="NuGet Staging\README"/>
-		<file src="NuGet Staging\bin\Junior.Persist.Persistence.*" target="lib\net40"/>
-		<file src="NuGet Staging\bin\Junior.Persist.Persistence.ActiveRecord.*" target="lib\net40"/>
+		<file src="NuGet Staging\bin\Junior.Persist.Data.*" target="lib\net40"/>
+		<file src="NuGet Staging\bin\Junior.Persist.Data.PostgreSql.*" target="lib\net40"/>
+		<file src="NuGet Staging\bin\Junior.Persist.Sessions.*" target="lib\net40"/>
 	</files>
 </package>

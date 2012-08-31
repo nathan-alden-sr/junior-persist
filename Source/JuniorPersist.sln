@@ -27,6 +27,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data.ActiveRecord", "Data.A
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sessions", "Sessions\Sessions.csproj", "{1E9A5D03-B743-49EC-9A11-2CDC29AEE35D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data.PostgreSql", "Data.PostgreSql\Data.PostgreSql.csproj", "{2633CFCA-F260-4494-BE52-0161699317F8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Persistence.PostgreSql", "Persistence.PostgreSql\Persistence.PostgreSql.csproj", "{3233D344-6A52-494F-866F-5B830ADB4EB3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -73,6 +77,14 @@ Global
 		{1E9A5D03-B743-49EC-9A11-2CDC29AEE35D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1E9A5D03-B743-49EC-9A11-2CDC29AEE35D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1E9A5D03-B743-49EC-9A11-2CDC29AEE35D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2633CFCA-F260-4494-BE52-0161699317F8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2633CFCA-F260-4494-BE52-0161699317F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2633CFCA-F260-4494-BE52-0161699317F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2633CFCA-F260-4494-BE52-0161699317F8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3233D344-6A52-494F-866F-5B830ADB4EB3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3233D344-6A52-494F-866F-5B830ADB4EB3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3233D344-6A52-494F-866F-5B830ADB4EB3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3233D344-6A52-494F-866F-5B830ADB4EB3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

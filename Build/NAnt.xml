@@ -6,7 +6,7 @@
 	<!-- Version information (read http://semver.org before modifying) -->
 	<property name="MajorVersionNumber" value="1"/>
 	<property name="MinorVersionNumber" value="0"/>
-	<property name="BuildVersionNumber" value="1"/>
+	<property name="BuildVersionNumber" value="2"/>
 	<property name="RevisionVersionNumber" value="0"/>
 	<property name="ProjectVersion" value="${MajorVersionNumber}.${MinorVersionNumber}.${BuildVersionNumber}"/>
 	<property name="AssemblyVersion" value="${MajorVersionNumber}.${MinorVersionNumber}.${BuildVersionNumber}.${RevisionVersionNumber}"/>
@@ -47,7 +47,7 @@
 			<call target="RecreateReleaseStagingDirectory"/>
 			<call target="RecreateReleaseDirectory"/>
 			<call target="RecreateNuGetResultsDirectory"/>
-			<foreach item="String" in="ActiveRecord,MySql,SqlServer" delim="," property="SubProject">
+			<foreach item="String" in="ActiveRecord,MySql,PostgreSql,SqlServer" delim="," property="SubProject">
 				<call target="StageArchiveFiles"/>
 				<call target="CreateReleaseArchives"/>
 				<call target="StageNuGetFiles"/>
@@ -161,6 +161,8 @@
 				<include name="NHibernate.*" if="${SubProject == 'ActiveRecord'}"/>
 				<include name="Remotion.*" if="${SubProject == 'ActiveRecord'}"/>
 				<include name="MySql.*" if="${SubProject == 'MySql'}"/>
+				<include name="Mono.Security.*" if="${SubProject == 'PostgreSql'}"/>
+				<include name="Npgsql.*" if="${SubProject == 'PostgreSql'}"/>
 			</fileset>
 		</copy>
 		<copy todir="${ReleaseStagingBinDirectory}">

@@ -11,7 +11,7 @@
 		<iconUrl>https://docs.google.com/uc?export=download&amp;id=0B8a4O6RATfaXQ2YxekpxbXRfUjQ</iconUrl>
 		<dependencies>
 			<dependency id="JuniorDDD" version="1.0.2"/>
-			<dependency id="JuniorPersist.Data.MySql" version="1.0.1"/>
+			<dependency id="JuniorPersist.Data.MySql" version="1.0.2"/>
 		</dependencies>
 		<references>
 			<reference file="Junior.Persist.Persistence.dll"/>
