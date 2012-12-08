@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+	<metadata>
+		<id>JuniorPersist.Sessions</id>
+		<version>$version$</version>
+		<title>JuniorPersist - Sessions</title>
+		<authors>Nathan Alden Sr.</authors>
+		<description>JuniorPersist is an entity persistence and data access framework. This package supports sessions and transactions.</description>
+		<releaseNotes></releaseNotes>
+		<projectUrl>https://github.com/NathanAlden/JuniorPersist</projectUrl>
+		<iconUrl>https://docs.google.com/uc?export=download&amp;id=0B8a4O6RATfaXQ2YxekpxbXRfUjQ</iconUrl>
+		<dependencies>
+			<dependency id="JuniorCommon" version="2.0.1"/>
+			<dependency id="JuniorDDD.DomainModel" version="2.0.0"/>
+		</dependencies>
+		<references>
+			<reference file="Junior.Persist.Sessions.dll"/>
+		</references>
+		<tags>Junior</tags>
+	</metadata>
+	<files>
+		<file src="NuGet Staging\LICENSE"/>
+		<file src="NuGet Staging\README.md"/>
+		<file src="NuGet Staging\bin\Junior.Persist.Sessions.*" target="lib\net40"/>
+	</files>
+</package>

@@ -50,9 +50,6 @@
     <AssemblyOriginatorKeyFile>..\JuniorPersist.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="..\CommonAssemblyInfo.cs">
-      <Link>Properties\CommonAssemblyInfo.cs</Link>
-    </Compile>
     <Compile Include="Finders\CacheKeyCachingFinder.cs" />
     <Compile Include="Finders\Finder.cs" />
     <Compile Include="Finders\EntityNotFoundException.cs" />
@@ -94,18 +91,13 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Junior.Common, Version=1.0.6.0, Culture=neutral, PublicKeyToken=998713eb9a0cce30, processorArchitecture=MSIL">
+    <Reference Include="Junior.Common, Version=2.0.0.0, Culture=neutral, PublicKeyToken=998713eb9a0cce30, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\JuniorCommon.1.0.6\lib\net40\Junior.Common.dll</HintPath>
+      <HintPath>..\packages\JuniorCommon.2.0.1\lib\net40\Junior.Common.dll</HintPath>
     </Reference>
-    <Reference Include="Junior.Ddd.DomainEvents">
-      <HintPath>..\packages\JuniorDDD.1.0.2\lib\net40\Junior.Ddd.DomainEvents.dll</HintPath>
-    </Reference>
-    <Reference Include="Junior.Ddd.DomainModel">
-      <HintPath>..\packages\JuniorDDD.1.0.2\lib\net40\Junior.Ddd.DomainModel.dll</HintPath>
-    </Reference>
-    <Reference Include="Junior.Ddd.Validation">
-      <HintPath>..\packages\JuniorDDD.1.0.2\lib\net40\Junior.Ddd.Validation.dll</HintPath>
+    <Reference Include="Junior.Ddd.DomainModel, Version=2.0.0.0, Culture=neutral, PublicKeyToken=998713eb9a0cce30, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\JuniorDDD.DomainModel.2.0.0\lib\net40\Junior.Ddd.DomainModel.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Xml" />

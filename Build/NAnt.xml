@@ -3,16 +3,9 @@
 	<!-- NAnt -->
 	<property name="nant.settings.currentframework" value="net-4.0"/>
 
-	<!-- Version information (read http://semver.org before modifying) -->
-	<property name="MajorVersionNumber" value="1"/>
-	<property name="MinorVersionNumber" value="0"/>
-	<property name="BuildVersionNumber" value="2"/>
-	<property name="RevisionVersionNumber" value="0"/>
-	<property name="ProjectVersion" value="${MajorVersionNumber}.${MinorVersionNumber}.${BuildVersionNumber}"/>
-	<property name="AssemblyVersion" value="${MajorVersionNumber}.${MinorVersionNumber}.${BuildVersionNumber}.${RevisionVersionNumber}"/>
 	<property name="SubProject" value=""/>
-	<property name="ShortProjectNameAndVersion" value="${string::to-lower(string::replace(project::get-name() + '-' + SubProject + '-' + ProjectVersion, ' ', ''))}" dynamic="true"/>
-	<property name="LongProjectNameAndVersion" value="${string::to-lower(string::replace(ShortProjectNameAndVersion + '-' + Platform + '-' + BuildConfiguration, ' ', ''))}" dynamic="true"/>
+	<property name="AssemblyInfoPath" value=""/>
+	<property name="NuGetVersion" value=""/>
 
 	<!-- Build configuration -->
 	<property name="Platform" value="Any CPU" overwrite="false"/>
@@ -21,61 +14,34 @@
 	<!-- Directories -->
 	<property name="TrunkDirectory" value="${directory::get-parent-directory(path::get-directory-name(project::get-buildfile-path()))}"/>
 	<property name="BuildDirectory" value="${path::combine(TrunkDirectory, 'Build')}"/>
-	<property name="ReleaseDirectory" value="${path::combine(TrunkDirectory, 'Release')}"/>
-	<property name="ReleaseStagingDirectory" value="${path::combine(BuildDirectory, 'Release Staging')}"/>
-	<property name="ReleaseStagingVersionDirectory" value="${path::combine(ReleaseStagingDirectory, ShortProjectNameAndVersion)}" dynamic="true"/>
-	<property name="ReleaseStagingBinDirectory" value="${path::combine(ReleaseStagingVersionDirectory, 'bin')}" dynamic="true"/>
 	<property name="SourceDirectory" value="${path::combine(TrunkDirectory, 'Source')}"/>
 	<property name="NuGetResultsDirectory" value="${path::combine(BuildDirectory, 'NuGet Results')}"/>
 	<property name="NuGetStagingDirectory" value="${path::combine(BuildDirectory, 'NuGet Staging')}"/>
+	<property name="NuGetStagingBinDirectory" value="${path::combine(NuGetStagingDirectory, 'bin')}"/>
 	<property name="NUnitResultsDirectory" value="${path::combine(BuildDirectory, 'NUnit Results')}"/>
 
 	<!-- Paths -->
-	<property name="NUnitConsolePath" value="${path::combine(path::combine(path::combine(BuildDirectory, 'NUnit-2.6.1'), 'bin'), 'nunit-console.exe')}"/>
-	<property name="NuGetPath" value="${path::combine(path::combine(BuildDirectory, 'NuGet-2.0'), 'NuGet.exe')}"/>
-	<property name="NuGetNuspecPath" value="${path::combine(BuildDirectory, 'NuGet.nuspec')}"/>
-	<property name="ReleaseArchivePath" value="${path::combine(ReleaseDirectory, LongProjectNameAndVersion + '.zip')}" dynamic="true"/>
+	<property name="NUnitConsolePath" value="${path::combine(BuildDirectory, 'NUnit-2.6.2\bin\nunit-console.exe')}"/>
+	<property name="NuGetPath" value="${path::combine(BuildDirectory, 'NuGet-2.0\NuGet.exe')}"/>
 	<property name="SolutionPath" value="${path::combine(SourceDirectory, project::get-name() + '.sln')}"/>
 
 	<!-- Build -->
 	<target name="Build">
-		<call target="CommonAssemblyInfo"/>
 		<call target="Compile"/>
 		<call target="DeleteNUnitResults"/>
 		<call target="RunUnitTests"/>
 		<if test="${BuildConfiguration == 'Release'}">
-			<call target="RecreateReleaseStagingDirectory"/>
-			<call target="RecreateReleaseDirectory"/>
 			<call target="RecreateNuGetResultsDirectory"/>
-			<foreach item="String" in="ActiveRecord,MySql,PostgreSql,SqlServer" delim="," property="SubProject">
-				<call target="StageArchiveFiles"/>
-				<call target="CreateReleaseArchives"/>
+			<foreach item="String" in="Sessions,Data-Core,Data-ActiveRecord,Data-MySql,Data-PostgreSql,Data-SqlServer,Persistence-Core,Persistence-ActiveRecord,Persistence-MySql,Persistence-PostgreSql,Persistence-SqlServer" delim="," property="SubProject">
+				<property name="AssemblyInfoPath" value="${path::combine(SourceDirectory, string::replace(string::replace(SubProject, '-Core', ''), '-', '.') + '\Properties\AssemblyInfo.cs')}"/>
 				<call target="StageNuGetFiles"/>
-				<call target="CreateNuGetDataPackage"/>
-				<call target="CreateNuGetPersistencePackage"/>
+				<call target="CreateNuGetPackage"/>
 				<call target="DeleteStagedFiles"/>
 			</foreach>
 		</if>
 	</target>
 
 	<!-- Compile -->
-	<target name="CommonAssemblyInfo">
-		<asminfo output="${SourceDirectory}\CommonAssemblyInfo.cs" language="CSharp">
-			<imports>
-				<import namespace="System.Reflection"/>
-				<import namespace="System.Runtime.InteropServices"/>
-			</imports>
-			<attributes>
-				<attribute type="ComVisibleAttribute" value="false"/>
-				<attribute type="AssemblyVersionAttribute" value="${AssemblyVersion}"/>
-				<attribute type="AssemblyFileVersionAttribute" value="${AssemblyVersion}"/>
-				<attribute type="AssemblyInformationalVersionAttribute" value="${AssemblyVersion}"/>
-			</attributes>
-			<references>
-				<include name="System.dll"/>
-			</references>
-		</asminfo>
-	</target>
 	<target name="Compile">
 		<exec
 			program="${framework::get-framework-directory(framework::get-target-framework())}\msbuild.exe"
@@ -94,7 +60,7 @@
 		<mkdir dir="${NUnitResultsDirectory}"/>
 	</target>
 	<target name="RunUnitTests">
-		<property name="UnitTestAssemblyPath" value="${path::combine(path::combine(SourceDirectory, path::combine('UnitTests', path::combine('bin', BuildConfiguration))), 'Junior.Persist.UnitTests.dll')}"/>
+		<property name="UnitTestAssemblyPath" value="${path::combine(SourceDirectory, 'UnitTests\bin\' + BuildConfiguration + '\Junior.Persist.UnitTests.dll')}"/>
 		<call target="ExecuteNUnit"/>
 	</target>
 	<target name="ExecuteNUnit">
@@ -105,118 +71,139 @@
 			<arg value="/nothread"/>
 			<arg value="/domain=Multiple"/>
 			<arg value="/process=Single"/>
-			<arg value="/framework=${nant.settings.currentframework}"/>
 		</exec>
 	</target>
 
 	<!-- Package -->
-	<target name="RecreateReleaseStagingDirectory">
-		<delete dir="${ReleaseStagingDirectory}"/>
-		<mkdir dir="${ReleaseStagingDirectory}"/>
-	</target>
-	<target name="RecreateReleaseDirectory">
-		<delete dir="${ReleaseDirectory}"/>
-		<mkdir dir="${ReleaseDirectory}"/>
-	</target>
 	<target name="RecreateNuGetResultsDirectory">
 		<delete dir="${NuGetResultsDirectory}"/>
 		<mkdir dir="${NuGetResultsDirectory}"/>
 	</target>
-	<target name="StageArchiveFiles">
-		<copy todir="${ReleaseStagingVersionDirectory}">
-			<fileset basedir="${TrunkDirectory}">
-				<include name="LICENSE"/>
-				<include name="README"/>
-			</fileset>
-		</copy>
-		<copy todir="${ReleaseStagingBinDirectory}">
-			<fileset basedir="${path::combine(SourceDirectory, path::combine('Sessions', path::combine('bin', BuildConfiguration)))}">
-				<include name="Junior.Common.*"/>
-				<include name="Junior.Ddd.DomainEvents.*"/>
-				<include name="Junior.Ddd.DomainModel.*"/>
-				<include name="Junior.Ddd.Validation.*"/>
-				<include name="Junior.Persist.Sessions.*"/>
-			</fileset>
-		</copy>
-		<copy todir="${ReleaseStagingBinDirectory}">
-			<fileset basedir="${path::combine(SourceDirectory, path::combine('Data', path::combine('bin', BuildConfiguration)))}">
-				<include name="Junior.Persist.Data.*"/>
-			</fileset>
-		</copy>
-		<copy todir="${ReleaseStagingBinDirectory}">
-			<fileset basedir="${path::combine(SourceDirectory, path::combine('Data.' + SubProject, path::combine('bin', BuildConfiguration)))}">
-				<include name="Junior.Persist.Data.${SubProject}.*"/>
-				<include name="es\**\*" if="${SubProject == 'ActiveRecord'}"/>
-				<include name="fr\**\*" if="${SubProject == 'ActiveRecord'}"/>
-				<include name="it\**\*" if="${SubProject == 'ActiveRecord'}"/>
-				<include name="lt\**\*" if="${SubProject == 'ActiveRecord'}"/>
-				<include name="lv\**\*" if="${SubProject == 'ActiveRecord'}"/>
-				<include name="mk\**\*" if="${SubProject == 'ActiveRecord'}"/>
-				<include name="nl\**\*" if="${SubProject == 'ActiveRecord'}"/>
-				<include name="ru\**\*" if="${SubProject == 'ActiveRecord'}"/>
-				<include name="sv\**\*" if="${SubProject == 'ActiveRecord'}"/>
-				<include name="Antlr3.*" if="${SubProject == 'ActiveRecord'}"/>
-				<include name="Castle.*" if="${SubProject == 'ActiveRecord'}"/>
-				<include name="Iesi.*" if="${SubProject == 'ActiveRecord'}"/>
-				<include name="NHibernate.*" if="${SubProject == 'ActiveRecord'}"/>
-				<include name="Remotion.*" if="${SubProject == 'ActiveRecord'}"/>
-				<include name="MySql.*" if="${SubProject == 'MySql'}"/>
-				<include name="Mono.Security.*" if="${SubProject == 'PostgreSql'}"/>
-				<include name="Npgsql.*" if="${SubProject == 'PostgreSql'}"/>
-			</fileset>
-		</copy>
-		<copy todir="${ReleaseStagingBinDirectory}">
-			<fileset basedir="${path::combine(SourceDirectory, path::combine('Persistence', path::combine('bin', BuildConfiguration)))}">
-				<include name="Junior.Persist.Persistence.*"/>
-			</fileset>
-		</copy>
-		<copy todir="${ReleaseStagingBinDirectory}">
-			<fileset basedir="${path::combine(SourceDirectory, path::combine('Persistence.' + SubProject, path::combine('bin', BuildConfiguration)))}">
-				<include name="Junior.Persist.Persistence.${SubProject}.*"/>
-			</fileset>
-		</copy>
-	</target>
-	<target name="CreateReleaseArchives">
-		<zip zipfile="${ReleaseArchivePath}">
-			<fileset basedir="${ReleaseStagingDirectory}">
-				<include name="**\*"/>
-			</fileset>
-		</zip>
-	</target>
 	<target name="StageNuGetFiles">
 		<delete dir="${NuGetStagingDirectory}"/>
-		<move todir="${NuGetStagingDirectory}">
-			<fileset basedir="${ReleaseStagingVersionDirectory}"/>
-		</move>
+		<mkdir dir="${NuGetStagingDirectory}"/>
+		<copy todir="${NuGetStagingDirectory}">
+			<fileset basedir="${TrunkDirectory}">
+				<include name="LICENSE"/>
+				<include name="README.md"/>
+			</fileset>
+		</copy>
+		<if test="${SubProject == 'Sessions'}">
+			<copy todir="${NuGetStagingBinDirectory}">
+				<fileset basedir="${path::combine(SourceDirectory, 'Sessions\bin\' + BuildConfiguration)}">
+					<include name="Junior.Persist.Sessions.*"/>
+				</fileset>
+			</copy>
+		</if>
+		<if test="${SubProject == 'Data-Core'}">
+			<copy todir="${NuGetStagingBinDirectory}">
+				<fileset basedir="${path::combine(SourceDirectory, 'Data\bin\' + BuildConfiguration)}">
+					<include name="Junior.Persist.Data.*"/>
+				</fileset>
+			</copy>
+		</if>
+		<if test="${SubProject == 'Data-ActiveRecord'}">
+			<copy todir="${NuGetStagingBinDirectory}">
+				<fileset basedir="${path::combine(SourceDirectory, 'Data.ActiveRecord\bin\' + BuildConfiguration)}">
+					<include name="Junior.Persist.Data.ActiveRecord.*"/>
+				</fileset>
+			</copy>
+		</if>
+		<if test="${SubProject == 'Data-MySql'}">
+			<copy todir="${NuGetStagingBinDirectory}">
+				<fileset basedir="${path::combine(SourceDirectory, 'Data.MySql\bin\' + BuildConfiguration)}">
+					<include name="Junior.Persist.Data.MySql.*"/>
+				</fileset>
+			</copy>
+		</if>
+		<if test="${SubProject == 'Data-PostgreSql'}">
+			<copy todir="${NuGetStagingBinDirectory}">
+				<fileset basedir="${path::combine(SourceDirectory, 'Data.PostgreSql\bin\' + BuildConfiguration)}">
+					<include name="Junior.Persist.Data.PostgreSql.*"/>
+				</fileset>
+			</copy>
+		</if>
+		<if test="${SubProject == 'Data-SqlServer'}">
+			<copy todir="${NuGetStagingBinDirectory}">
+				<fileset basedir="${path::combine(SourceDirectory, 'Data.SqlServer\bin\' + BuildConfiguration)}">
+					<include name="Junior.Persist.Data.SqlServer.*"/>
+				</fileset>
+			</copy>
+		</if>
+		<if test="${SubProject == 'Persistence-Core'}">
+			<copy todir="${NuGetStagingBinDirectory}">
+				<fileset basedir="${path::combine(SourceDirectory, 'Persistence\bin\' + BuildConfiguration)}">
+					<include name="Junior.Persist.Persistence.*"/>
+				</fileset>
+			</copy>
+		</if>
+		<if test="${SubProject == 'Persistence-ActiveRecord'}">
+			<copy todir="${NuGetStagingBinDirectory}">
+				<fileset basedir="${path::combine(SourceDirectory, 'Persistence.ActiveRecord\bin\' + BuildConfiguration)}">
+					<include name="Junior.Persist.Persistence.ActiveRecord.*"/>
+				</fileset>
+			</copy>
+		</if>
+		<if test="${SubProject == 'Persistence-MySql'}">
+			<copy todir="${NuGetStagingBinDirectory}">
+				<fileset basedir="${path::combine(SourceDirectory, 'Persistence.MySql\bin\' + BuildConfiguration)}">
+					<include name="Junior.Persist.Persistence.MySql.*"/>
+				</fileset>
+			</copy>
+		</if>
+		<if test="${SubProject == 'Persistence-PostgreSql'}">
+			<copy todir="${NuGetStagingBinDirectory}">
+				<fileset basedir="${path::combine(SourceDirectory, 'Persistence.PostgreSql\bin\' + BuildConfiguration)}">
+					<include name="Junior.Persist.Persistence.PostgreSql.*"/>
+				</fileset>
+			</copy>
+		</if>
+		<if test="${SubProject == 'Persistence-SqlServer'}">
+			<copy todir="${NuGetStagingBinDirectory}">
+				<fileset basedir="${path::combine(SourceDirectory, 'Persistence.SqlServer\bin\' + BuildConfiguration)}">
+					<include name="Junior.Persist.Persistence.SqlServer.*"/>
+				</fileset>
+			</copy>
+		</if>
+		<script language="C#">
+			<imports>
+				<import namespace="System.Linq"/>
+				<import namespace="System.Text.RegularExpressions"/>
+			</imports>
+			<references>
+				<include name="System.dll"/>
+				<include name="System.Core.dll"/>
+			</references>
+			<code>
+				<![CDATA[
+				public static void ScriptMain(Project project)
+				{
+					string assemblyInfoPath = project.Properties["AssemblyInfoPath"];
+					string assemblyInfo = File.ReadAllText(assemblyInfoPath);
+					string version = Regex.Match(assemblyInfo, @"(?<=AssemblyFileVersion\(\"").*?(?=\""\))").Value;
+					
+					version = String.Join(".", version.Split('.').Take(3));
+					
+					project.Properties["NuGetVersion"] = version;
+				}
+				]]>
+			</code>
+		</script>
 	</target>
-	<target name="CreateNuGetDataPackage">
+	<target name="CreateNuGetPackage">
 		<exec
 			program="${NuGetPath}"
 			workingdir="."
 			verbose="true">
 			<arg value="pack"/>
-			<arg value="NuGet-Data-${SubProject}.nuspec"/>
+			<arg value="NuGet-${SubProject}.nuspec"/>
 			<arg value="-Version"/>
-			<arg value="${ProjectVersion}"/>
-			<arg value="-OutputDirectory"/>
-			<arg value="${NuGetResultsDirectory}"/>
-		</exec>
-	</target>
-	<target name="CreateNuGetPersistencePackage">
-		<exec
-			program="${NuGetPath}"
-			workingdir="."
-			verbose="true">
-			<arg value="pack"/>
-			<arg value="NuGet-Persistence-${SubProject}.nuspec"/>
-			<arg value="-Version"/>
-			<arg value="${ProjectVersion}"/>
+			<arg value="${NuGetVersion}"/>
 			<arg value="-OutputDirectory"/>
 			<arg value="${NuGetResultsDirectory}"/>
 		</exec>
 	</target>
 	<target name="DeleteStagedFiles">
-		<delete dir="${ReleaseStagingDirectory}"/>
 		<delete dir="${NuGetStagingDirectory}"/>
 	</target>
 </project>
