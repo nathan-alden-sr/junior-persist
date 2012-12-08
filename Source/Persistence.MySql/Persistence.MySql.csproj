@@ -90,8 +90,6 @@
       <HintPath>..\packages\JuniorDDD.DomainModel.2.0.0\lib\net40\Junior.Ddd.DomainModel.dll</HintPath>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Xml" />
-    <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
