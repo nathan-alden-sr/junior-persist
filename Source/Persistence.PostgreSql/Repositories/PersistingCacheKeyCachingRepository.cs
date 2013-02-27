@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 using Junior.Common;
 using Junior.Ddd.DomainModel;
@@ -80,18 +81,18 @@ namespace Junior.Persist.Persistence.PostgreSql.Repositories
 		/// <param name="entity">The entity to persist.</param>
 		/// <returns>The entity's ID.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="entity"/> is null.</exception>
-		public Guid Persist(TEntity entity)
+		public async Task<Guid> Persist(TEntity entity)
 		{
 			entity.ThrowIfNull("entity");
 
 			Guid entityId = _sessionCache.GetEntityId(entity, _entityIdFactory.NewId());
 			TEntityData entityData = _entityDataMappingDelegate(new CacheEntity<TEntity>(entity, entityId));
 
-			_dataConnector.InsertOrUpdate(entityData);
+			await _dataConnector.InsertOrUpdate(entityData);
 
 			_sessionCache.EntityWasPersisted(new CacheEntity<object>(entity, entityId));
 
-			PersistRelated(entity);
+			await PersistRelated(entity);
 
 			return entityId;
 		}
@@ -102,11 +103,11 @@ namespace Junior.Persist.Persistence.PostgreSql.Repositories
 		/// <param name="entities">The entities to persist.</param>
 		/// <returns>The entities as <see cref="CacheEntity{TEntity}"/> instances.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="entities"/> is null.</exception>
-		public IEnumerable<CacheEntity<TEntity>> Persist(IEnumerable<TEntity> entities)
+		public async Task<IEnumerable<CacheEntity<TEntity>>> Persist(IEnumerable<TEntity> entities)
 		{
 			entities.ThrowIfNull("entities");
 
-			return entities.Select(arg => new CacheEntity<TEntity>(arg, Persist(arg)));
+			return await Task.WhenAll(entities.Select(async arg => new CacheEntity<TEntity>(arg, await Persist(arg))));
 		}
 
 		/// <summary>
@@ -115,11 +116,11 @@ namespace Junior.Persist.Persistence.PostgreSql.Repositories
 		/// <param name="entities">The lazy entities to persist.</param>
 		/// <returns>The entities as <see cref="CacheEntity{TEntity}"/> instances.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="entities"/> is null.</exception>
-		public IEnumerable<CacheEntity<TEntity>> Persist(LazyEntities<TEntity> entities)
+		public async Task<IEnumerable<CacheEntity<TEntity>>> Persist(LazyEntities<TEntity> entities)
 		{
 			entities.ThrowIfNull("entities");
 
-			return entities.IsValueCreated ? entities.Value.Select(arg => new CacheEntity<TEntity>(arg, Persist(arg))) : null;
+			return await (entities.IsValueCreated ? Task.WhenAll(entities.Value.Select(async arg => new CacheEntity<TEntity>(arg, await Persist(arg)))) : null);
 		}
 
 		/// <summary>
@@ -127,9 +128,11 @@ namespace Junior.Persist.Persistence.PostgreSql.Repositories
 		/// </summary>
 		/// <param name="entity">The entity whose related entities are to be persisted.</param>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="entity"/> is null.</exception>
-		protected virtual void PersistRelated(TEntity entity)
+		protected virtual Task PersistRelated(TEntity entity)
 		{
 			entity.ThrowIfNull("entity");
+
+			return Task.FromResult((object)null);
 		}
 	}
 
@@ -205,7 +208,7 @@ namespace Junior.Persist.Persistence.PostgreSql.Repositories
 		/// <returns>The entity's ID.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="parentEntity"/> is null.</exception>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="entity"/> is null.</exception>
-		public Guid Persist(TParentEntity parentEntity, TEntity entity)
+		public async Task<Guid> Persist(TParentEntity parentEntity, TEntity entity)
 		{
 			parentEntity.ThrowIfNull("parentEntity");
 			entity.ThrowIfNull("entity");
@@ -213,11 +216,11 @@ namespace Junior.Persist.Persistence.PostgreSql.Repositories
 			Guid entityId = _sessionCache.GetEntityId(entity, _entityIdFactory.NewId());
 			TEntityData entityData = _parentEntityDataMappingDelegate(parentEntity, new CacheEntity<TEntity>(entity, entityId));
 
-			_dataConnector.InsertOrUpdate(entityData);
+			await _dataConnector.InsertOrUpdate(entityData);
 
 			_sessionCache.EntityWasPersisted(new CacheEntity<object>(entity, entityId));
 
-			PersistRelated(entity);
+			await PersistRelated(entity);
 
 			return entityId;
 		}
@@ -230,12 +233,12 @@ namespace Junior.Persist.Persistence.PostgreSql.Repositories
 		/// <returns>The persisted entities as <see cref="CacheEntity{TEntity}"/> instances.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="parentEntity"/> is null.</exception>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="entities"/> is null.</exception>
-		public IEnumerable<CacheEntity<TEntity>> Persist(TParentEntity parentEntity, IEnumerable<TEntity> entities)
+		public async Task<IEnumerable<CacheEntity<TEntity>>> Persist(TParentEntity parentEntity, IEnumerable<TEntity> entities)
 		{
 			parentEntity.ThrowIfNull("parentEntity");
 			entities.ThrowIfNull("entities");
 
-			return entities.Select(arg => new CacheEntity<TEntity>(arg, Persist(parentEntity, arg)));
+			return await Task.WhenAll(entities.Select(async arg => new CacheEntity<TEntity>(arg, await Persist(parentEntity, arg))));
 		}
 
 		/// <summary>
@@ -246,12 +249,12 @@ namespace Junior.Persist.Persistence.PostgreSql.Repositories
 		/// <returns>The persisted entities as <see cref="CacheEntity{TEntity}"/> instances.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="parentEntity"/> is null.</exception>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="entities"/> is null.</exception>
-		public IEnumerable<CacheEntity<TEntity>> Persist(TParentEntity parentEntity, LazyEntities<TEntity> entities)
+		public async Task<IEnumerable<CacheEntity<TEntity>>> Persist(TParentEntity parentEntity, LazyEntities<TEntity> entities)
 		{
 			parentEntity.ThrowIfNull("parentEntity");
 			entities.ThrowIfNull("entities");
 
-			return entities.IsValueCreated ? entities.Value.Select(arg => new CacheEntity<TEntity>(arg, Persist(parentEntity, arg))) : null;
+			return await (entities.IsValueCreated ? Task.WhenAll(entities.Value.Select(async arg => new CacheEntity<TEntity>(arg, await Persist(parentEntity, arg)))) : null);
 		}
 
 		/// <summary>
@@ -269,7 +272,7 @@ namespace Junior.Persist.Persistence.PostgreSql.Repositories
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="parentEntity"/> is null.</exception>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="entities"/> is null.</exception>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="getExistingEntityIdsDelegate"/> is null.</exception>
-		public IEnumerable<CacheEntity<TEntity>> Persist(
+		public async Task<IEnumerable<CacheEntity<TEntity>>> Persist(
 			TParentEntity parentEntity,
 			IEnumerable<TEntity> entities,
 			Func<BinaryGuid, IEnumerable<BinaryGuid>> getExistingEntityIdsDelegate,
@@ -287,12 +290,12 @@ namespace Junior.Persist.Persistence.PostgreSql.Repositories
 			var synchronizer = new EnumerableSynchronizer<BinaryGuid, TEntity>(getExistingEntityIdsDelegate(new BinaryGuid(parentEntityId)), entities);
 			// ReSharper disable ImplicitlyCapturedClosure
 			Action<TEntity> addedItemDelegate =
-				arg =>
+				async arg =>
 				// ReSharper restore ImplicitlyCapturedClosure
 					{
 						if (persistingRepository != null)
 						{
-							persistingRepository.Persist(parentEntity, arg);
+							await persistingRepository.Persist(parentEntity, arg);
 						}
 						if (afterEntityAddedDelegate != null)
 						{
@@ -301,12 +304,12 @@ namespace Junior.Persist.Persistence.PostgreSql.Repositories
 					};
 			Action<TEntity> commonItemDelegate =
 				// ReSharper disable ImplicitlyCapturedClosure
-				arg =>
+				async arg =>
 				// ReSharper restore ImplicitlyCapturedClosure
 					{
 						if (persistingRepository != null)
 						{
-							persistingRepository.Persist(parentEntity, arg);
+							await persistingRepository.Persist(parentEntity, arg);
 						}
 						if (afterEntityUpdatedDelegate != null)
 						{
@@ -314,7 +317,7 @@ namespace Junior.Persist.Persistence.PostgreSql.Repositories
 						}
 					};
 			Action<BinaryGuid> removedItemDelegate =
-				arg =>
+				async arg =>
 					{
 						if (beforeEntityRemovedDelegate != null)
 						{
@@ -322,12 +325,12 @@ namespace Junior.Persist.Persistence.PostgreSql.Repositories
 						}
 						if (deletingByIdDataConnector != null)
 						{
-							deletingByIdDataConnector.DeleteById(arg);
+							await deletingByIdDataConnector.DeleteById(arg);
 							SessionCache.RemoveEntity(arg);
 						}
 					};
 
-			synchronizer.Synchronize(addedItemDelegate, removedItemDelegate, commonItemDelegate);
+			await synchronizer.Synchronize(addedItemDelegate, removedItemDelegate, commonItemDelegate);
 
 			IEnumerable<TEntity> currentEntities = synchronizer.AddedElements.Concat(synchronizer.CommonElements);
 
@@ -349,7 +352,7 @@ namespace Junior.Persist.Persistence.PostgreSql.Repositories
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="parentEntity"/> is null.</exception>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="entities"/> is null.</exception>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="getExistingEntityIdsDelegate"/> is null.</exception>
-		public IEnumerable<CacheEntity<TEntity>> Persist(
+		public async Task<IEnumerable<CacheEntity<TEntity>>> Persist(
 			TParentEntity parentEntity,
 			LazyEntities<TEntity> entities,
 			Func<BinaryGuid, IEnumerable<BinaryGuid>> getExistingEntityIdsDelegate,
@@ -363,17 +366,17 @@ namespace Junior.Persist.Persistence.PostgreSql.Repositories
 			entities.ThrowIfNull("entities");
 			getExistingEntityIdsDelegate.ThrowIfNull("getExistingEntityIdsDelegate");
 
-			return entities.IsValueCreated
-				       ? Persist(
-					       parentEntity,
-					       entities.Value,
-					       getExistingEntityIdsDelegate,
-					       persistingRepository,
-					       deletingByIdDataConnector,
-					       afterEntityAddedDelegate,
-					       beforeEntityRemovedDelegate,
-					       afterEntityUpdatedDelegate)
-				       : null;
+			return await (entities.IsValueCreated
+				              ? Persist(
+					              parentEntity,
+					              entities.Value,
+					              getExistingEntityIdsDelegate,
+					              persistingRepository,
+					              deletingByIdDataConnector,
+					              afterEntityAddedDelegate,
+					              beforeEntityRemovedDelegate,
+					              afterEntityUpdatedDelegate)
+				              : null);
 		}
 
 		/// <summary>
@@ -381,9 +384,11 @@ namespace Junior.Persist.Persistence.PostgreSql.Repositories
 		/// </summary>
 		/// <param name="entity">The entity whose related entities are to be persisted.</param>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="entity"/> is null.</exception>
-		protected virtual void PersistRelated(TEntity entity)
+		protected virtual Task PersistRelated(TEntity entity)
 		{
 			entity.ThrowIfNull("entity");
+
+			return Task.FromResult((object)null);
 		}
 	}
 }

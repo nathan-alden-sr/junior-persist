@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 namespace Junior.Persist.Sessions.Transactions
 {
@@ -13,9 +14,9 @@ namespace Junior.Persist.Sessions.Transactions
 		/// </summary>
 		/// <param name="option">An enlistment option.</param>
 		/// <returns>The enlisted transaction.</returns>
-		public ITransaction Enlist(EnlistmentOption option)
+		public Task<ITransaction> Enlist(EnlistmentOption option)
 		{
-			return new NullTransaction();
+			return Task.FromResult<ITransaction>(new NullTransaction());
 		}
 
 		/// <summary>
@@ -24,9 +25,9 @@ namespace Junior.Persist.Sessions.Transactions
 		/// <param name="option">An enlistment option.</param>
 		/// <param name="timeout">A transaction timeout.</param>
 		/// <returns>The enlisted transaction.</returns>
-		public ITransaction Enlist(EnlistmentOption option, TimeSpan timeout)
+		public Task<ITransaction> Enlist(EnlistmentOption option, TimeSpan timeout)
 		{
-			return new NullTransaction();
+			return Task.FromResult<ITransaction>(new NullTransaction());
 		}
 
 		/// <summary>
@@ -36,9 +37,9 @@ namespace Junior.Persist.Sessions.Transactions
 		/// <param name="isolationLevel">A transaction isolation level.</param>
 		/// <param name="timeout">A transaction timeout.</param>
 		/// <returns>The enlisted transaction.</returns>
-		public ITransaction Enlist(EnlistmentOption option, IsolationLevel isolationLevel, TimeSpan timeout)
+		public Task<ITransaction> Enlist(EnlistmentOption option, IsolationLevel isolationLevel, TimeSpan timeout)
 		{
-			return new NullTransaction();
+			return Task.FromResult<ITransaction>(new NullTransaction());
 		}
 	}
 }

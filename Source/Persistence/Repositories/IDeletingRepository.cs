@@ -1,4 +1,6 @@
-﻿namespace Junior.Persist.Persistence.Repositories
+﻿using System.Threading.Tasks;
+
+namespace Junior.Persist.Persistence.Repositories
 {
 	/// <summary>
 	/// Represents a repository that deletes entities.
@@ -10,6 +12,6 @@
 		/// Deletes an entity.
 		/// </summary>
 		/// <param name="entity">The entity to delete.</param>
-		void Delete(TEntity entity);
+		Task Delete(TEntity entity);
 	}
 }

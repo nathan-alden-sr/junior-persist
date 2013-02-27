@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Threading.Tasks;
 
 using Junior.Common;
 
@@ -25,18 +26,18 @@ namespace Junior.Persist.Data.SqlServer
 			_getDataDelegate = getDataDelegate;
 		}
 
-		public TData GetData(string sql, params SqlParameter[] parameters)
+		public async Task<TData> GetData(string sql, params SqlParameter[] parameters)
 		{
 			sql.ThrowIfNull("sql");
 
-			return GetData(sql, (IEnumerable<SqlParameter>)parameters);
+			return await GetData(sql, (IEnumerable<SqlParameter>)parameters);
 		}
 
-		public TData GetData(string sql, IEnumerable<SqlParameter> parameters)
+		public async Task<TData> GetData(string sql, IEnumerable<SqlParameter> parameters)
 		{
 			sql.ThrowIfNull("sql");
 
-			IEnumerable<TData> entityDatas = ExecuteProjection(sql, _getDataDelegate, parameters);
+			IEnumerable<TData> entityDatas = await ExecuteProjection(sql, _getDataDelegate, parameters);
 
 			// ReSharper disable PossibleMultipleEnumeration
 			if (entityDatas.CountGreaterThan(1))
@@ -48,18 +49,18 @@ namespace Junior.Persist.Data.SqlServer
 			// ReSharper restore PossibleMultipleEnumeration
 		}
 
-		public IEnumerable<TData> GetDatas(string sql, params SqlParameter[] parameters)
+		public async Task<IEnumerable<TData>> GetDatas(string sql, params SqlParameter[] parameters)
 		{
 			sql.ThrowIfNull("sql");
 
-			return ExecuteProjection(sql, _getDataDelegate, parameters);
+			return await ExecuteProjection(sql, _getDataDelegate, parameters);
 		}
 
-		public IEnumerable<TData> GetDatas(string sql, IEnumerable<SqlParameter> parameters)
+		public async Task<IEnumerable<TData>> GetDatas(string sql, IEnumerable<SqlParameter> parameters)
 		{
 			sql.ThrowIfNull("sql");
 
-			return ExecuteProjection(sql, _getDataDelegate, parameters);
+			return await ExecuteProjection(sql, _getDataDelegate, parameters);
 		}
 	}
 }

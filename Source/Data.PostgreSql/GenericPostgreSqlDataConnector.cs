@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 using Npgsql;
 
@@ -37,13 +38,13 @@ namespace Junior.Persist.Data.PostgreSql
 				_connectionString = connectionString;
 			}
 
-			public NpgsqlConnection GetConnection(string connectionKey, bool openConnection = true)
+			public async Task<NpgsqlConnection> GetConnection(string connectionKey, bool openConnection = true)
 			{
 				var connection = new NpgsqlConnection(_connectionString);
 
 				if (openConnection)
 				{
-					connection.Open();
+					await Task.Run(() => connection.Open());
 				}
 
 				return connection;

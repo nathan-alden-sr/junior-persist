@@ -1,11 +1,12 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 namespace Junior.Persist.Persistence.Finders
 {
 	/// <summary>
 	/// Represents a way to find an entity by ID.
 	/// </summary>
-	public interface IByIdFinder<out TEntity>
+	public interface IByIdFinder<TEntity>
 		where TEntity : class
 	{
 		/// <summary>
@@ -14,6 +15,6 @@ namespace Junior.Persist.Persistence.Finders
 		/// <param name="id">An entity ID.</param>
 		/// <param name="entityNotFoundHandling">Determines how to handle when entity data is not found.</param>
 		/// <returns>An entity.</returns>
-		TEntity ById(Guid id, EntityNotFoundHandling entityNotFoundHandling = EntityNotFoundHandling.ThrowException);
+		Task<TEntity> ById(Guid id, EntityNotFoundHandling entityNotFoundHandling = EntityNotFoundHandling.ThrowException);
 	}
 }

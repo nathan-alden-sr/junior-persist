@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data.SqlClient;
+using System.Threading.Tasks;
 
 using Junior.Common;
 
@@ -40,13 +41,13 @@ namespace Junior.Persist.Data.SqlServer
 				_connectionString = connectionString;
 			}
 
-			public SqlConnection GetConnection(string connectionKey, bool openConnection = true)
+			public async Task<SqlConnection> GetConnection(string connectionKey, bool openConnection = true)
 			{
 				var connection = new SqlConnection(_connectionString);
 
 				if (openConnection)
 				{
-					connection.Open();
+					await Task.Run(() => connection.Open());
 				}
 
 				return connection;

@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 
 using Junior.Common;
 
@@ -31,7 +32,7 @@ namespace Junior.Persist.Data.MySql
 		/// <param name="connectionKey">A connection key. <paramref name="connectionKey"/> is used to retrieve the command timeout.</param>
 		/// <param name="openConnection">Indicates if the connection should be opened before it is returned.</param>
 		/// <returns>A connection.</returns>
-		public MySqlConnection GetConnection(string connectionKey, bool openConnection = true)
+		public async Task<MySqlConnection> GetConnection(string connectionKey, bool openConnection = true)
 		{
 			connectionKey.ThrowIfNull("connectionKey");
 
@@ -39,7 +40,7 @@ namespace Junior.Persist.Data.MySql
 
 			if (openConnection)
 			{
-				connection.Open();
+				await Task.Run(() => connection.Open());
 			}
 
 			return connection;

@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 
 using Junior.Persist.Data;
 using Junior.Persist.Persistence.Sessions;
@@ -17,19 +18,19 @@ namespace Junior.Persist.UnitTests.Persistence.Sessions
 		public class When_enrolling_in_nested_nontransactional_session
 		{
 			[Test]
-			public void Must_not_share_same_session()
+			public async void Must_not_share_same_session()
 			{
 				var transactionManager = MockRepository.GenerateMock<ITransactionManager>();
 				var transactionalSessionManager = new TransactionalCacheKeySessionManager(transactionManager);
 				var transaction = MockRepository.GenerateMock<ITransaction>();
 
-				transactionManager.Stub(arg => arg.Enlist(Arg<EnlistmentOption>.Is.Anything)).Return(transaction);
+				transactionManager.Stub(arg => arg.Enlist(Arg<EnlistmentOption>.Is.Anything)).Return(Task.FromResult(transaction));
 
 				var systemUnderTest = new NonTransactionalCacheKeySessionManager();
 
-				using (transactionalSessionManager.Enroll())
+				using (await transactionalSessionManager.Enroll())
 				{
-					using (systemUnderTest.Enroll())
+					using (await systemUnderTest.Enroll())
 					{
 						Assert.That(NonTransactionalCacheKeySession.Current, Is.Not.SameAs(TransactionalCacheKeySession.Current));
 					}
@@ -41,25 +42,25 @@ namespace Junior.Persist.UnitTests.Persistence.Sessions
 		public class When_enrolling_in_nested_transactional_session
 		{
 			[Test]
-			public void Must_share_same_session()
+			public async void Must_share_same_session()
 			{
 				var transactionManager = MockRepository.GenerateMock<ITransactionManager>();
 				var transactionalSessionManager = new TransactionalCacheKeySessionManager(transactionManager);
 				var transaction = MockRepository.GenerateMock<ITransaction>();
 
-				transactionManager.Stub(arg => arg.Enlist(Arg<EnlistmentOption>.Is.Anything)).Return(transaction);
+				transactionManager.Stub(arg => arg.Enlist(Arg<EnlistmentOption>.Is.Anything)).Return(Task.FromResult(transaction));
 
 				var systemUnderTest = new TransactionalCacheKeySessionManager(transactionManager);
 
 				var cacheKey = new CacheKey("Test");
 
-				using (transactionalSessionManager.Enroll())
+				using (await transactionalSessionManager.Enroll())
 				{
 					var cacheEntity = new CacheEntity<object>(new object(), Guid.NewGuid());
 
 					transactionalSessionManager.EntityWasFound(cacheKey, cacheEntity);
 
-					using (systemUnderTest.Enroll())
+					using (await systemUnderTest.Enroll())
 					{
 						CacheEntity<object> foundEntity = systemUnderTest.GetEntity(cacheKey);
 
@@ -73,16 +74,16 @@ namespace Junior.Persist.UnitTests.Persistence.Sessions
 		public class When_enrolling_in_transactional_session
 		{
 			[Test]
-			public void Must_enlist_in_transaction()
+			public async void Must_enlist_in_transaction()
 			{
 				var transactionManager = MockRepository.GenerateMock<ITransactionManager>();
 				var transaction = MockRepository.GenerateMock<ITransaction>();
 
-				transactionManager.Stub(arg => arg.Enlist()).Return(transaction);
+				transactionManager.Stub(arg => arg.Enlist()).Return(Task.FromResult(transaction));
 
 				var systemUnderTest = new TransactionalCacheKeySessionManager(transactionManager);
 
-				systemUnderTest.Enroll();
+				await systemUnderTest.Enroll();
 
 				transactionManager.AssertWasCalled(arg => arg.Enlist());
 			}

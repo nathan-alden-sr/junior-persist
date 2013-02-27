@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 
 using Junior.Persist.Persistence;
 using Junior.Persist.Persistence.Finders;
@@ -21,7 +22,7 @@ namespace Junior.Persist.UnitTests.Persistence
 				var finder = MockRepository.GenerateMock<IByIdFinder<object>>();
 				Guid entityId = Guid.NewGuid();
 
-				finder.Stub(arg => arg.ById(entityId)).Return(entity);
+				finder.Stub(arg => arg.ById(entityId)).Return(Task.FromResult(entity));
 
 				var systemUnderTest = new LazyEntityById<object>(entityId, finder);
 

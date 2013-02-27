@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 
 using Castle.ActiveRecord;
 
@@ -21,11 +22,13 @@ namespace Junior.Persist.Persistence.ActiveRecord.Finders
 		/// <param name="entityNotFoundHandling">Determines how to handle when entity data is not found.</param>
 		/// <returns>An entity.</returns>
 		/// <exception cref="EntityNotFoundException">Thrown when <paramref name="entityNotFoundHandling"/> is <see cref="EntityNotFoundHandling.ThrowException"/> and an entity was not found.</exception>
-		public TEntity ById(Guid id, EntityNotFoundHandling entityNotFoundHandling)
+		public async Task<TEntity> ById(Guid id, EntityNotFoundHandling entityNotFoundHandling)
 		{
 			try
 			{
-				return GetEntity(ActiveRecordBase<TEntityData>.Find((BinaryGuid)id));
+				TEntityData entityData = await Task.Run(() => ActiveRecordBase<TEntityData>.Find((BinaryGuid)id));
+
+				return GetEntity(entityData);
 			}
 			catch (NotFoundException exception)
 			{

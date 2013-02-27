@@ -1,4 +1,6 @@
-﻿using Junior.Common;
+﻿using System.Threading.Tasks;
+
+using Junior.Common;
 
 namespace Junior.Persist.Data.MySql
 {
@@ -11,6 +13,6 @@ namespace Junior.Persist.Data.MySql
 		/// Deletes an entity with the specified ID.
 		/// </summary>
 		/// <param name="id">An entity ID.</param>
-		void DeleteById(BinaryGuid id);
+		Task DeleteById(BinaryGuid id);
 	}
 }

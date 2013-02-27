@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 namespace Junior.Persist.Data.SqlServer
 {
@@ -11,6 +12,6 @@ namespace Junior.Persist.Data.SqlServer
 		/// Deletes an entity with the specified ID.
 		/// </summary>
 		/// <param name="id">An entity ID.</param>
-		void DeleteById(Guid id);
+		Task DeleteById(Guid id);
 	}
 }

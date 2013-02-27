@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Threading.Tasks;
 
 using Junior.Common;
 
@@ -42,7 +43,7 @@ namespace Junior.Persist.Data.SqlServer
 		/// </summary>
 		/// <param name="id">An entity ID.</param>
 		/// <returns>Entity data for an entity with the specified ID.</returns>
-		public abstract TEntityData GetById(Guid id);
+		public abstract Task<TEntityData> GetById(Guid id);
 
 		/// <summary>
 		/// Retrieves entity data by executing a SQL query.
@@ -51,11 +52,11 @@ namespace Junior.Persist.Data.SqlServer
 		/// <param name="parameters">Named parameters.</param>
 		/// <returns>Entity data.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="sql"/> is null.</exception>
-		protected TEntityData GetEntityData(string sql, params SqlParameter[] parameters)
+		protected async Task<TEntityData> GetEntityData(string sql, params SqlParameter[] parameters)
 		{
 			sql.ThrowIfNull("sql");
 
-			return _gettingSqlServerDataConnectorHelper.GetData(sql, parameters);
+			return await _gettingSqlServerDataConnectorHelper.GetData(sql, parameters);
 		}
 
 		/// <summary>
@@ -66,11 +67,11 @@ namespace Junior.Persist.Data.SqlServer
 		/// <returns>Entity data.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="sql"/> is null.</exception>
 		/// <exception cref="TooManyRowsException">Thrown when the SQL query unexpectedly returns too many rows.</exception>
-		protected TEntityData GetEntityData(string sql, IEnumerable<SqlParameter> parameters)
+		protected async Task<TEntityData> GetEntityData(string sql, IEnumerable<SqlParameter> parameters)
 		{
 			sql.ThrowIfNull("sql");
 
-			return _gettingSqlServerDataConnectorHelper.GetData(sql, parameters);
+			return await _gettingSqlServerDataConnectorHelper.GetData(sql, parameters);
 		}
 
 		/// <summary>
@@ -80,11 +81,11 @@ namespace Junior.Persist.Data.SqlServer
 		/// <param name="parameters">Named parameters.</param>
 		/// <returns>Entity data.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="sql"/> is null.</exception>
-		protected IEnumerable<TEntityData> GetEntityDatas(string sql, params SqlParameter[] parameters)
+		protected async Task<IEnumerable<TEntityData>> GetEntityDatas(string sql, params SqlParameter[] parameters)
 		{
 			sql.ThrowIfNull("sql");
 
-			return _gettingSqlServerDataConnectorHelper.GetDatas(sql, parameters);
+			return await _gettingSqlServerDataConnectorHelper.GetDatas(sql, parameters);
 		}
 
 		/// <summary>
@@ -94,11 +95,11 @@ namespace Junior.Persist.Data.SqlServer
 		/// <param name="parameters">Named parameters.</param>
 		/// <returns>Entity data.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="sql"/> is null.</exception>
-		protected IEnumerable<TEntityData> GetEntityDatas(string sql, IEnumerable<SqlParameter> parameters)
+		protected async Task<IEnumerable<TEntityData>> GetEntityDatas(string sql, IEnumerable<SqlParameter> parameters)
 		{
 			sql.ThrowIfNull("sql");
 
-			return _gettingSqlServerDataConnectorHelper.GetDatas(sql, parameters);
+			return await _gettingSqlServerDataConnectorHelper.GetDatas(sql, parameters);
 		}
 
 		/// <summary>

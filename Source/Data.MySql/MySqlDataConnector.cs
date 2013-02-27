@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Threading.Tasks;
 
 using Junior.Common;
 
@@ -179,11 +180,11 @@ namespace Junior.Persist.Data.MySql
 		/// <param name="parameters">Named parameters.</param>
 		/// <returns>The number of rows affected by the SQL statement.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="sql"/> is null.</exception>
-		protected int ExecuteNonQuery(string sql, params MySqlParameter[] parameters)
+		protected async Task<int> ExecuteNonQuery(string sql, params MySqlParameter[] parameters)
 		{
 			sql.ThrowIfNull("sql");
 
-			return ExecuteNonQuery(sql, (IEnumerable<MySqlParameter>)parameters);
+			return await ExecuteNonQuery(sql, (IEnumerable<MySqlParameter>)parameters);
 		}
 
 		/// <summary>
@@ -193,13 +194,13 @@ namespace Junior.Persist.Data.MySql
 		/// <param name="parameters">Named parameters.</param>
 		/// <returns>The number of rows affected by the SQL statement.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="sql"/> is null.</exception>
-		protected int ExecuteNonQuery(string sql, IEnumerable<MySqlParameter> parameters)
+		protected async Task<int> ExecuteNonQuery(string sql, IEnumerable<MySqlParameter> parameters)
 		{
 			sql.ThrowIfNull("sql");
 
 			parameters = parameters ?? Enumerable.Empty<MySqlParameter>();
 
-			using (MySqlConnection connection = ConnectionProvider.GetConnection(_connectionKey))
+			using (MySqlConnection connection = await ConnectionProvider.GetConnection(_connectionKey))
 			{
 				string formattedSql = FormatSql(sql);
 				MySqlCommand command = CommandProvider.GetCommand(_connectionKey, connection, formattedSql, parameters);
@@ -215,11 +216,11 @@ namespace Junior.Persist.Data.MySql
 		/// <param name="parameters">Named parameters.</param>
 		/// <returns>A scalar value.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="sql"/> is null.</exception>
-		protected T ExecuteScalar<T>(string sql, params MySqlParameter[] parameters)
+		protected async Task<T> ExecuteScalar<T>(string sql, params MySqlParameter[] parameters)
 		{
 			sql.ThrowIfNull("sql");
 
-			return ExecuteScalar<T>(sql, (IEnumerable<MySqlParameter>)parameters);
+			return await ExecuteScalar<T>(sql, (IEnumerable<MySqlParameter>)parameters);
 		}
 
 		/// <summary>
@@ -229,17 +230,16 @@ namespace Junior.Persist.Data.MySql
 		/// <param name="parameters">Named parameters.</param>
 		/// <returns>A scalar value.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="sql"/> is null.</exception>
-		protected T ExecuteScalar<T>(string sql, IEnumerable<MySqlParameter> parameters)
+		protected async Task<T> ExecuteScalar<T>(string sql, IEnumerable<MySqlParameter> parameters)
 		{
 			sql.ThrowIfNull("sql");
 
 			parameters = parameters ?? Enumerable.Empty<MySqlParameter>();
 
-			using (MySqlConnection connection = ConnectionProvider.GetConnection(_connectionKey))
+			using (MySqlConnection connection = await ConnectionProvider.GetConnection(_connectionKey))
 			{
 				string formattedSql = FormatSql(sql);
 				MySqlCommand command = CommandProvider.GetCommand(_connectionKey, connection, formattedSql, parameters);
-
 				object value = command.ExecuteScalar();
 
 				if (value == null || value == DBNull.Value)
@@ -263,11 +263,11 @@ namespace Junior.Persist.Data.MySql
 		/// <param name="parameters">Named parameters.</param>
 		/// <returns>A data reader.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="sql"/> is null.</exception>
-		protected MySqlDataReader ExecuteReader(string sql, params MySqlParameter[] parameters)
+		protected async Task<MySqlDataReader> ExecuteReader(string sql, params MySqlParameter[] parameters)
 		{
 			sql.ThrowIfNull("sql");
 
-			return ExecuteReader(sql, (IEnumerable<MySqlParameter>)parameters);
+			return await ExecuteReader(sql, (IEnumerable<MySqlParameter>)parameters);
 		}
 
 		/// <summary>
@@ -277,13 +277,13 @@ namespace Junior.Persist.Data.MySql
 		/// <param name="parameters">Named parameters.</param>
 		/// <returns>A data reader.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="sql"/> is null.</exception>
-		protected MySqlDataReader ExecuteReader(string sql, IEnumerable<MySqlParameter> parameters)
+		protected async Task<MySqlDataReader> ExecuteReader(string sql, IEnumerable<MySqlParameter> parameters)
 		{
 			sql.ThrowIfNull("sql");
 
 			parameters = parameters ?? Enumerable.Empty<MySqlParameter>();
 
-			MySqlConnection connection = ConnectionProvider.GetConnection(_connectionKey);
+			MySqlConnection connection = await ConnectionProvider.GetConnection(_connectionKey);
 
 			try
 			{
@@ -308,12 +308,12 @@ namespace Junior.Persist.Data.MySql
 		/// <returns><typeparamref name="T"/> instances.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="sql"/> is null.</exception>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="getProjectedObjectDelegate"/> is null.</exception>
-		protected IEnumerable<T> ExecuteProjection<T>(string sql, Func<MySqlDataReader, T> getProjectedObjectDelegate, params MySqlParameter[] parameters)
+		protected async Task<IEnumerable<T>> ExecuteProjection<T>(string sql, Func<MySqlDataReader, T> getProjectedObjectDelegate, params MySqlParameter[] parameters)
 		{
 			sql.ThrowIfNull("sql");
 			getProjectedObjectDelegate.ThrowIfNull("getProjectedObjectDelegate");
 
-			return ExecuteProjection(sql, getProjectedObjectDelegate, (IEnumerable<MySqlParameter>)parameters);
+			return await ExecuteProjection(sql, getProjectedObjectDelegate, (IEnumerable<MySqlParameter>)parameters);
 		}
 
 		/// <summary>
@@ -325,7 +325,7 @@ namespace Junior.Persist.Data.MySql
 		/// <returns><typeparamref name="T"/> instances.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="sql"/> is null.</exception>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="getProjectedObjectDelegate"/> is null.</exception>
-		protected IEnumerable<T> ExecuteProjection<T>(string sql, Func<MySqlDataReader, T> getProjectedObjectDelegate, IEnumerable<MySqlParameter> parameters)
+		protected async Task<IEnumerable<T>> ExecuteProjection<T>(string sql, Func<MySqlDataReader, T> getProjectedObjectDelegate, IEnumerable<MySqlParameter> parameters)
 		{
 			sql.ThrowIfNull("sql");
 			getProjectedObjectDelegate.ThrowIfNull("getProjectedObjectDelegate");
@@ -334,7 +334,7 @@ namespace Junior.Persist.Data.MySql
 
 			var projections = new List<T>();
 
-			using (MySqlDataReader reader = ExecuteReader(sql, parameters))
+			using (MySqlDataReader reader = await ExecuteReader(sql, parameters))
 			{
 				if (reader.HasRows)
 				{
@@ -357,12 +357,12 @@ namespace Junior.Persist.Data.MySql
 		/// <returns><typeparamref name="T"/> instances.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="sql"/> is null.</exception>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="getProjectedObjectDelegate"/> is null.</exception>
-		protected IEnumerable<T> ExecuteProjection<T>(string sql, Func<DataRow, T> getProjectedObjectDelegate, params MySqlParameter[] parameters)
+		protected async Task<IEnumerable<T>> ExecuteProjection<T>(string sql, Func<DataRow, T> getProjectedObjectDelegate, params MySqlParameter[] parameters)
 		{
 			sql.ThrowIfNull("sql");
 			getProjectedObjectDelegate.ThrowIfNull("getProjectedObjectDelegate");
 
-			return ExecuteProjection(sql, getProjectedObjectDelegate, (IEnumerable<MySqlParameter>)parameters);
+			return await ExecuteProjection(sql, getProjectedObjectDelegate, (IEnumerable<MySqlParameter>)parameters);
 		}
 
 		/// <summary>
@@ -374,7 +374,7 @@ namespace Junior.Persist.Data.MySql
 		/// <returns><typeparamref name="T"/> instances.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="sql"/> is null.</exception>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="getProjectedObjectDelegate"/> is null.</exception>
-		protected IEnumerable<T> ExecuteProjection<T>(string sql, Func<DataRow, T> getProjectedObjectDelegate, IEnumerable<MySqlParameter> parameters)
+		protected async Task<IEnumerable<T>> ExecuteProjection<T>(string sql, Func<DataRow, T> getProjectedObjectDelegate, IEnumerable<MySqlParameter> parameters)
 		{
 			sql.ThrowIfNull("sql");
 			getProjectedObjectDelegate.ThrowIfNull("getProjectedObjectDelegate");
@@ -383,12 +383,13 @@ namespace Junior.Persist.Data.MySql
 
 			var table = new DataTable();
 
-			using (MySqlConnection connection = ConnectionProvider.GetConnection(_connectionKey))
+			using (MySqlConnection connection = await ConnectionProvider.GetConnection(_connectionKey))
 			{
 				string formattedSql = FormatSql(sql);
 				MySqlCommand command = CommandProvider.GetCommand(_connectionKey, connection, formattedSql, parameters);
+				var dataAdapter = new MySqlDataAdapter(command);
 
-				new MySqlDataAdapter(command).Fill(table);
+				dataAdapter.Fill(table);
 			}
 
 			return table.Rows.Cast<DataRow>().Select(getProjectedObjectDelegate);

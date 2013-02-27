@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Threading.Tasks;
 
 using Junior.Common;
 
@@ -45,11 +46,11 @@ namespace Junior.Persist.Data.PostgreSql
 		/// <param name="parameters">Named parameters.</param>
 		/// <returns>Data.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="sql"/> is null.</exception>
-		protected TData GetData(string sql, params NpgsqlParameter[] parameters)
+		protected async Task<TData> GetData(string sql, params NpgsqlParameter[] parameters)
 		{
 			sql.ThrowIfNull("sql");
 
-			return _gettingPostgreSqlDataConnectorHelper.GetData(sql, parameters);
+			return await _gettingPostgreSqlDataConnectorHelper.GetData(sql, parameters);
 		}
 
 		/// <summary>
@@ -59,11 +60,11 @@ namespace Junior.Persist.Data.PostgreSql
 		/// <param name="parameters">Named parameters.</param>
 		/// <returns>Data.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="sql"/> is null.</exception>
-		protected TData GetData(string sql, IEnumerable<NpgsqlParameter> parameters)
+		protected async Task<TData> GetData(string sql, IEnumerable<NpgsqlParameter> parameters)
 		{
 			sql.ThrowIfNull("sql");
 
-			return _gettingPostgreSqlDataConnectorHelper.GetData(sql, parameters);
+			return await _gettingPostgreSqlDataConnectorHelper.GetData(sql, parameters);
 		}
 
 		/// <summary>
@@ -73,11 +74,11 @@ namespace Junior.Persist.Data.PostgreSql
 		/// <param name="parameters">Named parameters.</param>
 		/// <returns>Data.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="sql"/> is null.</exception>
-		protected IEnumerable<TData> GetDatas(string sql, params NpgsqlParameter[] parameters)
+		protected async Task<IEnumerable<TData>> GetDatas(string sql, params NpgsqlParameter[] parameters)
 		{
 			sql.ThrowIfNull("sql");
 
-			return _gettingPostgreSqlDataConnectorHelper.GetDatas(sql, parameters);
+			return await _gettingPostgreSqlDataConnectorHelper.GetDatas(sql, parameters);
 		}
 
 		/// <summary>
@@ -87,11 +88,11 @@ namespace Junior.Persist.Data.PostgreSql
 		/// <param name="parameters">Named parameters.</param>
 		/// <returns>Data.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="sql"/> is null.</exception>
-		protected IEnumerable<TData> GetDatas(string sql, IEnumerable<NpgsqlParameter> parameters)
+		protected async Task<IEnumerable<TData>> GetDatas(string sql, IEnumerable<NpgsqlParameter> parameters)
 		{
 			sql.ThrowIfNull("sql");
 
-			return _gettingPostgreSqlDataConnectorHelper.GetDatas(sql, parameters);
+			return await _gettingPostgreSqlDataConnectorHelper.GetDatas(sql, parameters);
 		}
 
 		/// <summary>

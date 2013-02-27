@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Threading.Tasks;
 
 using Junior.Common;
 
@@ -153,11 +154,11 @@ namespace Junior.Persist.Data.SqlServer
 		/// <param name="parameters">Named parameters.</param>
 		/// <returns>The number of rows affected by the SQL statement.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="sql"/> is null.</exception>
-		protected int ExecuteNonQuery(string sql, params SqlParameter[] parameters)
+		protected async Task<int> ExecuteNonQuery(string sql, params SqlParameter[] parameters)
 		{
 			sql.ThrowIfNull("sql");
 
-			return ExecuteNonQuery(sql, (IEnumerable<SqlParameter>)parameters);
+			return await ExecuteNonQuery(sql, (IEnumerable<SqlParameter>)parameters);
 		}
 
 		/// <summary>
@@ -167,13 +168,13 @@ namespace Junior.Persist.Data.SqlServer
 		/// <param name="parameters">Named parameters.</param>
 		/// <returns>The number of rows affected by the SQL statement.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="sql"/> is null.</exception>
-		protected int ExecuteNonQuery(string sql, IEnumerable<SqlParameter> parameters)
+		protected async Task<int> ExecuteNonQuery(string sql, IEnumerable<SqlParameter> parameters)
 		{
 			sql.ThrowIfNull("sql");
 
 			parameters = parameters ?? Enumerable.Empty<SqlParameter>();
 
-			using (SqlConnection connection = ConnectionProvider.GetConnection(_connectionKey))
+			using (SqlConnection connection = await ConnectionProvider.GetConnection(_connectionKey))
 			{
 				string formattedSql = FormatSql(sql);
 				SqlCommand command = CommandProvider.GetCommand(_connectionKey, connection, formattedSql, parameters);
@@ -189,11 +190,11 @@ namespace Junior.Persist.Data.SqlServer
 		/// <param name="parameters">Named parameters.</param>
 		/// <returns>A scalar value.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="sql"/> is null.</exception>
-		protected T ExecuteScalar<T>(string sql, params SqlParameter[] parameters)
+		protected async Task<T> ExecuteScalar<T>(string sql, params SqlParameter[] parameters)
 		{
 			sql.ThrowIfNull("sql");
 
-			return ExecuteScalar<T>(sql, (IEnumerable<SqlParameter>)parameters);
+			return await ExecuteScalar<T>(sql, (IEnumerable<SqlParameter>)parameters);
 		}
 
 		/// <summary>
@@ -203,13 +204,13 @@ namespace Junior.Persist.Data.SqlServer
 		/// <param name="parameters">Named parameters.</param>
 		/// <returns>A scalar value.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="sql"/> is null.</exception>
-		protected T ExecuteScalar<T>(string sql, IEnumerable<SqlParameter> parameters)
+		protected async Task<T> ExecuteScalar<T>(string sql, IEnumerable<SqlParameter> parameters)
 		{
 			sql.ThrowIfNull("sql");
 
 			parameters = parameters ?? Enumerable.Empty<SqlParameter>();
 
-			using (SqlConnection connection = ConnectionProvider.GetConnection(_connectionKey))
+			using (SqlConnection connection = await ConnectionProvider.GetConnection(_connectionKey))
 			{
 				string formattedSql = FormatSql(sql);
 				SqlCommand command = CommandProvider.GetCommand(_connectionKey, connection, formattedSql, parameters);
@@ -236,11 +237,11 @@ namespace Junior.Persist.Data.SqlServer
 		/// <param name="parameters">Named parameters.</param>
 		/// <returns>A data reader.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="sql"/> is null.</exception>
-		protected SqlDataReader ExecuteReader(string sql, params SqlParameter[] parameters)
+		protected async Task<SqlDataReader> ExecuteReader(string sql, params SqlParameter[] parameters)
 		{
 			sql.ThrowIfNull("sql");
 
-			return ExecuteReader(sql, (IEnumerable<SqlParameter>)parameters);
+			return await ExecuteReader(sql, (IEnumerable<SqlParameter>)parameters);
 		}
 
 		/// <summary>
@@ -250,13 +251,13 @@ namespace Junior.Persist.Data.SqlServer
 		/// <param name="parameters">Named parameters.</param>
 		/// <returns>A data reader.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="sql"/> is null.</exception>
-		protected SqlDataReader ExecuteReader(string sql, IEnumerable<SqlParameter> parameters)
+		protected async Task<SqlDataReader> ExecuteReader(string sql, IEnumerable<SqlParameter> parameters)
 		{
 			sql.ThrowIfNull("sql");
 
 			parameters = parameters ?? Enumerable.Empty<SqlParameter>();
 
-			SqlConnection connection = ConnectionProvider.GetConnection(_connectionKey);
+			SqlConnection connection = await ConnectionProvider.GetConnection(_connectionKey);
 
 			try
 			{
@@ -281,12 +282,12 @@ namespace Junior.Persist.Data.SqlServer
 		/// <returns><typeparamref name="T"/> instances.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="sql"/> is null.</exception>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="getProjectedObjectDelegate"/> is null.</exception>
-		protected IEnumerable<T> ExecuteProjection<T>(string sql, Func<SqlDataReader, T> getProjectedObjectDelegate, params SqlParameter[] parameters)
+		protected async Task<IEnumerable<T>> ExecuteProjection<T>(string sql, Func<SqlDataReader, T> getProjectedObjectDelegate, params SqlParameter[] parameters)
 		{
 			sql.ThrowIfNull("sql");
 			getProjectedObjectDelegate.ThrowIfNull("getProjectedObjectDelegate");
 
-			return ExecuteProjection(sql, getProjectedObjectDelegate, (IEnumerable<SqlParameter>)parameters);
+			return await ExecuteProjection(sql, getProjectedObjectDelegate, (IEnumerable<SqlParameter>)parameters);
 		}
 
 		/// <summary>
@@ -298,7 +299,7 @@ namespace Junior.Persist.Data.SqlServer
 		/// <returns><typeparamref name="T"/> instances.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="sql"/> is null.</exception>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="getProjectedObjectDelegate"/> is null.</exception>
-		protected IEnumerable<T> ExecuteProjection<T>(string sql, Func<SqlDataReader, T> getProjectedObjectDelegate, IEnumerable<SqlParameter> parameters)
+		protected async Task<IEnumerable<T>> ExecuteProjection<T>(string sql, Func<SqlDataReader, T> getProjectedObjectDelegate, IEnumerable<SqlParameter> parameters)
 		{
 			sql.ThrowIfNull("sql");
 			getProjectedObjectDelegate.ThrowIfNull("getProjectedObjectDelegate");
@@ -307,7 +308,7 @@ namespace Junior.Persist.Data.SqlServer
 
 			var projections = new List<T>();
 
-			using (SqlDataReader reader = ExecuteReader(sql, parameters))
+			using (SqlDataReader reader = await ExecuteReader(sql, parameters))
 			{
 				if (reader.HasRows)
 				{
@@ -330,12 +331,12 @@ namespace Junior.Persist.Data.SqlServer
 		/// <returns><typeparamref name="T"/> instances.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="sql"/> is null.</exception>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="getProjectedObjectDelegate"/> is null.</exception>
-		protected IEnumerable<T> ExecuteProjection<T>(string sql, Func<DataRow, T> getProjectedObjectDelegate, params SqlParameter[] parameters)
+		protected async Task<IEnumerable<T>> ExecuteProjection<T>(string sql, Func<DataRow, T> getProjectedObjectDelegate, params SqlParameter[] parameters)
 		{
 			sql.ThrowIfNull("sql");
 			getProjectedObjectDelegate.ThrowIfNull("getProjectedObjectDelegate");
 
-			return ExecuteProjection(sql, getProjectedObjectDelegate, (IEnumerable<SqlParameter>)parameters);
+			return await ExecuteProjection(sql, getProjectedObjectDelegate, (IEnumerable<SqlParameter>)parameters);
 		}
 
 		/// <summary>
@@ -347,7 +348,7 @@ namespace Junior.Persist.Data.SqlServer
 		/// <returns><typeparamref name="T"/> instances.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="sql"/> is null.</exception>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="getProjectedObjectDelegate"/> is null.</exception>
-		protected IEnumerable<T> ExecuteProjection<T>(string sql, Func<DataRow, T> getProjectedObjectDelegate, IEnumerable<SqlParameter> parameters)
+		protected async Task<IEnumerable<T>> ExecuteProjection<T>(string sql, Func<DataRow, T> getProjectedObjectDelegate, IEnumerable<SqlParameter> parameters)
 		{
 			sql.ThrowIfNull("sql");
 			getProjectedObjectDelegate.ThrowIfNull("getProjectedObjectDelegate");
@@ -356,12 +357,13 @@ namespace Junior.Persist.Data.SqlServer
 
 			var table = new DataTable();
 
-			using (SqlConnection connection = ConnectionProvider.GetConnection(_connectionKey))
+			using (SqlConnection connection = await ConnectionProvider.GetConnection(_connectionKey))
 			{
 				string formattedSql = FormatSql(sql);
 				SqlCommand command = CommandProvider.GetCommand(_connectionKey, connection, formattedSql, parameters);
+				var dataAdapter = new SqlDataAdapter(command);
 
-				new SqlDataAdapter(command).Fill(table);
+				dataAdapter.Fill(table);
 			}
 
 			return table.Rows.Cast<DataRow>().Select(getProjectedObjectDelegate);

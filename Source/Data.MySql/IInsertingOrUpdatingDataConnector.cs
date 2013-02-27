@@ -1,3 +1,5 @@
+using System.Threading.Tasks;
+
 namespace Junior.Persist.Data.MySql
 {
 	/// <summary>
@@ -10,6 +12,6 @@ namespace Junior.Persist.Data.MySql
 		/// Insert the specified entity data if the entity it identifies has not been persisted; otherwise, update the entity data.
 		/// </summary>
 		/// <param name="entityData">Entity data.</param>
-		void InsertOrUpdate(TEntityData entityData);
+		Task InsertOrUpdate(TEntityData entityData);
 	}
 }

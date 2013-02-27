@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Threading.Tasks;
 
 using Junior.Common;
 
@@ -40,11 +41,11 @@ namespace Junior.Persist.Data.SqlServer
 		/// <param name="parameters">Named parameters.</param>
 		/// <returns>Data.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="sql"/> is null.</exception>
-		protected TData GetData(string sql, params SqlParameter[] parameters)
+		protected async Task<TData> GetData(string sql, params SqlParameter[] parameters)
 		{
 			sql.ThrowIfNull("sql");
 
-			return _gettingSqlServerDataConnectorHelper.GetData(sql, parameters);
+			return await _gettingSqlServerDataConnectorHelper.GetData(sql, parameters);
 		}
 
 		/// <summary>
@@ -54,11 +55,11 @@ namespace Junior.Persist.Data.SqlServer
 		/// <param name="parameters">Named parameters.</param>
 		/// <returns>Data.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="sql"/> is null.</exception>
-		protected TData GetData(string sql, IEnumerable<SqlParameter> parameters)
+		protected async Task<TData> GetData(string sql, IEnumerable<SqlParameter> parameters)
 		{
 			sql.ThrowIfNull("sql");
 
-			return _gettingSqlServerDataConnectorHelper.GetData(sql, parameters);
+			return await _gettingSqlServerDataConnectorHelper.GetData(sql, parameters);
 		}
 
 		/// <summary>
@@ -68,11 +69,11 @@ namespace Junior.Persist.Data.SqlServer
 		/// <param name="parameters">Named parameters.</param>
 		/// <returns>Data.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="sql"/> is null.</exception>
-		protected IEnumerable<TData> GetDatas(string sql, params SqlParameter[] parameters)
+		protected async Task<IEnumerable<TData>> GetDatas(string sql, params SqlParameter[] parameters)
 		{
 			sql.ThrowIfNull("sql");
 
-			return _gettingSqlServerDataConnectorHelper.GetDatas(sql, parameters);
+			return await _gettingSqlServerDataConnectorHelper.GetDatas(sql, parameters);
 		}
 
 		/// <summary>
@@ -82,11 +83,11 @@ namespace Junior.Persist.Data.SqlServer
 		/// <param name="parameters">Named parameters.</param>
 		/// <returns>Data.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="sql"/> is null.</exception>
-		protected IEnumerable<TData> GetDatas(string sql, IEnumerable<SqlParameter> parameters)
+		protected async Task<IEnumerable<TData>> GetDatas(string sql, IEnumerable<SqlParameter> parameters)
 		{
 			sql.ThrowIfNull("sql");
 
-			return _gettingSqlServerDataConnectorHelper.GetDatas(sql, parameters);
+			return await _gettingSqlServerDataConnectorHelper.GetDatas(sql, parameters);
 		}
 
 		/// <summary>

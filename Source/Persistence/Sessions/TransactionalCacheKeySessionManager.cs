@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 
 using Junior.Common;
 using Junior.Persist.Data;
@@ -41,9 +42,9 @@ namespace Junior.Persist.Persistence.Sessions
 		/// Enrolls in a session. An existing session context is used if there is one; otherwise, a new session context is created.
 		/// </summary>
 		/// <returns>A session.</returns>
-		public override ITransactionalCacheKeySession Enroll()
+		public override async Task<ITransactionalCacheKeySession> Enroll()
 		{
-			return new TransactionalCacheKeySession(_transactionManager.Enlist());
+			return new TransactionalCacheKeySession(await _transactionManager.Enlist());
 		}
 
 		/// <summary>
@@ -52,11 +53,11 @@ namespace Junior.Persist.Persistence.Sessions
 		/// <param name="observer">An observer that will receive observed session actions.</param>
 		/// <returns>A session.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="observer"/> is null.</exception>
-		public override ITransactionalCacheKeySession Enroll(ISessionObserver<CacheKey, object> observer)
+		public override async Task<ITransactionalCacheKeySession> Enroll(ISessionObserver<CacheKey, object> observer)
 		{
 			observer.ThrowIfNull("observer");
 
-			return new TransactionalCacheKeySession(_transactionManager.Enlist(), observer);
+			return new TransactionalCacheKeySession(await _transactionManager.Enlist(), observer);
 		}
 	}
 }

@@ -1,3 +1,5 @@
+using System.Threading.Tasks;
+
 namespace Junior.Persist.Sessions.Transactions
 {
 	/// <summary>
@@ -16,8 +18,9 @@ namespace Junior.Persist.Sessions.Transactions
 		/// <summary>
 		/// Commits the transaction.
 		/// </summary>
-		public void Commit()
+		public Task Commit()
 		{
+			return Task.FromResult((object)null);
 		}
 	}
 }

@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 
 using Junior.Common;
 using Junior.Persist.Data.MySql;
@@ -45,9 +46,9 @@ namespace Junior.Persist.Persistence.MySql.Finders
 		/// <param name="id">An entity ID.</param>
 		/// <param name="entityNotFoundHandling">Determines how to handle when entity data is not found.</param>
 		/// <returns>An entity.</returns>
-		public TEntity ById(Guid id, EntityNotFoundHandling entityNotFoundHandling)
+		public async Task<TEntity> ById(Guid id, EntityNotFoundHandling entityNotFoundHandling)
 		{
-			TEntityData entityData = _dataConnector.GetById(id);
+			TEntityData entityData = await _dataConnector.GetById(id);
 
 			return GetEntity(entityData, entityNotFoundHandling);
 		}

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 using MySql.Data.MySqlClient;
 
@@ -37,13 +38,13 @@ namespace Junior.Persist.Data.MySql
 				_connectionString = connectionString;
 			}
 
-			public MySqlConnection GetConnection(string connectionKey, bool openConnection = true)
+			public async Task<MySqlConnection> GetConnection(string connectionKey, bool openConnection = true)
 			{
 				var connection = new MySqlConnection(_connectionString);
 
 				if (openConnection)
 				{
-					connection.Open();
+					await Task.Run(() => connection.Open());
 				}
 
 				return connection;

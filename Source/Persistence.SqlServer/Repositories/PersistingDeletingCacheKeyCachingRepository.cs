@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 using Junior.Common;
 using Junior.Persist.Data;
@@ -50,13 +51,13 @@ namespace Junior.Persist.Persistence.SqlServer.Repositories
 		/// Deletes an entity.
 		/// </summary>
 		/// <param name="entity">The entity to delete.</param>
-		public void Delete(TEntity entity)
+		public async Task Delete(TEntity entity)
 		{
 			entity.ThrowIfNull("entity");
 
 			Guid entityId = SessionCache.GetEntityId(entity);
 
-			DataConnector.DeleteById(entityId);
+			await DataConnector.DeleteById(entityId);
 
 			SessionCache.RemoveEntity(entity);
 
@@ -111,13 +112,13 @@ namespace Junior.Persist.Persistence.SqlServer.Repositories
 		/// Deletes an entity.
 		/// </summary>
 		/// <param name="entity">The entity to delete.</param>
-		public void Delete(TEntity entity)
+		public async Task Delete(TEntity entity)
 		{
 			entity.ThrowIfNull("entity");
 
 			Guid entityId = SessionCache.GetEntityId(entity);
 
-			DataConnector.DeleteById(entityId);
+			await DataConnector.DeleteById(entityId);
 
 			SessionCache.RemoveEntity(entity);
 

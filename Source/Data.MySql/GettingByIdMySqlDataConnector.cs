@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Threading.Tasks;
 
 using Junior.Common;
 
@@ -43,7 +44,7 @@ namespace Junior.Persist.Data.MySql
 		/// </summary>
 		/// <param name="id">An entity ID.</param>
 		/// <returns>Entity data for an entity with the specified ID.</returns>
-		public abstract TEntityData GetById(BinaryGuid id);
+		public abstract Task<TEntityData> GetById(BinaryGuid id);
 
 		/// <summary>
 		/// Retrieves entity data by executing a SQL query.
@@ -52,11 +53,11 @@ namespace Junior.Persist.Data.MySql
 		/// <param name="parameters">Named parameters.</param>
 		/// <returns>Entity data.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="sql"/> is null.</exception>
-		protected virtual TEntityData GetEntityData(string sql, params MySqlParameter[] parameters)
+		protected virtual async Task<TEntityData> GetEntityData(string sql, params MySqlParameter[] parameters)
 		{
 			sql.ThrowIfNull("sql");
 
-			return _gettingMySqlDataConnectorHelper.GetData(sql, parameters);
+			return await _gettingMySqlDataConnectorHelper.GetData(sql, parameters);
 		}
 
 		/// <summary>
@@ -67,11 +68,11 @@ namespace Junior.Persist.Data.MySql
 		/// <returns>Entity data.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="sql"/> is null.</exception>
 		/// <exception cref="TooManyRowsException">Thrown when the SQL query unexpectedly returns too many rows.</exception>
-		protected virtual TEntityData GetEntityData(string sql, IEnumerable<MySqlParameter> parameters)
+		protected virtual async Task<TEntityData> GetEntityData(string sql, IEnumerable<MySqlParameter> parameters)
 		{
 			sql.ThrowIfNull("sql");
 
-			return _gettingMySqlDataConnectorHelper.GetData(sql, parameters);
+			return await _gettingMySqlDataConnectorHelper.GetData(sql, parameters);
 		}
 
 		/// <summary>
@@ -81,11 +82,11 @@ namespace Junior.Persist.Data.MySql
 		/// <param name="parameters">Named parameters.</param>
 		/// <returns>Entity data.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="sql"/> is null.</exception>
-		protected virtual IEnumerable<TEntityData> GetEntityDatas(string sql, params MySqlParameter[] parameters)
+		protected virtual async Task<IEnumerable<TEntityData>> GetEntityDatas(string sql, params MySqlParameter[] parameters)
 		{
 			sql.ThrowIfNull("sql");
 
-			return _gettingMySqlDataConnectorHelper.GetDatas(sql, parameters);
+			return await _gettingMySqlDataConnectorHelper.GetDatas(sql, parameters);
 		}
 
 		/// <summary>
@@ -95,11 +96,11 @@ namespace Junior.Persist.Data.MySql
 		/// <param name="parameters">Named parameters.</param>
 		/// <returns>Entity data.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="sql"/> is null.</exception>
-		protected virtual IEnumerable<TEntityData> GetEntityDatas(string sql, IEnumerable<MySqlParameter> parameters)
+		protected virtual async Task<IEnumerable<TEntityData>> GetEntityDatas(string sql, IEnumerable<MySqlParameter> parameters)
 		{
 			sql.ThrowIfNull("sql");
 
-			return _gettingMySqlDataConnectorHelper.GetDatas(sql, parameters);
+			return await _gettingMySqlDataConnectorHelper.GetDatas(sql, parameters);
 		}
 
 		/// <summary>

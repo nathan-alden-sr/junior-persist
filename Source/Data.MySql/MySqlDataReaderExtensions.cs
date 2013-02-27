@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 
 using Junior.Common;
 
@@ -20,20 +21,23 @@ namespace Junior.Persist.Data.MySql
 		/// <returns>The column value.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="reader"/> is null.</exception>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="column"/> is null.</exception>
-		public static T GetValue<T>(this MySqlDataReader reader, string column)
+		public static async Task<T> GetValue<T>(this MySqlDataReader reader, string column)
 		{
 			reader.ThrowIfNull("reader");
 			column.ThrowIfNull("column");
 
-			int ordinal = reader.GetOrdinal(column);
-			Type type = typeof(T);
+			return await Task.Run(() =>
+				{
+					int ordinal = reader.GetOrdinal(column);
+					Type type = typeof(T);
 
-			if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>) && reader.IsDBNull(ordinal))
-			{
-				return default(T);
-			}
+					if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>) && reader.IsDBNull(ordinal))
+					{
+						return default(T);
+					}
 
-			return (T)reader.GetValue(ordinal);
+					return (T)reader.GetValue(ordinal);
+				});
 		}
 
 		/// <summary>
@@ -44,17 +48,20 @@ namespace Junior.Persist.Data.MySql
 		/// <returns>A precise date-time</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="reader"/> is null.</exception>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="column"/> is null.</exception>
-		public static BinaryGuid GetBinaryGuid(this MySqlDataReader reader, string column)
+		public static async Task<BinaryGuid> GetBinaryGuid(this MySqlDataReader reader, string column)
 		{
 			reader.ThrowIfNull("reader");
 			column.ThrowIfNull("column");
 
-			int ordinal = reader.GetOrdinal(column);
-			var buffer = new byte[16];
+			return await Task.Run(() =>
+				{
+					int ordinal = reader.GetOrdinal(column);
+					var buffer = new byte[16];
 
-			reader.GetBytes(ordinal, 0, buffer, 0, 16);
+					reader.GetBytes(ordinal, 0, buffer, 0, 16);
 
-			return new BinaryGuid(buffer);
+					return new BinaryGuid(buffer);
+				});
 		}
 
 		/// <summary>
@@ -65,12 +72,12 @@ namespace Junior.Persist.Data.MySql
 		/// <returns>A precise date-time</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="reader"/> is null.</exception>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="column"/> is null.</exception>
-		public static PreciseDateTime GetPreciseDateTime(this MySqlDataReader reader, string column)
+		public static async Task<PreciseDateTime> GetPreciseDateTime(this MySqlDataReader reader, string column)
 		{
 			reader.ThrowIfNull("reader");
 			column.ThrowIfNull("column");
 
-			return new PreciseDateTime(reader.GetInt64(column));
+			return await Task.Run(() => new PreciseDateTime(reader.GetInt64(column)));
 		}
 	}
 }

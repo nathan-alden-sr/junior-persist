@@ -1,5 +1,6 @@
 using System;
 using System.Data.SqlClient;
+using System.Threading.Tasks;
 
 using Junior.Common;
 
@@ -19,20 +20,23 @@ namespace Junior.Persist.Data.SqlServer
 		/// <returns>The column value.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="reader"/> is null.</exception>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="column"/> is null.</exception>
-		public static T GetValue<T>(this SqlDataReader reader, string column)
+		public static async Task<T> GetValue<T>(this SqlDataReader reader, string column)
 		{
 			reader.ThrowIfNull("reader");
 			column.ThrowIfNull("column");
 
-			int ordinal = reader.GetOrdinal(column);
-			Type type = typeof(T);
+			return await Task.Run(() =>
+				{
+					int ordinal = reader.GetOrdinal(column);
+					Type type = typeof(T);
 
-			if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>) && reader.IsDBNull(ordinal))
-			{
-				return default(T);
-			}
+					if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>) && reader.IsDBNull(ordinal))
+					{
+						return default(T);
+					}
 
-			return (T)reader.GetValue(ordinal);
+					return (T)reader.GetValue(ordinal);
+				});
 		}
 
 		/// <summary>
@@ -43,14 +47,17 @@ namespace Junior.Persist.Data.SqlServer
 		/// <returns>A precise date-time</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="reader"/> is null.</exception>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="column"/> is null.</exception>
-		public static PreciseDateTime GetPreciseDateTime(this SqlDataReader reader, string column)
+		public static async Task<PreciseDateTime> GetPreciseDateTime(this SqlDataReader reader, string column)
 		{
 			reader.ThrowIfNull("reader");
 			column.ThrowIfNull("column");
 
-			int ordinal = reader.GetOrdinal(column);
+			return await Task.Run(() =>
+				{
+					int ordinal = reader.GetOrdinal(column);
 
-			return new PreciseDateTime(reader.GetInt64(ordinal));
+					return new PreciseDateTime(reader.GetInt64(ordinal));
+				});
 		}
 	}
 }

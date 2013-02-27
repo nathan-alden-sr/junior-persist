@@ -10,8 +10,8 @@
 		<projectUrl>https://github.com/NathanAlden/JuniorPersist</projectUrl>
 		<iconUrl>https://docs.google.com/uc?export=download&amp;id=0B8a4O6RATfaXQ2YxekpxbXRfUjQ</iconUrl>
 		<dependencies>
-			<dependency id="JuniorCommon" version="2.0.1"/>
-			<dependency id="JuniorPersist.Sessions" version="2.0.0"/>
+			<dependency id="JuniorCommon" version="3.0.0"/>
+			<dependency id="JuniorPersist.Sessions" version="3.0.0"/>
 		</dependencies>
 		<references>
 			<reference file="Junior.Persist.Persistence.dll"/>

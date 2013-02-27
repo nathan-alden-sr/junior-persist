@@ -1,3 +1,5 @@
+using System.Threading.Tasks;
+
 using Junior.Common;
 
 namespace Junior.Persist.Data.PostgreSql
@@ -6,7 +8,7 @@ namespace Junior.Persist.Data.PostgreSql
 	/// Represents a data connector that retrieves entities by ID.
 	/// </summary>
 	/// <typeparam name="TEntityData"></typeparam>
-	public interface IGettingByIdDataConnector<out TEntityData>
+	public interface IGettingByIdDataConnector<TEntityData>
 		where TEntityData : class, IEntityData
 	{
 		/// <summary>
@@ -14,6 +16,6 @@ namespace Junior.Persist.Data.PostgreSql
 		/// </summary>
 		/// <param name="id">An entity ID.</param>
 		/// <returns>Entity data for an entity with the specified ID.</returns>
-		TEntityData GetById(BinaryGuid id);
+		Task<TEntityData> GetById(BinaryGuid id);
 	}
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 using Junior.Common;
 using Junior.Persist.Data;
@@ -43,11 +44,11 @@ namespace Junior.Persist.Persistence.Sessions
 		/// <summary>
 		/// Commits the current transaction.
 		/// </summary>
-		public void Commit()
+		public async Task Commit()
 		{
 			this.ThrowIfDisposed(Disposed);
 
-			_transaction.Commit();
+			await _transaction.Commit();
 		}
 
 		/// <summary>

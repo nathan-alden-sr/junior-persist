@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 
 namespace Junior.Persist.Persistence.Repositories
 {
@@ -13,7 +14,7 @@ namespace Junior.Persist.Persistence.Repositories
 		/// </summary>
 		/// <param name="entity">The entity to persist.</param>
 		/// <returns>The entity's ID.</returns>
-		Guid Persist(TEntity entity);
+		Task<Guid> Persist(TEntity entity);
 	}
 
 	/// <summary>
@@ -29,6 +30,6 @@ namespace Junior.Persist.Persistence.Repositories
 		/// <param name="parentEntity">The parent of the entity to persist.</param>
 		/// <param name="entity">The entity to persist.</param>
 		/// <returns>The entity's ID.</returns>
-		Guid Persist(TParentEntity parentEntity, TEntity entity);
+		Task<Guid> Persist(TParentEntity parentEntity, TEntity entity);
 	}
 }

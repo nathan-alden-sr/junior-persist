@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using System.Transactions;
 
 using Junior.Common;
@@ -28,11 +29,11 @@ namespace Junior.Persist.Data
 			GC.SuppressFinalize(this);
 		}
 
-		public void Commit()
+		public async Task Commit()
 		{
 			this.ThrowIfDisposed(_disposed);
 
-			_transaction.Complete();
+			await Task.Run(() => _transaction.Complete());
 		}
 	}
 }

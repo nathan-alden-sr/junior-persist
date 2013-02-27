@@ -49,9 +49,9 @@ namespace Junior.Persist.UnitTests.Persistence.Sessions
 		public class When_adding_created_lazy_entity_to_session : NonTransactionalCacheKeySessionTestFixture
 		{
 			[Test]
-			public void Must_add_lazy_entity_if_it_is_not_cached()
+			public async void Must_add_lazy_entity_if_it_is_not_cached()
 			{
-				using (INonTransactionalCacheKeySession systemUnderTest = SessionManager.Enroll())
+				using (INonTransactionalCacheKeySession systemUnderTest = await SessionManager.Enroll())
 				{
 					var lazyEntity = new LazyEntity<object>(() => new object());
 					Guid entityId = Guid.NewGuid();
@@ -63,9 +63,9 @@ namespace Junior.Persist.UnitTests.Persistence.Sessions
 			}
 
 			[Test]
-			public void Must_throw_exception_if_caching_the_same_lazy_entity_more_than_once()
+			public async void Must_throw_exception_if_caching_the_same_lazy_entity_more_than_once()
 			{
-				using (INonTransactionalCacheKeySession systemUnderTest = SessionManager.Enroll())
+				using (INonTransactionalCacheKeySession systemUnderTest = await SessionManager.Enroll())
 				{
 					var lazyEntity = new LazyEntity<object>(() => new object());
 
@@ -80,11 +80,11 @@ namespace Junior.Persist.UnitTests.Persistence.Sessions
 		public class When_adding_found_entities_to_session : NonTransactionalCacheKeySessionTestFixture
 		{
 			[Test]
-			public void Must_replace_cached_entities_with_new_entity_instances()
+			public async void Must_replace_cached_entities_with_new_entity_instances()
 			{
 				var observer = MockRepository.GenerateMock<ISessionObserver<CacheKey, object>>();
 
-				using (INonTransactionalCacheKeySession session = SessionManager.Enroll(observer))
+				using (INonTransactionalCacheKeySession session = await SessionManager.Enroll(observer))
 				{
 					var cacheKey = new CacheKey("test");
 					var cacheEntityA1 = new CacheEntity<object>(new Entity1(), Guid.NewGuid());
@@ -103,9 +103,9 @@ namespace Junior.Persist.UnitTests.Persistence.Sessions
 			}
 
 			[Test]
-			public void Must_throw_exception_if_caching_more_than_one_entity_type_for_single_cache_key()
+			public async void Must_throw_exception_if_caching_more_than_one_entity_type_for_single_cache_key()
 			{
-				using (INonTransactionalCacheKeySession session = SessionManager.Enroll())
+				using (INonTransactionalCacheKeySession session = await SessionManager.Enroll())
 				{
 					Assert.Throws<SessionException>(
 						() => session.EntitiesWereFound(
@@ -120,9 +120,9 @@ namespace Junior.Persist.UnitTests.Persistence.Sessions
 			}
 
 			[Test]
-			public void Must_throw_exception_if_caching_more_than_one_entity_type_with_the_same_id()
+			public async void Must_throw_exception_if_caching_more_than_one_entity_type_with_the_same_id()
 			{
-				using (INonTransactionalCacheKeySession session = SessionManager.Enroll())
+				using (INonTransactionalCacheKeySession session = await SessionManager.Enroll())
 				{
 					Guid id = Guid.NewGuid();
 
@@ -139,9 +139,9 @@ namespace Junior.Persist.UnitTests.Persistence.Sessions
 			}
 
 			[Test]
-			public void Must_throw_exception_if_caching_the_same_entity_more_than_once()
+			public async void Must_throw_exception_if_caching_the_same_entity_more_than_once()
 			{
-				using (INonTransactionalCacheKeySession session = SessionManager.Enroll())
+				using (INonTransactionalCacheKeySession session = await SessionManager.Enroll())
 				{
 					var entity = new Entity1();
 
@@ -158,9 +158,9 @@ namespace Junior.Persist.UnitTests.Persistence.Sessions
 			}
 
 			[Test]
-			public void Must_throw_exception_if_same_entity_is_added_with_different_id()
+			public async void Must_throw_exception_if_same_entity_is_added_with_different_id()
 			{
-				using (INonTransactionalCacheKeySession session = SessionManager.Enroll())
+				using (INonTransactionalCacheKeySession session = await SessionManager.Enroll())
 				{
 					var cacheKey = new CacheKey("test");
 					var entity = new Entity1();
@@ -177,11 +177,11 @@ namespace Junior.Persist.UnitTests.Persistence.Sessions
 		public class When_adding_persisted_entities_to_session : NonTransactionalCacheKeySessionTestFixture
 		{
 			[Test]
-			public void Must_add_entity_if_entity_is_not_cached()
+			public async void Must_add_entity_if_entity_is_not_cached()
 			{
 				var observer = MockRepository.GenerateMock<ISessionObserver<CacheKey, object>>();
 
-				using (INonTransactionalCacheKeySession session = SessionManager.Enroll(observer))
+				using (INonTransactionalCacheKeySession session = await SessionManager.Enroll(observer))
 				{
 					Guid id = Guid.NewGuid();
 					var entity = new Entity1();
@@ -193,11 +193,11 @@ namespace Junior.Persist.UnitTests.Persistence.Sessions
 			}
 
 			[Test]
-			public void Must_not_throw_exception_if_same_entity_is_added_more_than_once()
+			public async void Must_not_throw_exception_if_same_entity_is_added_more_than_once()
 			{
 				var observer = MockRepository.GenerateMock<ISessionObserver<CacheKey, object>>();
 
-				using (INonTransactionalCacheKeySession session = SessionManager.Enroll(observer))
+				using (INonTransactionalCacheKeySession session = await SessionManager.Enroll(observer))
 				{
 					var cacheEntity = new CacheEntity<object>(new Entity1(), Guid.NewGuid());
 
@@ -209,9 +209,9 @@ namespace Junior.Persist.UnitTests.Persistence.Sessions
 			}
 
 			[Test]
-			public void Must_throw_exception_if_same_entity_is_added_with_different_id()
+			public async void Must_throw_exception_if_same_entity_is_added_with_different_id()
 			{
-				using (INonTransactionalCacheKeySession session = SessionManager.Enroll())
+				using (INonTransactionalCacheKeySession session = await SessionManager.Enroll())
 				{
 					var entity = new Entity1();
 					var cacheEntity1 = new CacheEntity<object>(entity, Guid.NewGuid());
@@ -227,11 +227,11 @@ namespace Junior.Persist.UnitTests.Persistence.Sessions
 		public class When_clearing_all_entities_from_session : NonTransactionalCacheKeySessionTestFixture
 		{
 			[Test]
-			public void Must_clear_all_entities()
+			public async void Must_clear_all_entities()
 			{
 				var observer = MockRepository.GenerateMock<ISessionObserver<CacheKey, object>>();
 
-				using (INonTransactionalCacheKeySession session = SessionManager.Enroll(observer))
+				using (INonTransactionalCacheKeySession session = await SessionManager.Enroll(observer))
 				{
 					var cacheKey1 = new CacheKey("test1");
 					var cacheKey2 = new CacheKey("test2");
@@ -278,11 +278,11 @@ namespace Junior.Persist.UnitTests.Persistence.Sessions
 		public class When_clearing_entities_of_a_type_from_session : NonTransactionalCacheKeySessionTestFixture
 		{
 			[Test]
-			public void Must_clear_entities_of_that_type()
+			public async void Must_clear_entities_of_that_type()
 			{
 				var observer = MockRepository.GenerateMock<ISessionObserver<CacheKey, object>>();
 
-				using (INonTransactionalCacheKeySession session = SessionManager.Enroll(observer))
+				using (INonTransactionalCacheKeySession session = await SessionManager.Enroll(observer))
 				{
 					var cacheKey1 = new CacheKey("test1");
 					var cacheKey2 = new CacheKey("test2");
@@ -339,11 +339,11 @@ namespace Junior.Persist.UnitTests.Persistence.Sessions
 		public class When_removing_entities_from_session : NonTransactionalCacheKeySessionTestFixture
 		{
 			[Test]
-			public void Must_remove_cache_keys_and_all_their_entities_for_cache_keys_referencing_a_removed_entity()
+			public async void Must_remove_cache_keys_and_all_their_entities_for_cache_keys_referencing_a_removed_entity()
 			{
 				var observer = MockRepository.GenerateMock<ISessionObserver<CacheKey, object>>();
 
-				using (INonTransactionalCacheKeySession session = SessionManager.Enroll(observer))
+				using (INonTransactionalCacheKeySession session = await SessionManager.Enroll(observer))
 				{
 					var cacheKey = new CacheKey("test");
 					var cacheEntities = new[]
@@ -385,11 +385,11 @@ namespace Junior.Persist.UnitTests.Persistence.Sessions
 			}
 
 			[Test]
-			public void Must_remove_entities_if_entities_are_cached()
+			public async void Must_remove_entities_if_entities_are_cached()
 			{
 				var observer = MockRepository.GenerateMock<ISessionObserver<CacheKey, object>>();
 
-				using (INonTransactionalCacheKeySession session = SessionManager.Enroll(observer))
+				using (INonTransactionalCacheKeySession session = await SessionManager.Enroll(observer))
 				{
 					var cacheEntities = new[]
 						{
@@ -421,9 +421,9 @@ namespace Junior.Persist.UnitTests.Persistence.Sessions
 			}
 
 			[Test]
-			public void Must_throw_exception_if_entity_being_removed_is_not_cached()
+			public async void Must_throw_exception_if_entity_being_removed_is_not_cached()
 			{
-				using (INonTransactionalCacheKeySession session = SessionManager.Enroll())
+				using (INonTransactionalCacheKeySession session = await SessionManager.Enroll())
 				{
 					var entity = new Entity1();
 
@@ -436,20 +436,20 @@ namespace Junior.Persist.UnitTests.Persistence.Sessions
 		public class When_removing_entities_from_session_by_entity_id : NonTransactionalCacheKeySessionTestFixture
 		{
 			[Test]
-			public void Must_not_throw_exception_if_entity_being_removed_is_not_cached()
+			public async void Must_not_throw_exception_if_entity_being_removed_is_not_cached()
 			{
-				using (INonTransactionalCacheKeySession session = SessionManager.Enroll())
+				using (INonTransactionalCacheKeySession session = await SessionManager.Enroll())
 				{
 					Assert.DoesNotThrow(() => session.RemoveEntity(Guid.NewGuid()));
 				}
 			}
 
 			[Test]
-			public void Must_remove_cache_keys_and_all_their_entities_for_cache_keys_referencing_a_removed_entity()
+			public async void Must_remove_cache_keys_and_all_their_entities_for_cache_keys_referencing_a_removed_entity()
 			{
 				var observer = MockRepository.GenerateMock<ISessionObserver<CacheKey, object>>();
 
-				using (INonTransactionalCacheKeySession session = SessionManager.Enroll(observer))
+				using (INonTransactionalCacheKeySession session = await SessionManager.Enroll(observer))
 				{
 					var cacheKey = new CacheKey("test");
 					Guid entityId = Guid.NewGuid();
@@ -487,11 +487,11 @@ namespace Junior.Persist.UnitTests.Persistence.Sessions
 			}
 
 			[Test]
-			public void Must_remove_entities_if_entities_are_cached()
+			public async void Must_remove_entities_if_entities_are_cached()
 			{
 				var observer = MockRepository.GenerateMock<ISessionObserver<CacheKey, object>>();
 
-				using (INonTransactionalCacheKeySession session = SessionManager.Enroll(observer))
+				using (INonTransactionalCacheKeySession session = await SessionManager.Enroll(observer))
 				{
 					Guid entityId = Guid.NewGuid();
 					var cacheEntities = new[]

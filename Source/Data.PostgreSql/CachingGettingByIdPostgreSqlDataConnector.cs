@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Threading.Tasks;
 
 using Junior.Common;
 
@@ -42,7 +43,7 @@ namespace Junior.Persist.Data.PostgreSql
 		/// </summary>
 		/// <param name="id">An entity ID.</param>
 		/// <returns>A query result specifying either cached entity data or containing the entity data itself for the specified entity ID.</returns>
-		public abstract IQueryResult<TEntityData> GetById(BinaryGuid id);
+		public abstract Task<IQueryResult<TEntityData>> GetById(BinaryGuid id);
 
 		/// <summary>
 		/// Retrieves entity data by executing a SQL query.
@@ -51,11 +52,11 @@ namespace Junior.Persist.Data.PostgreSql
 		/// <param name="parameters">Named parameters.</param>
 		/// <returns>A query result specifying either cached entity data or containing the entity data itself.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="sql"/> is null.</exception>
-		protected IQueryResult<TEntityData> GetEntityData(string sql, params NpgsqlParameter[] parameters)
+		protected async Task<IQueryResult<TEntityData>> GetEntityData(string sql, params NpgsqlParameter[] parameters)
 		{
 			sql.ThrowIfNull("sql");
 
-			return GetEntityData(sql, (IEnumerable<NpgsqlParameter>)parameters);
+			return await GetEntityData(sql, (IEnumerable<NpgsqlParameter>)parameters);
 		}
 
 		/// <summary>
@@ -66,7 +67,7 @@ namespace Junior.Persist.Data.PostgreSql
 		/// <returns>A query result specifying either cached entity data or containing the entity data itself.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="sql"/> is null.</exception>
 		/// <exception cref="TooManyRowsException">Thrown when the SQL query unexpectedly returns too many rows.</exception>
-		protected IQueryResult<TEntityData> GetEntityData(string sql, IEnumerable<NpgsqlParameter> parameters)
+		protected async Task<IQueryResult<TEntityData>> GetEntityData(string sql, IEnumerable<NpgsqlParameter> parameters)
 		{
 			sql.ThrowIfNull("sql");
 
@@ -77,7 +78,7 @@ namespace Junior.Persist.Data.PostgreSql
 				return new CacheQueryResult<TEntityData>(key);
 			}
 
-			IEnumerable<TEntityData> entityDatas = ExecuteProjection(sql, GetEntityData, parameters).ToArray();
+			IEnumerable<TEntityData> entityDatas = (await ExecuteProjection(sql, GetEntityData, parameters)).ToArray();
 
 			if (entityDatas.CountGreaterThan(1))
 			{
@@ -94,11 +95,11 @@ namespace Junior.Persist.Data.PostgreSql
 		/// <param name="parameters">Named parameters.</param>
 		/// <returns>A query result specifying either cached entity data or containing the entity data itself.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="sql"/> is null.</exception>
-		protected IQueryResult<IEnumerable<TEntityData>> GetEntityDatas(string sql, params NpgsqlParameter[] parameters)
+		protected async Task<IQueryResult<IEnumerable<TEntityData>>> GetEntityDatas(string sql, params NpgsqlParameter[] parameters)
 		{
 			sql.ThrowIfNull("sql");
 
-			return GetEntityDatas(sql, (IEnumerable<NpgsqlParameter>)parameters);
+			return await GetEntityDatas(sql, (IEnumerable<NpgsqlParameter>)parameters);
 		}
 
 		/// <summary>
@@ -108,7 +109,7 @@ namespace Junior.Persist.Data.PostgreSql
 		/// <param name="parameters">Named parameters.</param>
 		/// <returns>A query result specifying either cached entity data or containing the entity data itself.</returns>
 		/// <exception cref="ArgumentNullException">Thrown when <paramref name="sql"/> is null.</exception>
-		protected IQueryResult<IEnumerable<TEntityData>> GetEntityDatas(string sql, IEnumerable<NpgsqlParameter> parameters)
+		protected async Task<IQueryResult<IEnumerable<TEntityData>>> GetEntityDatas(string sql, IEnumerable<NpgsqlParameter> parameters)
 		{
 			sql.ThrowIfNull("sql");
 
@@ -116,7 +117,7 @@ namespace Junior.Persist.Data.PostgreSql
 
 			return _cache.IsCached(key)
 				       ? (IQueryResult<IEnumerable<TEntityData>>)new CacheQueryResult<IEnumerable<TEntityData>>(key)
-				       : new ResultQueryResult<IEnumerable<TEntityData>>(key, ExecuteProjection(sql, GetEntityData, parameters));
+				       : new ResultQueryResult<IEnumerable<TEntityData>>(key, await ExecuteProjection(sql, GetEntityData, parameters));
 		}
 
 		/// <summary>

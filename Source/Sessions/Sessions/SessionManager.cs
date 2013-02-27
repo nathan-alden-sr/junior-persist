@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 using Junior.Common;
 using Junior.Ddd.DomainModel;
@@ -232,14 +233,14 @@ namespace Junior.Persist.Sessions.Sessions
 		/// Enrolls in a session. An existing session context is used if there is one; otherwise, a new session context is created.
 		/// </summary>
 		/// <returns>A session.</returns>
-		public abstract TSession Enroll();
+		public abstract Task<TSession> Enroll();
 
 		/// <summary>
 		/// Enrolls in a session. An existing session context is used if there is one; otherwise, a new session context is created.
 		/// </summary>
 		/// <param name="observer">An observer that will receive observed session actions.</param>
 		/// <returns>A session.</returns>
-		public abstract TSession Enroll(ISessionObserver<TCacheKey, TEntity> observer);
+		public abstract Task<TSession> Enroll(ISessionObserver<TCacheKey, TEntity> observer);
 
 		/// <summary>
 		/// Validates that a session context is present.

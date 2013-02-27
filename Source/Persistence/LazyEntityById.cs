@@ -22,7 +22,7 @@ namespace Junior.Persist.Persistence
 			Guid id,
 			IByIdFinder<TEntity> finder,
 			EntityNotFoundHandling entityNotFoundHandling = EntityNotFoundHandling.ThrowException)
-			: this(id, finder.ById, entityNotFoundHandling)
+			: this(id, (tempId, tempEntityNotFoundHandling) => finder.ById(tempId, tempEntityNotFoundHandling).Result, entityNotFoundHandling)
 		{
 		}
 

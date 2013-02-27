@@ -1,3 +1,5 @@
+using System.Threading.Tasks;
+
 using Junior.Persist.Data;
 using Junior.Persist.Sessions.Sessions;
 
@@ -11,6 +13,6 @@ namespace Junior.Persist.Persistence.Sessions
 		/// <summary>
 		/// Commits the current transaction.
 		/// </summary>
-		void Commit();
+		Task Commit();
 	}
 }

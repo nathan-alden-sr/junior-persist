@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 
 using Junior.Common;
 using Junior.Persist.Data;
@@ -48,9 +49,9 @@ namespace Junior.Persist.Persistence.SqlServer.Finders
 		/// <param name="id">An entity ID.</param>
 		/// <param name="entityNotFoundHandling">Determines how to handle when entity data is not found.</param>
 		/// <returns>An entity.</returns>
-		public TEntity ById(Guid id, EntityNotFoundHandling entityNotFoundHandling)
+		public async Task<TEntity> ById(Guid id, EntityNotFoundHandling entityNotFoundHandling)
 		{
-			IQueryResult<TEntityData> queryResult = _dataConnector.GetById(id);
+			IQueryResult<TEntityData> queryResult = await _dataConnector.GetById(id);
 
 			return GetEntity(queryResult, entityNotFoundHandling).IfNotNull(arg => arg.Entity);
 		}
