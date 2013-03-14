@@ -218,9 +218,11 @@ namespace Junior.Persist.Data.SqlServer
 
 				if (value == null || value == DBNull.Value)
 				{
-					if (typeof(T).IsValueType)
+					Type type = typeof(T);
+
+					if (type.IsValueType && (!type.IsGenericType || type.GetGenericTypeDefinition() != typeof(Nullable<>)))
 					{
-						throw new Exception("Query resulted in NULL but scalar type is a value type.");
+						throw new Exception("Query resulted in NULL but scalar type is a non-nullable value type.");
 					}
 
 					return default(T);
